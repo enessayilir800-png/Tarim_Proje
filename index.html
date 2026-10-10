@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#173e2b">
+  <title>Tarım Yol Haritası | NASA POWER</title>
+  <link rel="stylesheet" href="main.css">
+  <style>.location-search{margin-bottom:0}.location-search input{padding-left:8px}.location-search button{height:28px;margin-right:7px;border:0;border-radius:5px;background:#edf4e8;color:#4b754d;font:600 10px 'DM Sans',sans-serif;padding:0 10px;cursor:pointer;white-space:nowrap}.location-status{min-height:14px;font-size:10px;color:#6b8469;margin:5px 0 3px}.or-divider{display:flex;align-items:center;gap:8px;color:#a0aaa0;font-size:9px;margin:4px 0 8px}.or-divider:before,.or-divider:after{content:'';height:1px;background:#edf0eb;flex:1}</style>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#top"><span class="brand-mark">T</span><span>Tarım<span class="brand-light">Yol</span></span></a>
+    <div class="top-links"><span class="top-chip"><strong>NASA</strong> POWER</span><span class="top-chip">SoilGrids</span><span class="top-chip">Açık veri</span></div><span class="top-note"><span class="live-dot"></span> NASA POWER iklim verisi</span>
+  </header>
+  <main id="top">
+    <section class="hero">
+      <div class="hero-copy">
+        <div class="eyebrow"><span>2026 NASA SPACE APPS</span><span class="eyebrow-line"></span><span>KARAR DESTEK ARACI</span></div>
+        <h1>Tarlan için<br><em>akıllı bir yol haritası.</em></h1>
+        <p>Konumunu, toprağını ve düşündüğün ürünü gir. NASA’nın iklim verileriyle ekimden hasada uzanan planını oluştur.</p>
+        <div class="hero-tags"><span>Konuma özel iklim</span><span>Aylık iş planı</span><span>Ürün değerlendirmesi</span></div>
+      </div>
+      <div class="hero-art" aria-hidden="true"><div class="sun"></div><div class="field field-one"></div><div class="field field-two"></div><div class="field field-three"></div><div class="art-label"><span>SAHA VERİSİ</span><strong>Toprağını tanı,<br>sezonu planla.</strong></div><div class="art-coords">NASA POWER · DAILY</div></div>
+    </section>
+
+    <section class="workspace">
+      <div class="form-panel">
+        <div class="section-heading"><div><span class="step">01 / TARLAN</span><h2>Bilgileri gir</h2></div><span class="leaf-icon">✳</span></div>
+        <form id="farm-form">
+          <label class="field-label" for="location">Tarla konumu <span>İl, ilçe, köy veya adres</span></label>
+          <div class="input-wrap location-search"><span class="input-icon">⌖</span><input id="location" type="text" placeholder="Örn. Polatlı, Ankara veya köy adı"><button id="find-location" type="button">Konumu bul</button></div>
+          <p class="location-status" id="location-status"></p>
+          <div class="or-divider"><span>veya koordinat gir</span></div>
+          <div class="two-cols coordinate-row"><div class="input-wrap"><span class="input-icon">↕</span><input id="latitude" type="number" step="any" min="-90" max="90" placeholder="Enlem · 39.92"></div><div class="input-wrap"><span class="input-icon">↔</span><input id="longitude" type="number" step="any" min="-180" max="180" placeholder="Boylam · 32.85"></div></div>
+          <p class="hint">Koordinatını bilmiyor musun? <a href="https://www.google.com/maps" target="_blank" rel="noreferrer">Haritalar’da konumunu bul ↗</a></p>
+          <div class="two-cols field-row"><div><label class="field-label" for="area">Tarla büyüklüğü</label><div class="input-wrap"><input id="area" type="number" min="0.1" step="0.1" placeholder="Örn. 25" required><span class="unit">dekar</span></div></div><div><label class="field-label" for="soil">Toprak yapısı</label><select id="soil"><option value="unknown">Bilmiyorum</option><option value="clay">Killi</option><option value="loam">Tınlı</option><option value="sandy">Kumlu</option><option value="silty">Siltli</option><option value="red">Kırmızı toprak</option><option value="white">Beyaz / kireçli toprak</option><option value="gravel">Çakıllı toprak</option><option value="alluvial">Alüvyal / taban toprak</option><option value="saline">Tuzlu / alkali toprak</option><option value="humus">Humuslu / organik maddece zengin</option></select></div></div>
+          <label class="field-label crop-label" for="crop">Bu sezon düşündüğün ürün</label>
+          <div class="crop-select-wrap"><span class="crop-symbol">♧</span><select id="crop" required><option value="">Ürün seç</option><option value="wheat">Buğday</option><option value="barley">Arpa</option><option value="corn">Mısır</option><option value="sunflower">Ayçiçeği</option><option value="chickpea">Nohut</option><option value="lentil">Mercimek</option><option value="cotton">Pamuk</option><option value="tomato">Domates</option><option value="potato">Patates</option></select><span class="select-arrow">⌄</span></div>
+          <label class="check-row"><input id="irrigation" type="checkbox"><span class="fake-check"></span><span>Sulama imkânım var</span></label>
+          <div class="two-cols field-row preference-row"><div><label class="field-label" for="priority">Önceliğim</label><select id="priority"><option value="soil">Toprak sağlığı</option><option value="water">Suyu korumak</option><option value="yield">Verim ve gelir</option><option value="risk">Düşük risk / dayanıklılık</option></select></div><div><label class="field-label" for="previous-crop">Geçen yıl ne ekildi?</label><select id="previous-crop"><option value="none">Bilmiyorum / boş</option><option value="wheat">Buğday</option><option value="barley">Arpa</option><option value="corn">Mısır</option><option value="sunflower">Ayçiçeği</option><option value="chickpea">Nohut</option><option value="lentil">Mercimek</option><option value="cotton">Pamuk</option><option value="tomato">Domates</option><option value="potato">Patates</option></select></div></div>
+          <button class="submit-button" type="submit"><span>Yol haritamı oluştur</span><span class="button-arrow">↗</span></button>
+          <div class="form-foot"><span class="lock-icon">◈</span> Konum bilgilerin yalnızca bu analiz için kullanılır.</div>
+        </form>
+      </div>
+      <div class="results-panel" id="results-panel">
+        <div class="results-empty" id="empty-state"><div class="empty-illustration"><span class="empty-sun"></span><span class="empty-hill hill-a"></span><span class="empty-hill hill-b"></span><span class="empty-sprout">♧</span></div><span class="step">02 / ANALİZİN</span><h2>Sezon planın burada<br>hayat bulacak.</h2><p>Tarla bilgilerini doldur. Konumuna ait NASA POWER iklim verileriyle sana özel bir plan hazırlayalım.</p><div class="empty-source"><span class="source-orbit">✳</span><span><strong>NASA POWER</strong><small>Günlük meteorolojik ve güneş verisi</small></span></div></div>
+        <div class="loading-state hidden" id="loading-state"><div class="loader"></div><span class="step">NASA POWER VERİSİ ALINIYOR</span><h2>İklim verilerini<br>inceliyoruz…</h2><p>Konumuna ait son üç tamamlanmış yılın günlük verileri yükleniyor.</p></div>
+        <div class="report hidden" id="report"></div>
+      </div>
+    </section>
+    <section class="bottom-note"><span class="note-star">✳</span><p><strong>Yerel bilgi değerlidir.</strong> Bu araç genel bir karar desteğidir; ürün çeşidi, toprak analizi, yerel ziraat uzmanı görüşü ve güncel hava tahminleriyle planı doğrula.</p><span class="nasa-wordmark">POWER <small>NASA</small></span></section>
+  </main>
+  <footer><span>TarımYol · Çiftlikleri NASA verileriyle uyarlamak</span><span>NASA POWER Project · Open data</span></footer>
+  <script src="main.js"></script>
+</body>
+</html>
