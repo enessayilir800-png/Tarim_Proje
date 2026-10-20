@@ -7,7 +7,8 @@
     const isApi=url.includes('/api/');
     const isGeo=url.includes('/api/geocode');
     // The page may be opened by VS Code Live Server (5500), file://, or another static host.
-    // Geocoding always belongs to the Python API server on port 8000.
+    // Route API requests through the local backend. Browser-side TKGM HTTP errors do not
+    // reject fetch(), so a catch-based fallback can leave the location dropdowns broken.
     if(isApi && (window.location.protocol==='file:' || window.location.port!=='8000')){
       const path=url.slice(url.indexOf('/api/'));
       const host=window.location.hostname||'127.0.0.1';
