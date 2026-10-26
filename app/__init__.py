@@ -1,0 +1,1 @@
+"""TarımYol FastAPI application."""
