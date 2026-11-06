@@ -225,5 +225,6 @@
         : `${error.message} · Geçerli API tokenı için python setup_appeears.py çalıştır.`;
     } finally { button.disabled = false; }
   });
+  window.addEventListener('tarimyol:show-parcels', () => map.invalidateSize());
   redraw(); setTimeout(() => map.invalidateSize(), 150);
 })();

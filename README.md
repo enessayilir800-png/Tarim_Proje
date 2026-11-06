@@ -2,6 +2,8 @@
 
 TarımYol, FastAPI tabanlı tarımsal karar destek uygulamasıdır. Mevcut web arayüzü aynı uygulamadan sunulur.
 
+Arayüzde Genel Bakış, Tarla Planı ve Parsel Haritası sol menüden ayrı ekranlar olarak açılır.
+
 ## Kurulum ve çalıştırma
 
 Proje klasöründe PowerShell ile:

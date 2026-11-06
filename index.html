@@ -3,28 +3,48 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#173e2b">
-  <title>Tarım Yol Haritası | NASA POWER</title>
+  <meta name="theme-color" content="#16302a">
+  <meta name="description" content="TarımYol ile tarlan için iklim, toprak ve ürün verilerine dayalı sezon planı oluştur.">
+  <title>TarımYol | Tarımsal Karar Desteği</title>
   <link rel="stylesheet" href="main.css">
   <style>.location-search{margin-bottom:0}.location-search input{padding-left:8px}.location-search button{height:28px;margin-right:7px;border:0;border-radius:5px;background:#edf4e8;color:#4b754d;font:600 10px 'DM Sans',sans-serif;padding:0 10px;cursor:pointer;white-space:nowrap}.location-status{min-height:14px;font-size:10px;color:#6b8469;margin:5px 0 3px}.or-divider{display:flex;align-items:center;gap:8px;color:#a0aaa0;font-size:9px;margin:4px 0 8px}.or-divider:before,.or-divider:after{content:'';height:1px;background:#edf0eb;flex:1}</style>
 </head>
 <body>
   <header class="topbar">
-    <a class="brand" href="#top"><span class="brand-mark">T</span><span>Tarım<span class="brand-light">Yol</span></span></a>
-    <div class="top-links"><span class="top-chip"><strong>NASA</strong> POWER</span><span class="top-chip">SoilGrids</span><span class="top-chip">Açık veri</span></div><span class="top-note"><span class="live-dot"></span> NASA POWER iklim verisi</span>
+    <a class="brand" href="#/overview" aria-label="TarımYol ana sayfa"><span class="brand-mark">T</span><span>Tarım<span class="brand-light">Yol</span></span></a>
+    <div class="top-links"><span class="top-chip"><strong>NASA</strong> POWER</span><span class="top-chip">SoilGrids</span><span class="top-chip">Açık veri</span></div><span class="top-note"><span class="live-dot"></span> Tarımsal karar desteği</span>
   </header>
-  <main id="top">
+  <aside class="side-nav">
+    <span class="side-nav-label">ÇALIŞMA ALANI</span>
+    <nav aria-label="Ana menü">
+      <a class="side-nav-link" href="#/overview" aria-label="Genel bakış" title="Genel bakış" aria-current="page"><span class="side-nav-icon" aria-hidden="true">⌂</span><span>Genel bakış</span></a>
+      <a class="side-nav-link" href="#/plan" aria-label="Tarla planı" title="Tarla planı"><span class="side-nav-icon" aria-hidden="true">✳</span><span>Tarla planı</span></a>
+      <a class="side-nav-link" href="#/parcels" aria-label="Parsel haritası" title="Parsel haritası"><span class="side-nav-icon" aria-hidden="true">⌖</span><span>Parsel haritası</span></a>
+    </nav>
+    <div class="side-nav-note"><span class="side-nav-note-icon" aria-hidden="true">✦</span><strong>Toprağını tanı,<br>sezonu planla.</strong><small>NASA POWER · SoilGrids</small></div>
+  </aside>
+  <main id="app">
+    <section class="app-page overview-page" id="overview-page" aria-labelledby="overview-title">
     <section class="hero">
       <div class="hero-copy">
-        <div class="eyebrow"><span>2026 NASA SPACE APPS</span><span class="eyebrow-line"></span><span>KARAR DESTEK ARACI</span></div>
-        <h1>Tarlan için<br><em>akıllı bir yol haritası.</em></h1>
-        <p>Konumunu, toprağını ve düşündüğün ürünü gir. NASA’nın iklim verileriyle ekimden hasada uzanan planını oluştur.</p>
-        <div class="hero-tags"><span>Konuma özel iklim</span><span>Aylık iş planı</span><span>Ürün değerlendirmesi</span></div>
+        <div class="eyebrow"><span>TARIMYOL · TARIM YÖNETİMİ</span><span class="eyebrow-line"></span><span>NASA POWER VERİSİ</span></div>
+        <h1 id="overview-title">Tarlan için<br><em>akıllı bir yol haritası.</em></h1>
+        <p>Toprağını tanı, sezonu güvenle planla. Konumuna özel iklim ve toprak verilerini ekimden hasada uzanan bir yol haritasına dönüştür.</p>
+        <div class="hero-tags"><span>FAO-56 su dengesi</span><span>Konuma özel iklim</span><span>Uydu ve parsel takibi</span></div>
       </div>
-      <div class="hero-art" aria-hidden="true"><div class="sun"></div><div class="field field-one"></div><div class="field field-two"></div><div class="field field-three"></div><div class="art-label"><span>SAHA VERİSİ</span><strong>Toprağını tanı,<br>sezonu planla.</strong></div><div class="art-coords">NASA POWER · DAILY</div></div>
+      <div class="hero-art" aria-hidden="true"><div class="sun"></div><div class="field field-one"></div><div class="field field-two"></div><div class="field field-three"></div><div class="art-label"><span>SAHA VERİSİ · 2026</span><strong>Her karar<br>topraktan başlar.</strong></div><div class="art-coords">NASA POWER · FAO-56</div><div class="art-pin"><span></span><strong>Parselin hazır</strong><small>Konumunu ekleyerek başla</small></div></div>
     </section>
 
-    <section class="workspace">
+    <section class="overview-cards" aria-label="Hızlı erişim">
+      <a class="overview-card" href="#/plan"><span class="overview-card-icon">✳</span><span class="overview-card-copy"><small>01 · SEZONUNU PLANLA</small><strong>Tarla planı oluştur</strong><span>Konumunu, toprağını ve ürününü seç.</span></span><span class="overview-card-arrow" aria-hidden="true">↗</span></a>
+      <a class="overview-card" href="#/parcels"><span class="overview-card-icon">⌖</span><span class="overview-card-copy"><small>02 · SAHANI İZLE</small><strong>Parsel haritasını aç</strong><span>Parselini bul, çiz ve NDVI verisini incele.</span></span><span class="overview-card-arrow" aria-hidden="true">↗</span></a>
+    </section>
+    <section class="bottom-note"><span class="note-star">✳</span><p><strong>Yerel bilgi değerlidir.</strong> Bu araç genel bir karar desteğidir; ürün çeşidi, toprak analizi, yerel ziraat uzmanı görüşü ve güncel hava tahminleriyle planı doğrula.</p><span class="nasa-wordmark">POWER <small>NASA</small></span></section>
+    </section>
+
+    <section class="app-page plan-page" id="plan-page" aria-labelledby="plan-title" hidden>
+    <header class="page-heading"><span class="eyebrow"><span>TARIMYOL · SEZON PLANLAMA</span></span><h1 id="plan-title">Tarlan için doğru plan.</h1><p>Tarla bilgilerini gir; konumuna özel iklim, toprak ve ürün verilerini birlikte değerlendirelim.</p></header>
+    <section class="workspace" id="workspace">
       <div class="form-panel">
         <div class="section-heading"><div><span class="step">01 / TARLAN</span><h2>Bilgileri gir</h2></div><span class="leaf-icon">✳</span></div>
         <form id="farm-form">
@@ -49,27 +69,53 @@
         <div class="report hidden" id="report"></div>
       </div>
     </section>
-    <section class="parcel-section" aria-labelledby="parcel-title">
-      <div class="section-heading"><div><span class="step">03 / PARSEL VE NDVI</span><h2 id="parcel-title">Tarlalarini haritada izle</h2></div><span class="leaf-icon">N</span></div>
-      <p class="parcel-intro">Parsel sinirini haritada isaretle, tarih araligini sec ve NASA AppEEARS'tan NDVI iste. Son donem ortalamasi parseli renklendirir; donemsel ortalama, minimum ve maksimum degerleri asagida listelenir.</p>
-      <div class="parcel-tools"><input id="parcel-name" type="text" placeholder="Parsel adi (orn. Kuzey tarla)" aria-label="Parsel adi"><button id="start-parcel" type="button">Parsel ciz</button><button id="save-parcel" type="button" disabled>Parseli kaydet</button><button id="cancel-parcel" type="button" class="quiet-button" hidden>Iptal</button><span id="parcel-status" role="status">Harita yukleniyor...</span></div>
+    </section>
+
+    <section class="app-page parcels-page" id="parcels-page" aria-labelledby="parcel-title" hidden>
+      <header class="page-heading"><span class="eyebrow"><span>TARIMYOL · SAHA TAKİBİ</span></span><h1>Parselini haritada izle.</h1><p>Haritada parselini bul veya çiz; uydu görünümünü ve bitki gelişimini tek ekranda takip et.</p></header>
+    <section class="parcel-section" id="parcel-section" aria-labelledby="parcel-title">
+      <div class="section-heading"><div><span class="step">03 / PARSEL VE NDVI</span><h2 id="parcel-title">Tarlalarını haritada izle</h2></div><span class="leaf-icon">N</span></div>
+      <p class="parcel-intro">Parsel sınırını haritada işaretle, tarih aralığını seç ve NASA AppEEARS'tan NDVI iste. Son dönem ortalaması parseli renklendirir; ortalama, minimum ve maksimum değerler aşağıda listelenir.</p>
+      <div class="parcel-tools"><input id="parcel-name" type="text" placeholder="Parsel adı (örn. Kuzey tarla)" aria-label="Parsel adı"><button id="start-parcel" type="button">Parsel çiz</button><button id="save-parcel" type="button" disabled>Parseli kaydet</button><button id="cancel-parcel" type="button" class="quiet-button" hidden>İptal</button><span id="parcel-status" role="status">Harita yükleniyor...</span></div>
       <div class="tkgm-search">
-        <div class="tkgm-search-title"><strong>TKGM parsel sorgula</strong><span>Il, ilce, mahalle, ada ve parsel bilgisiyle haritadan bul</span></div>
-        <div class="tkgm-fields"><select id="tkgm-province" aria-label="Il"><option value="">Il sec</option></select><select id="tkgm-district" aria-label="Ilce" disabled><option value="">Once il sec</option></select><select id="tkgm-neighborhood" aria-label="Mahalle" disabled><option value="">Once ilce sec</option></select><input id="tkgm-block" type="text" placeholder="Ada no" aria-label="Ada numarasi"><input id="tkgm-parcel" type="text" placeholder="Parsel no" aria-label="Parsel numarasi"><button id="tkgm-find" type="button">Parseli bul</button></div>
-        <p id="tkgm-status" role="status">Konum listesi yukleniyor...</p>
+        <div class="tkgm-search-title"><strong>TKGM parsel sorgula</strong><span>İl, ilçe, mahalle, ada ve parsel bilgisiyle haritadan bul</span></div>
+        <div class="tkgm-fields"><select id="tkgm-province" aria-label="İl"><option value="">İl seç</option></select><select id="tkgm-district" aria-label="İlçe" disabled><option value="">Önce il seç</option></select><select id="tkgm-neighborhood" aria-label="Mahalle" disabled><option value="">Önce ilçe seç</option></select><input id="tkgm-block" type="text" placeholder="Ada no" aria-label="Ada numarası"><input id="tkgm-parcel" type="text" placeholder="Parsel no" aria-label="Parsel numarası"><button id="tkgm-find" type="button">Parseli bul</button></div>
+        <p id="tkgm-status" role="status">Konum listesi yükleniyor...</p>
       </div>
       <div id="parcel-map" aria-label="Parselleri isaretleme haritasi"></div>
-      <div class="ndvi-legend"><span><i style="background:#c94f42"></i> Dusuk NDVI</span><span><i style="background:#e8bd45"></i> Orta</span><span><i style="background:#58a65c"></i> Yuksek</span><small>NASA GIBS MODIS Terra NDVI - 8 day visual map layer</small></div>
+      <div class="ndvi-legend"><span><i style="background:#c94f42"></i> Düşük NDVI</span><span><i style="background:#e8bd45"></i> Orta</span><span><i style="background:#58a65c"></i> Yüksek</span><small>NASA GIBS MODIS Terra NDVI · 8 günlük görsel harita katmanı</small></div>
       <div id="parcel-list" class="parcel-list"></div>
       <div class="ndvi-connect"><button id="ndvi-check" type="button">AppEEARS bağlantısını kontrol et</button><span id="ndvi-connection-status" role="status">Token yalnızca yerel sunucudan NASA'ya gönderilir.</span></div>
-      <p class="parcel-disclaimer">NASA/AppEEARS istegi icin gecerli AppEEARS token'i gerekir; yaklasik 48 saatte bir yenilenir. MODIS 250 m piksel cozunurlugundedir ve kucuk parsellerde komsu alanlari da etkileyebilir. Parsel cizimleri bu tarayicida saklanir.</p>
+      <p class="parcel-disclaimer">NASA/AppEEARS isteği için geçerli bir AppEEARS token'ı gerekir; yaklaşık 48 saatte bir yenilenir. MODIS 250 m piksel çözünürlüğündedir ve küçük parsellerde komşu alanları da etkileyebilir. Parsel çizimleri bu tarayıcıda saklanır.</p>
     </section>
-    <section class="bottom-note"><span class="note-star">✳</span><p><strong>Yerel bilgi değerlidir.</strong> Bu araç genel bir karar desteğidir; ürün çeşidi, toprak analizi, yerel ziraat uzmanı görüşü ve güncel hava tahminleriyle planı doğrula.</p><span class="nasa-wordmark">POWER <small>NASA</small></span></section>
+    </section>
   </main>
-  <footer><span>TarımYol · Çiftlikleri NASA verileriyle uyarlamak</span><span>NASA POWER Project · Open data</span></footer>
+  <footer><span>TarımYol · Toprağını tanı, sezonu planla.</span><span>NASA POWER · Açık veri</span></footer>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
   <script src="main.js"></script>
   <script src="parcel-map.js"></script>
+  <script>
+    const appPages = [...document.querySelectorAll('.app-page')];
+    const sideNavLinks = [...document.querySelectorAll('.side-nav-link')];
+    const routePages = {
+      '#/overview': document.getElementById('overview-page'),
+      '#/plan': document.getElementById('plan-page'),
+      '#/parcels': document.getElementById('parcels-page')
+    };
+    function renderRoute() {
+      const route = routePages[window.location.hash] ? window.location.hash : '#/overview';
+      if (window.location.hash !== route) history.replaceState(null, '', route);
+      appPages.forEach(section => { section.hidden = section === routePages[route] ? false : true; });
+      sideNavLinks.forEach(link => {
+        if (link.getAttribute('href') === route) link.setAttribute('aria-current', 'page');
+        else link.removeAttribute('aria-current');
+      });
+      window.scrollTo(0, 0);
+      if (route === '#/parcels') requestAnimationFrame(() => window.dispatchEvent(new Event('tarimyol:show-parcels')));
+    }
+    window.addEventListener('hashchange', renderRoute);
+    renderRoute();
+  </script>
 </body>
 </html>
