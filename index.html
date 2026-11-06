@@ -5,7 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#16302a">
   <meta name="description" content="TarımYol ile tarlan için iklim, toprak ve ürün verilerine dayalı sezon planı oluştur.">
+  <link rel="manifest" href="manifest.json">
   <title>TarımYol | Tarımsal Karar Desteği</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
   <link rel="stylesheet" href="main.css">
   <style>.location-search{margin-bottom:0}.location-search input{padding-left:8px}.location-search button{height:28px;margin-right:7px;border:0;border-radius:5px;background:#edf4e8;color:#4b754d;font:600 10px 'DM Sans',sans-serif;padding:0 10px;cursor:pointer;white-space:nowrap}.location-status{min-height:14px;font-size:10px;color:#6b8469;margin:5px 0 3px}.or-divider{display:flex;align-items:center;gap:8px;color:#a0aaa0;font-size:9px;margin:4px 0 8px}.or-divider:before,.or-divider:after{content:'';height:1px;background:#edf0eb;flex:1}</style>
 </head>
@@ -20,6 +22,7 @@
       <a class="side-nav-link" href="#/overview" aria-label="Genel bakış" title="Genel bakış" aria-current="page"><span class="side-nav-icon" aria-hidden="true">⌂</span><span>Genel bakış</span></a>
       <a class="side-nav-link" href="#/plan" aria-label="Tarla planı" title="Tarla planı"><span class="side-nav-icon" aria-hidden="true">✳</span><span>Tarla planı</span></a>
       <a class="side-nav-link" href="#/parcels" aria-label="Parsel haritası" title="Parsel haritası"><span class="side-nav-icon" aria-hidden="true">⌖</span><span>Parsel haritası</span></a>
+      <a class="side-nav-link" href="#/plants" aria-label="Bitkileri tanı" title="Bitkileri tanı"><span class="side-nav-icon" aria-hidden="true">🌱</span><span>Bitkileri tanı</span></a>
     </nav>
     <div class="side-nav-note"><span class="side-nav-note-icon" aria-hidden="true">✦</span><strong>Toprağını tanı,<br>sezonu planla.</strong><small>NASA POWER · SoilGrids</small></div>
   </aside>
@@ -38,6 +41,20 @@
     <section class="overview-cards" aria-label="Hızlı erişim">
       <a class="overview-card" href="#/plan"><span class="overview-card-icon">✳</span><span class="overview-card-copy"><small>01 · SEZONUNU PLANLA</small><strong>Tarla planı oluştur</strong><span>Konumunu, toprağını ve ürününü seç.</span></span><span class="overview-card-arrow" aria-hidden="true">↗</span></a>
       <a class="overview-card" href="#/parcels"><span class="overview-card-icon">⌖</span><span class="overview-card-copy"><small>02 · SAHANI İZLE</small><strong>Parsel haritasını aç</strong><span>Parselini bul, çiz ve NDVI verisini incele.</span></span><span class="overview-card-arrow" aria-hidden="true">↗</span></a>
+      <a class="overview-card" href="#/plants"><span class="overview-card-icon">🌱</span><span class="overview-card-copy"><small>03 · BİTKİ REHBERİ</small><strong>Bitkileri tanı</strong><span>Fotoğraflı ürün kartları ve tarımsal bilgiler.</span></span><span class="overview-card-arrow" aria-hidden="true">↗</span></a>
+    </section>
+
+    <!-- Ana Sayfa Bitkileri Tanı Vitrini -->
+    <section class="overview-plants-preview">
+      <div class="preview-header">
+        <div>
+          <span class="step">BİTKİ REHBERİ</span>
+          <h2>Bölgenin Başlıca Ürünlerini Tanı</h2>
+          <p>Fotoğraflara tıklayarak ekim, hasat ve yetiştirme koşulları hakkında bilgi alabilirsiniz.</p>
+        </div>
+        <a href="#/plants" class="see-all-plants-btn">Tüm Bitkileri Gör ↗</a>
+      </div>
+      <div class="plants-grid" id="overview-plants-grid"></div>
     </section>
     <section class="bottom-note"><span class="note-star">✳</span><p><strong>Yerel bilgi değerlidir.</strong> Bu araç genel bir karar desteğidir; ürün çeşidi, toprak analizi, yerel ziraat uzmanı görüşü ve güncel hava tahminleriyle planı doğrula.</p><span class="nasa-wordmark">POWER <small>NASA</small></span></section>
     </section>
@@ -78,9 +95,23 @@
       <p class="parcel-intro">Parsel sınırını haritada işaretle, tarih aralığını seç ve NASA AppEEARS'tan NDVI iste. Son dönem ortalaması parseli renklendirir; ortalama, minimum ve maksimum değerler aşağıda listelenir.</p>
       <div class="parcel-tools"><input id="parcel-name" type="text" placeholder="Parsel adı (örn. Kuzey tarla)" aria-label="Parsel adı"><button id="start-parcel" type="button">Parsel çiz</button><button id="save-parcel" type="button" disabled>Parseli kaydet</button><button id="cancel-parcel" type="button" class="quiet-button" hidden>İptal</button><span id="parcel-status" role="status">Harita yükleniyor...</span></div>
       <div class="tkgm-search">
-        <div class="tkgm-search-title"><strong>TKGM parsel sorgula</strong><span>İl, ilçe, mahalle, ada ve parsel bilgisiyle haritadan bul</span></div>
-        <div class="tkgm-fields"><select id="tkgm-province" aria-label="İl"><option value="">İl seç</option></select><select id="tkgm-district" aria-label="İlçe" disabled><option value="">Önce il seç</option></select><select id="tkgm-neighborhood" aria-label="Mahalle" disabled><option value="">Önce ilçe seç</option></select><input id="tkgm-block" type="text" placeholder="Ada no" aria-label="Ada numarası"><input id="tkgm-parcel" type="text" placeholder="Parsel no" aria-label="Parsel numarası"><button id="tkgm-find" type="button">Parseli bul</button></div>
-        <p id="tkgm-status" role="status">Konum listesi yükleniyor...</p>
+        <div class="tkgm-search-title"><strong>Konum veya parsel numarasıyla bul</strong><span>Yeri adıyla ara ya da resmi il, ilçe, mahalle, ada ve parsel bilgilerini gir</span></div>
+        <div class="place-search-fields">
+          <input id="parcel-search-input" type="text" placeholder="Örn: Diyarbakır Kayapınar veya Malatya Akçadağ" aria-label="Tarla arama">
+          <button id="parcel-search-btn" type="button">Konumu bul ⌕</button>
+        </div>
+        <div class="parcel-id-search">
+          <label class="parcel-id-label" for="tkgm-province">TKGM ada / parsel sorgula</label>
+          <div class="tkgm-fields">
+            <select id="tkgm-province" aria-label="İl"><option value="">İl seç</option></select>
+            <select id="tkgm-district" aria-label="İlçe" disabled><option value="">Önce il seç</option></select>
+            <select id="tkgm-neighborhood" aria-label="Mahalle" disabled><option value="">Önce ilçe seç</option></select>
+            <input id="tkgm-block" type="text" inputmode="numeric" maxlength="10" autocomplete="off" placeholder="Ada no" aria-label="Ada numarası">
+            <input id="tkgm-parcel" type="text" inputmode="numeric" maxlength="10" autocomplete="off" placeholder="Parsel no" aria-label="Parsel numarası">
+            <button id="tkgm-find" type="button">Parseli bul</button>
+          </div>
+        </div>
+        <p id="tkgm-status" role="status">İl, ilçe ve mahalleyi seç; ada ve parsel numaralarını yaz.</p>
       </div>
       <div id="parcel-map" aria-label="Parselleri isaretleme haritasi"></div>
       <div class="ndvi-legend"><span><i style="background:#c94f42"></i> Düşük NDVI</span><span><i style="background:#e8bd45"></i> Orta</span><span><i style="background:#58a65c"></i> Yüksek</span><small>NASA GIBS MODIS Terra NDVI · 8 günlük görsel harita katmanı</small></div>
@@ -89,19 +120,54 @@
       <p class="parcel-disclaimer">NASA/AppEEARS isteği için geçerli bir AppEEARS token'ı gerekir; yaklaşık 48 saatte bir yenilenir. MODIS 250 m piksel çözünürlüğündedir ve küçük parsellerde komşu alanları da etkileyebilir. Parsel çizimleri bu tarayıcıda saklanır.</p>
     </section>
     </section>
+
+    <section class="app-page plants-page" id="plants-page" aria-labelledby="plants-title" hidden>
+      <header class="page-heading">
+        <span class="eyebrow"><span>TARIMYOL · BİTKİ REHBERİ</span></span>
+        <h1 id="plants-title">Bitkileri Tanı</h1>
+        <p>Bilgi almak istediğin bitkinin üzerine tıkla; ekim, hasat, su ve bakım bilgilerini gör.</p>
+      </header>
+      <section class="plants-container">
+        <!-- Kategori Filtreleri -->
+        <div class="plants-filter-bar">
+          <button type="button" class="plant-filter-btn active" data-filter="all">Tümü (9)</button>
+          <button type="button" class="plant-filter-btn" data-filter="Tahıl">🌾 Tahıllar</button>
+          <button type="button" class="plant-filter-btn" data-filter="Baklagil">🫘 Baklagiller</button>
+          <button type="button" class="plant-filter-btn" data-filter="Sebze">🍅 Sebzeler</button>
+          <button type="button" class="plant-filter-btn" data-filter="Endüstri Bitkisi">🏭 Endüstriyel</button>
+        </div>
+        <div class="plants-grid" id="plants-grid"></div>
+      </section>
+    </section>
   </main>
   <footer><span>TarımYol · Toprağını tanı, sezonu planla.</span><span>NASA POWER · Açık veri</span></footer>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+
+  <!-- Bitki Detay Penceresi (Tüm ekranın tam ortasında açılır) -->
+  <div class="plant-modal-overlay" id="plant-modal" hidden>
+    <div class="plant-modal-box">
+      <button class="modal-close-btn" id="modal-close-btn" type="button" aria-label="Kapat">✕</button>
+      <div id="plant-modal-body"></div>
+    </div>
+  </div>
+
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.2/jspdf.umd.min.js"></script>
   <script src="main.js"></script>
   <script src="parcel-map.js"></script>
+  <script src="plants.js"></script>
+  <script src="charts.js"></script>
+  <script src="pdf-export.js"></script>
+  <script src="cost-calculator.js"></script>
   <script>
     const appPages = [...document.querySelectorAll('.app-page')];
     const sideNavLinks = [...document.querySelectorAll('.side-nav-link')];
     const routePages = {
       '#/overview': document.getElementById('overview-page'),
       '#/plan': document.getElementById('plan-page'),
-      '#/parcels': document.getElementById('parcels-page')
+      '#/parcels': document.getElementById('parcels-page'),
+      '#/plants': document.getElementById('plants-page')
     };
     function renderRoute() {
       const route = routePages[window.location.hash] ? window.location.hash : '#/overview';
@@ -116,6 +182,9 @@
     }
     window.addEventListener('hashchange', renderRoute);
     renderRoute();
+    if ('serviceWorker' in navigator && window.location.protocol !== 'file:') {
+      navigator.serviceWorker.register('./sw.js').catch(() => {});
+    }
   </script>
 </body>
 </html>

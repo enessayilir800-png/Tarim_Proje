@@ -23,7 +23,7 @@
       parcel.ndvi = null; parcel.ndviSeries = []; discardedManualNdvi = true;
     }
   });
-  let drawing = false, points = [], draftLine = null;
+  let drawing = false, points = [], draftLine = null, searchMarker = null;
   const ndviColor = value => value < 0.25 ? '#c94f42' : value < 0.55 ? '#e8bd45' : '#58a65c';
   const hasApiNdvi = parcel => Number.isFinite(parcel.ndvi) && Boolean(parcel.ndviSource);
   const escapeHtml = value => String(value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -163,7 +163,7 @@
     try { response = await fetch(path); }
     catch (_) { response = await fetch(`${path}&proxy=1`); }
     const data = await response.json();
-    if (!response.ok) throw new Error(data.error || 'TKGM konum listesi alınamadı.');
+    if (!response.ok) throw new Error(data.detail || data.error || 'TKGM konum listesi alınamadı.');
     const options = data.options || (data.features || []).map(feature => ({id:feature.properties?.id, name:feature.properties?.text}));
     fillSelect(select, options, placeholder);
   }
@@ -194,7 +194,7 @@
       try { response = await fetch(path); }
       catch (_) { response = await fetch(`${path}&proxy=1`); }
       const result = await response.json();
-      if (!response.ok) throw new Error(result.error || 'Parsel bulunamadı.');
+      if (!response.ok) throw new Error(result.detail || result.error || 'Parsel bulunamadı.');
       const properties = result.properties || {};
       const name = `${properties.mahalleAd || neighborhood.selectedOptions[0].text} · Ada ${properties.adaNo || block} / Parsel ${properties.parselNo || parcelNo}`;
       const bounds = L.geoJSON(result.geometry).getBounds();
@@ -208,6 +208,23 @@
     } catch (error) { tkgmStatus.textContent = error.message; }
     finally { button.disabled = false; }
   });
+  async function searchPlace() {
+    const query = $('parcel-search-input').value.trim(), button = $('parcel-search-btn');
+    if (query.length < 2) { tkgmStatus.textContent = 'Bir il, ilçe, köy veya mevkii yaz.'; return; }
+    button.disabled = true; tkgmStatus.textContent = 'Konum aranıyor…';
+    try {
+      const response = await fetch(`/api/geocode?q=${encodeURIComponent(query)}`), result = await response.json();
+      if (!response.ok) throw new Error(result.detail || result.error || 'Konum bulunamadı.');
+      const point = [Number(result.latitude), Number(result.longitude)];
+      map.flyTo(point, 15, {duration: 1.2});
+      if (searchMarker) searchMarker.remove();
+      searchMarker = L.marker(point).addTo(map).bindPopup(escapeHtml(result.display_name || query)).openPopup();
+      tkgmStatus.textContent = `${result.display_name || query} · Harita konuma yaklaştırıldı. Ada/parsel sorgusu için aşağıdaki alanları kullan.`;
+    } catch (error) { tkgmStatus.textContent = error.message; }
+    finally { button.disabled = false; }
+  }
+  $('parcel-search-btn').addEventListener('click', searchPlace);
+  $('parcel-search-input').addEventListener('keydown', event => { if (event.key === 'Enter') { event.preventDefault(); searchPlace(); } });
   $('latitude')?.addEventListener('change', centerFromInputs); $('longitude')?.addEventListener('change', centerFromInputs);
   const geocodeButton = $('find-location'); geocodeButton?.addEventListener('click', () => [300, 800, 1600].forEach(delay => setTimeout(centerFromInputs, delay)));
   $('ndvi-check')?.addEventListener('click', async event => {

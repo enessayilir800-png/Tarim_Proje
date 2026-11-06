@@ -1,0 +1,19 @@
+{
+  "name": "TarımYol | Tarımsal Karar Desteği",
+  "short_name": "TarımYol",
+  "description": "Tarlan için iklim, toprak ve ürün verilerine dayalı sezon planı ve uydu takip sistemi.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#f5f2e8",
+  "theme_color": "#16302a",
+  "orientation": "portrait-primary",
+  "lang": "tr",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='25' fill='%2316302a'/><text x='50' y='68' font-size='55' font-family='serif' font-weight='bold' fill='%23e4d7ae' text-anchor='middle'>T</text></svg>",
+      "sizes": "192x192 512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
