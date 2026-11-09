@@ -1,5 +1,5 @@
 // TarımYol - Offline & Service Worker Modülü
-const CACHE_NAME = 'tarimyol-cache-v2';
+const CACHE_NAME = 'tarimyol-cache-v3';
 
 const STATIC_ASSETS = [
   './',
@@ -11,6 +11,8 @@ const STATIC_ASSETS = [
   './charts.js',
   './cost-calculator.js',
   './pdf-export.js',
+  './farmer-auth.js',
+  './agro-advisor.js',
   './manifest.json'
 ];
 

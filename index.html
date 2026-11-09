@@ -14,16 +14,34 @@
 <body>
   <header class="topbar">
     <a class="brand" href="#/overview" aria-label="TarımYol ana sayfa"><span class="brand-mark">T</span><span>Tarım<span class="brand-light">Yol</span></span></a>
-    <div class="top-links"><span class="top-chip"><strong>NASA</strong> POWER</span><span class="top-chip">SoilGrids</span><span class="top-chip">Açık veri</span></div><span class="top-note"><span class="live-dot"></span> Tarımsal karar desteği</span>
+    <div class="top-links">
+      <span class="top-chip"><strong>NASA</strong> POWER</span>
+      <span class="top-chip">SoilGrids</span>
+      <span class="top-chip">Açık veri</span>
+    </div>
+    <div class="topbar-actions">
+      <button type="button" class="top-action-btn top-farmer-btn" id="farmer-auth-btn" title="Kayıtlı Ada ve Parsellerimi Yönet">
+        <span id="farmer-badge-text">👨‍🌾 <span>Tarlalarım & Çiftçi Girişi</span></span>
+      </button>
+    </div>
   </header>
   <aside class="side-nav">
     <span class="side-nav-label">ÇALIŞMA ALANI</span>
     <nav aria-label="Ana menü">
       <a class="side-nav-link" href="#/overview" aria-label="Genel bakış" title="Genel bakış" aria-current="page"><span class="side-nav-icon" aria-hidden="true">⌂</span><span>Genel bakış</span></a>
       <a class="side-nav-link" href="#/plan" aria-label="Tarla planı" title="Tarla planı"><span class="side-nav-icon" aria-hidden="true">✳</span><span>Tarla planı</span></a>
-      <a class="side-nav-link" href="#/parcels" aria-label="Parsel haritası" title="Parsel haritası"><span class="side-nav-icon" aria-hidden="true">⌖</span><span>Parsel haritası</span></a>
+      <a class="side-nav-link" href="#/parcels" aria-label="Parsel haritası" title="Parsel haritası"><span class="side-nav-icon" aria-hidden="true">⌖</span><span>Parsel & İlaçlama</span></a>
       <a class="side-nav-link" href="#/plants" aria-label="Bitkileri tanı" title="Bitkileri tanı"><span class="side-nav-icon" aria-hidden="true">🌱</span><span>Bitkileri tanı</span></a>
     </nav>
+    <div class="side-nav-farmer-box">
+      <button type="button" class="side-nav-farmer-cta" onclick="window.FarmerAuth && window.FarmerAuth.openModal('farmer-auth-modal')">
+        <span class="cta-icon">🌾</span>
+        <div class="cta-copy">
+          <strong>Tarlalarım & Giriş</strong>
+          <small>Ada & Parsellerini Kaydet</small>
+        </div>
+      </button>
+    </div>
     <div class="side-nav-note"><span class="side-nav-note-icon" aria-hidden="true">✦</span><strong>Toprağını tanı,<br>sezonu planla.</strong><small>NASA POWER · SoilGrids</small></div>
   </aside>
   <main id="app">
@@ -93,7 +111,29 @@
     <section class="parcel-section" id="parcel-section" aria-labelledby="parcel-title">
       <div class="section-heading"><div><span class="step">03 / PARSEL VE NDVI</span><h2 id="parcel-title">Tarlalarını haritada izle</h2></div><span class="leaf-icon">N</span></div>
       <p class="parcel-intro">Parsel sınırını haritada işaretle, tarih aralığını seç ve NASA AppEEARS'tan NDVI iste. Son dönem ortalaması parseli renklendirir; ortalama, minimum ve maksimum değerler aşağıda listelenir.</p>
-      <div class="parcel-tools"><input id="parcel-name" type="text" placeholder="Parsel adı (örn. Kuzey tarla)" aria-label="Parsel adı"><button id="start-parcel" type="button">Parsel çiz</button><button id="save-parcel" type="button" disabled>Parseli kaydet</button><button id="cancel-parcel" type="button" class="quiet-button" hidden>İptal</button><span id="parcel-status" role="status">Harita yükleniyor...</span></div>
+      <!-- Hızlı Tarla Seçim Çubuğu -->
+      <div class="quick-field-bar">
+        <div class="quick-field-label">
+          <span>🚜</span>
+          <strong>Kayıtlı Tarlanı Seç:</strong>
+        </div>
+        <select id="quick-field-select" aria-label="Kayıtlı tarlalarımdan seç">
+          <option value="">-- Kayıtlı tarlalarından birini seç --</option>
+        </select>
+        <button type="button" class="btn-quick-manage" onclick="window.FarmerAuth && window.FarmerAuth.openModal('farmer-auth-modal')">
+          ➕ Yeni Tarla / Parsel Ekle
+        </button>
+      </div>
+
+      <div class="parcel-tools">
+        <input id="parcel-name" type="text" placeholder="Parsel adı (örn. Kuzey tarla)" aria-label="Parsel adı">
+        <button id="start-parcel" type="button">Parsel çiz</button>
+        <button id="save-parcel" type="button" disabled>Parseli kaydet</button>
+        <button id="cancel-parcel" type="button" class="quiet-button" hidden>İptal</button>
+        <button id="btn-save-to-farmer" type="button" class="btn-farmer-save" title="Bu parseli çiftçi hesabınıza kaydeder">💾 Tarlalarıma Kaydet</button>
+        <button id="btn-open-farmer-fields" type="button" class="btn-farmer-list" onclick="window.FarmerAuth && window.FarmerAuth.openModal('farmer-auth-modal')">🌾 Tarlalarımdan Seç</button>
+        <span id="parcel-status" role="status">Harita yükleniyor...</span>
+      </div>
       <div class="tkgm-search">
         <div class="tkgm-search-title"><strong>Konum veya parsel numarasıyla bul</strong><span>Yeri adıyla ara ya da resmi il, ilçe, mahalle, ada ve parsel bilgilerini gir</span></div>
         <div class="place-search-fields">
@@ -115,6 +155,9 @@
       </div>
       <div id="parcel-map" aria-label="Parselleri isaretleme haritasi"></div>
       <div class="ndvi-legend"><span><i style="background:#c94f42"></i> Düşük NDVI</span><span><i style="background:#e8bd45"></i> Orta</span><span><i style="background:#58a65c"></i> Yüksek</span><small>NASA GIBS MODIS Terra NDVI · 8 günlük görsel harita katmanı</small></div>
+      
+      <!-- Akıllı Tarımsal Karar Haritası & Eylem Planı (İlaçlama, Gübreleme, Sulama - Rüzgar & Yağmur Analizli) -->
+      <div id="agro-advisor-container" class="agro-advisor-container"></div>
       <div id="parcel-list" class="parcel-list"></div>
       <div class="ndvi-connect"><button id="ndvi-check" type="button">AppEEARS bağlantısını kontrol et</button><span id="ndvi-connection-status" role="status">Token yalnızca yerel sunucudan NASA'ya gönderilir.</span></div>
       <p class="parcel-disclaimer">NASA/AppEEARS isteği için geçerli bir AppEEARS token'ı gerekir; yaklaşık 48 saatte bir yenilenir. MODIS 250 m piksel çözünürlüğündedir ve küçük parsellerde komşu alanları da etkileyebilir. Parsel çizimleri bu tarayıcıda saklanır.</p>
@@ -150,6 +193,113 @@
     </div>
   </div>
 
+  <!-- Çiftçi Defteri & Kayıtlı Ada-Parsel Modalı (Sade & Anlaşılır) -->
+  <div class="farmer-modal-overlay" id="farmer-auth-modal" hidden>
+    <div class="farmer-modal-box">
+      <button class="modal-close-btn btn-close-farmer-modal" type="button" aria-label="Kapat">✕</button>
+      
+      <div class="farmer-modal-tabs">
+        <button type="button" class="farmer-tab-btn active" data-tab="tab-my-fields">🌾 Kayıtlı Tarlalarım</button>
+        <button type="button" class="farmer-tab-btn" data-tab="tab-add-field">➕ Yeni Tarla / Parsel Ekle</button>
+        <button type="button" class="farmer-tab-btn" data-tab="tab-login">👤 Çiftçi Girişi</button>
+      </div>
+
+      <div class="farmer-modal-body">
+        <!-- SEKME 1: Tarlalarım -->
+        <div class="farmer-tab-content" id="tab-my-fields">
+          <div class="tab-intro">
+            <h3>🌾 Kayıtlı Ada & Parsellerim</h3>
+            <p>Tarlanızı bir kez kaydedin; ada-parsel aramaya gerek kalmadan tek tıkla haritada açın ve rüzgar/ilaçlama durumunu görün.</p>
+          </div>
+          <div id="farmer-no-fields-notice" class="empty-fields-notice">
+            <span>🌱</span>
+            <p><strong>Henüz kayıtlı bir tarlanız yok.</strong><br>Yukarıdaki <b>"Yeni Tarla / Parsel Ekle"</b> sekmesinden tarlanızı hemen kaydedebilirsiniz.</p>
+          </div>
+          <div id="farmer-saved-fields-list" class="farmer-fields-list"></div>
+        </div>
+
+        <!-- SEKME 2: Yeni Ada & Parsel Ekle -->
+        <div class="farmer-tab-content" id="tab-add-field" hidden>
+          <div class="tab-intro">
+            <h3>➕ Yeni Tarla & Parsel Bilgisi Ekle</h3>
+            <p>Tarlanın adını, ada ve parsel numarasını yazıp kaydedin. Artık bu cihazda kalıcı olarak saklanacak.</p>
+          </div>
+          <form id="farmer-add-field-form" class="farmer-form">
+            <div class="form-group">
+              <label for="field-name-input">1. Tarlanın Adı (Örnek: Ev Önü Tarlası, Dere Boyu)</label>
+              <input id="field-name-input" type="text" placeholder="Örn: Ev Önündeki Buğday Tarlası" required>
+            </div>
+            <div class="form-row-3">
+              <div class="form-group">
+                <label for="field-province-input">İl</label>
+                <input id="field-province-input" type="text" placeholder="Örn: Diyarbakır" required>
+              </div>
+              <div class="form-group">
+                <label for="field-district-input">İlçe</label>
+                <input id="field-district-input" type="text" placeholder="Örn: Kayapınar" required>
+              </div>
+              <div class="form-group">
+                <label for="field-neighborhood-input">Köy / Mahalle</label>
+                <input id="field-neighborhood-input" type="text" placeholder="Örn: Çölgüzeli" required>
+              </div>
+            </div>
+            <div class="form-row-2">
+              <div class="form-group highlight-input-group">
+                <label for="field-block-input">🏷️ Ada Numarası</label>
+                <input id="field-block-input" type="text" placeholder="Örn: 104" required>
+              </div>
+              <div class="form-group highlight-input-group">
+                <label for="field-parcel-input">🏷️ Parsel Numarası</label>
+                <input id="field-parcel-input" type="text" placeholder="Örn: 12" required>
+              </div>
+            </div>
+            <div class="form-row-2">
+              <div class="form-group">
+                <label for="field-area-input">Büyüklük (Kaç Dekar?)</label>
+                <input id="field-area-input" type="number" min="0.5" step="0.5" placeholder="Örn: 35" required>
+              </div>
+              <div class="form-group">
+                <label for="field-crop-select">Ekilen Ürün</label>
+                <select id="field-crop-select">
+                  <option value="wheat">🌾 Buğday</option>
+                  <option value="barley">🌾 Arpa</option>
+                  <option value="corn">🌽 Mısır</option>
+                  <option value="sunflower">🌻 Ayçiçeği</option>
+                  <option value="chickpea">🫘 Nohut</option>
+                  <option value="lentil">🫘 Mercimek</option>
+                  <option value="cotton">☁️ Pamuk</option>
+                  <option value="tomato">🍅 Domates</option>
+                  <option value="potato">🥔 Patates</option>
+                </select>
+              </div>
+            </div>
+            <button type="submit" class="farmer-btn-submit">💾 Tarlamı Deftere Kaydet (Bir daha sorma)</button>
+          </form>
+        </div>
+
+        <!-- SEKME 3: Çiftçi Girişi -->
+        <div class="farmer-tab-content" id="tab-login" hidden>
+          <div class="tab-intro">
+            <h3>👤 Çiftçi Girişi</h3>
+            <p>Adınızı yazmanız yeterlidir. Şifre gerekmez, tarlalarınız doğrudan bu tarayıcıya bağlanır.</p>
+          </div>
+          <form id="farmer-login-form" class="farmer-form">
+            <div class="form-group">
+              <label for="farmer-input-name">Adınız Soyadınız / Lakabınız</label>
+              <input id="farmer-input-name" type="text" placeholder="Örn: Ahmet Dayı veya Mehmet Yılmaz" required>
+            </div>
+            <button type="submit" class="farmer-btn-submit">✅ Giriş Yap / Defterimi Aç</button>
+            <p id="farmer-login-status" class="form-status-msg"></p>
+          </form>
+          <div id="farmer-logout-wrap" class="farmer-logout-box" hidden>
+            <hr>
+            <button type="button" id="btn-farmer-logout" class="btn-farmer-logout">Hesaptan Çıkış Yap</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -160,6 +310,8 @@
   <script src="charts.js"></script>
   <script src="pdf-export.js"></script>
   <script src="cost-calculator.js"></script>
+  <script src="farmer-auth.js"></script>
+  <script src="agro-advisor.js"></script>
   <script>
     const appPages = [...document.querySelectorAll('.app-page')];
     const sideNavLinks = [...document.querySelectorAll('.side-nav-link')];

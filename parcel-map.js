@@ -167,6 +167,130 @@
     const options = data.options || (data.features || []).map(feature => ({id:feature.properties?.id, name:feature.properties?.text}));
     fillSelect(select, options, placeholder);
   }
+  let lastActiveParcel = null;
+  let weatherMarker = null;
+
+  // Çiftçi hesabından seçilen tarlayı haritaya odakla ve tarımsal danışmanı çalıştır
+  window.focusFieldOnMap = function (field) {
+    if (!field || !map) return;
+    const lat = parseFloat(field.lat) || 39.0;
+    const lon = parseFloat(field.lon) || 35.0;
+
+    map.flyTo([lat, lon], 15, { duration: 1.2 });
+
+    if (searchMarker) searchMarker.remove();
+
+    const cropName = field.cropName || field.crop || 'Ürün';
+    const popupContent = `
+      <div style="font-family:sans-serif;line-height:1.4;">
+        <strong style="color:#1d4436;font-size:14px;">${escapeHtml(field.name)}</strong><br>
+        <span style="font-size:12px;color:#556;">📍 ${escapeHtml(field.province)} / ${escapeHtml(field.district)} / ${escapeHtml(field.neighborhood)}</span><br>
+        <span style="display:inline-block;margin-top:4px;padding:3px 8px;background:#edf4e8;color:#2e6a43;border-radius:4px;font-weight:600;font-size:11px;">
+          Ada: ${escapeHtml(field.block || '—')} · Parsel: ${escapeHtml(field.parcel || '—')}
+        </span><br>
+        <small style="color:#777;">🌱 ${escapeHtml(cropName)} · ${field.area} Dekar</small>
+      </div>
+    `;
+
+    searchMarker = L.marker([lat, lon]).addTo(map).bindPopup(popupContent).openPopup();
+    lastActiveParcel = { ...field, lat, lon };
+
+    if (status) {
+      status.textContent = `"${field.name}" (Ada: ${field.block}, Parsel: ${field.parcel}) haritada gösteriliyor.`;
+    }
+  };
+
+  // Harita üzerine canlı rüzgar & yağış hava durumu rozeti yerleştir
+  window.addWeatherBadgeToMap = function (lat, lon, data) {
+    if (!map) return;
+    if (weatherMarker) weatherMarker.remove();
+
+    const wind = data.wind || 0;
+    const rain = data.rain || 0;
+    const temp = data.temp || 0;
+    
+    let statusText = '🟢 İlaçlama & Fıskiye İdeal';
+    let badgeColor = '#2e6a43';
+
+    if (rain > 0.5) {
+      statusText = '🌧️ Yağmur Var · İlaçlama Yapılmaz';
+      badgeColor = '#c94f42';
+    } else if (wind > 15) {
+      statusText = '🔴 Rüzgarlı · Fıskiye & İlaçlama Yapılamaz';
+      badgeColor = '#c94f42';
+    } else if (wind >= 8) {
+      statusText = '🟡 Orta Rüzgar · Fıskiyeyi Dikkatli Çalıştır';
+      badgeColor = '#b37d1d';
+    }
+
+    const iconHtml = `
+      <div style="background:#fff;border:2px solid ${badgeColor};border-radius:8px;padding:5px 10px;font-size:11.5px;font-family:sans-serif;font-weight:700;color:#183428;box-shadow:0 4px 14px rgba(0,0,0,0.2);white-space:nowrap;display:flex;align-items:center;gap:8px;">
+        <span>💨 ${wind.toFixed(0)} km/s</span>
+        <span>🌧️ ${rain.toFixed(1)} mm</span>
+        <span style="color:${badgeColor};font-weight:800;">${statusText}</span>
+      </div>
+    `;
+
+    const weatherIcon = L.divIcon({
+      className: 'leaflet-weather-badge',
+      html: iconHtml,
+      iconSize: [220, 32],
+      iconAnchor: [110, 44]
+    });
+
+    weatherMarker = L.marker([lat, lon], { icon: weatherIcon }).addTo(map);
+  };
+
+  // Parseli Çiftçi Hesabına Kaydet Butonu
+  $('btn-save-to-farmer')?.addEventListener('click', () => {
+    let name = $('parcel-name')?.value.trim();
+    let block = $('tkgm-block')?.value.trim();
+    let parcelNo = $('tkgm-parcel')?.value.trim();
+    let prov = $('tkgm-province')?.selectedOptions[0]?.text || '';
+    let dist = $('tkgm-district')?.selectedOptions[0]?.text || '';
+    let neigh = $('tkgm-neighborhood')?.selectedOptions[0]?.text || '';
+
+    let lat = parseFloat($('latitude')?.value);
+    let lon = parseFloat($('longitude')?.value);
+
+    // Eğer harita merkezinden veya son aktif parselden geliyorsa
+    if (lastActiveParcel) {
+      if (!block) block = lastActiveParcel.block || '';
+      if (!parcelNo) parcelNo = lastActiveParcel.parcel || '';
+      if (!name) name = lastActiveParcel.name || '';
+      if (!prov && lastActiveParcel.province) prov = lastActiveParcel.province;
+      if (!dist && lastActiveParcel.district) dist = lastActiveParcel.district;
+      if (!neigh && lastActiveParcel.neighborhood) neigh = lastActiveParcel.neighborhood;
+      if (isNaN(lat)) lat = lastActiveParcel.lat;
+      if (isNaN(lon)) lon = lastActiveParcel.lon;
+    }
+
+    if (!name) name = `Tarla (Ada ${block || '—'} / Parsel ${parcelNo || '—'})`;
+
+    if (isNaN(lat) || isNaN(lon)) {
+      const center = map.getCenter();
+      lat = center.lat;
+      lon = center.lng;
+    }
+
+    if (window.FarmerAuth && window.FarmerAuth.saveField) {
+      const saved = window.FarmerAuth.saveField({
+        name,
+        province: prov === 'İl seç' ? '' : prov,
+        district: dist === 'İlçe seç' ? '' : dist,
+        neighborhood: neigh === 'Mahalle seç' ? '' : neigh,
+        block,
+        parcel: parcelNo,
+        area: 25,
+        crop: 'wheat',
+        lat,
+        lon
+      });
+
+      alert(`✓ "${saved.name}" (Ada: ${saved.block || '—'}, Parsel: ${saved.parcel || '—'}) çiftçi hesabınıza başarıyla kaydedildi!\n\nArtık "Tarlalarımdan Seç" butonuna basarak istediğiniz zaman tek tıkla yükleyebilirsiniz.`);
+    }
+  });
+
   const province = $('tkgm-province'), district = $('tkgm-district'), neighborhood = $('tkgm-neighborhood'), tkgmStatus = $('tkgm-status');
   loadLocations('province', '', province, 'İl seç').then(() => { tkgmStatus.textContent = 'TKGM il listesi hazır.'; }).catch(error => { tkgmStatus.textContent = error.message; });
   province.addEventListener('change', async () => {
@@ -204,8 +328,26 @@
       if ($('latitude')) $('latitude').value = center.lat.toFixed(6);
       if ($('longitude')) $('longitude').value = center.lng.toFixed(6);
       const detail = [properties.ilAd,properties.ilceAd,properties.mahalleAd].filter(Boolean).join(' / ');
-      tkgmStatus.textContent = `${name}${detail ? ` · ${detail}` : ''}${properties.alan ? ` · ${properties.alan} m²` : ''} haritaya eklendi.`;
-    } catch (error) { tkgmStatus.textContent = error.message; }
+      tkgmStatus.innerHTML = `✓ <strong>${name}</strong>${detail ? ` · ${detail}` : ''}${properties.alan ? ` · ${properties.alan} m²` : ''} haritaya eklendi. <span style="color:#2e6a43;font-weight:600;">(Hesabınıza kaydetmek için yukarıdaki "Tarlalarıma Kaydet"e basabilirsiniz)</span>`;
+
+      lastActiveParcel = {
+        name,
+        province: properties.ilAd || province.selectedOptions[0]?.text || '',
+        district: properties.ilceAd || district.selectedOptions[0]?.text || '',
+        neighborhood: properties.mahalleAd || neighborhood.selectedOptions[0]?.text || '',
+        block,
+        parcel: parcelNo,
+        lat: center.lat,
+        lon: center.lng
+      };
+
+      // Tarlanın konumuna göre anında İlaçlama, Gübreleme ve Sulama analizi çalıştır!
+      if (window.AgroAdvisor && window.AgroAdvisor.loadForCoordinates) {
+        window.AgroAdvisor.loadForCoordinates(center.lat, center.lng, lastActiveParcel);
+      }
+    } catch (error) {
+      tkgmStatus.innerHTML = `<span style="color:#b34033;">⚠️ ${escapeHtml(error.message)}</span><br><small>TKGM sorgusu yanıt vermezse, yukarıdaki "Konum veya parsel numarasıyla bul" arama kutusuna köy/ilçe adını yazabilir veya doğrudan "Tarlalarıma Kaydet" ile bilgilerinizi hesabınızda saklayabilirsiniz.</small>`;
+    }
     finally { button.disabled = false; }
   });
   async function searchPlace() {
@@ -220,6 +362,17 @@
       if (searchMarker) searchMarker.remove();
       searchMarker = L.marker(point).addTo(map).bindPopup(escapeHtml(result.display_name || query)).openPopup();
       tkgmStatus.textContent = `${result.display_name || query} · Harita konuma yaklaştırıldı. Ada/parsel sorgusu için aşağıdaki alanları kullan.`;
+
+      lastActiveParcel = {
+        name: query,
+        lat: point[0],
+        lon: point[1],
+        province: query.split(',')[0] || query
+      };
+
+      if (window.AgroAdvisor && window.AgroAdvisor.loadForCoordinates) {
+        window.AgroAdvisor.loadForCoordinates(point[0], point[1], { name: query, displayName: result.display_name });
+      }
     } catch (error) { tkgmStatus.textContent = error.message; }
     finally { button.disabled = false; }
   }
