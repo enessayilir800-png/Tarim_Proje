@@ -62,7 +62,22 @@
       <a class="overview-card" href="#/plants"><span class="overview-card-icon">🌱</span><span class="overview-card-copy"><small>03 · ÜRÜN REHBERİ</small><strong>Tarla ve bahçe bitkileri</strong><span>Fotoğraflı ürünler ve yetiştirme bilgileri.</span></span><span class="overview-card-arrow" aria-hidden="true">↗</span></a>
     </section>
 
-    <section class="bottom-note"><span class="note-star">✳</span><p><strong>Yerel bilgi değerlidir.</strong> Bu araç genel bir karar desteğidir; ürün çeşidi, toprak analizi, yerel ziraat uzmanı görüşü ve güncel hava tahminleriyle planı doğrula.</p><span class="nasa-wordmark">POWER <small>NASA</small></span></section>
+    <section class="crop-category-choices" aria-label="Bitki kategorileri">
+      <a class="plants-category-card crop-field-card" href="#/plants/field" aria-label="Tarla bitkilerini görüntüle">
+        <img src="assets/plants/wheat.jpg" alt="" class="plants-category-photo">
+        <span class="plants-category-shade" aria-hidden="true"></span>
+        <span class="plants-category-label"><span class="plants-category-mark" aria-hidden="true">🌾</span> TARIM ALANI</span>
+        <span class="plants-category-copy"><strong>Tarla Bitkileri</strong><span>Buğday, arpa, mercimek ve diğer tarla ürünleri için yetiştirme rehberi.</span></span>
+        <span class="plants-category-action">Ürünleri keşfet <span aria-hidden="true">↗</span></span>
+      </a>
+      <a class="plants-category-card crop-garden-card" href="#/plants/garden" aria-label="Bahçe bitkilerini görüntüle">
+        <img src="assets/plants/bean.jpg" alt="" class="plants-category-photo">
+        <span class="plants-category-shade" aria-hidden="true"></span>
+        <span class="plants-category-label"><span class="plants-category-mark" aria-hidden="true">🌱</span> BAHÇE ÜRETİMİ</span>
+        <span class="plants-category-copy"><strong>Bahçe Bitkileri</strong><span>Bahçe üretimine uygun bitkileri ve yetiştirme bilgilerini incele.</span></span>
+        <span class="plants-category-action">Ürünleri keşfet <span aria-hidden="true">↗</span></span>
+      </a>
+    </section>
     </section>
 
     <section class="app-page plan-page" id="plan-page" aria-labelledby="plan-title" hidden>
@@ -156,17 +171,33 @@
       <header class="page-heading">
         <span class="eyebrow"><span>TARIMYOL · BİTKİ REHBERİ</span></span>
         <h1 id="plants-title">Tarla ve Bahçe Bitkileri</h1>
-        <p>Gönderdiğiniz ürün fotoğraflarından birini seçerek ekim, hasat ve yetiştirme bilgilerini görüntüleyin.</p>
+        <p id="plants-description">Önce tarla veya bahçe bitkisi kategorisini seçin; ardından ürünlerin yetiştirme rehberini görüntüleyin.</p>
       </header>
-      <section class="plants-container">
-        <section class="crop-group" aria-labelledby="field-crops-title">
+      <section class="plants-category-choices" aria-label="Bitki türü seçin">
+        <a class="plants-category-card plants-field-card" href="#/plants/field" aria-label="Tarla bitkilerini görüntüle">
+          <img src="assets/plants/wheat.jpg" alt="" class="plants-category-photo">
+          <span class="plants-category-shade" aria-hidden="true"></span>
+          <span class="plants-category-label"><span class="plants-category-mark" aria-hidden="true">🌾</span> TARIM ALANI</span>
+          <span class="plants-category-copy"><strong>Tarla Bitkileri</strong><span>Buğday, arpa, mercimek ve diğer tarla ürünleri için yetiştirme rehberi.</span></span>
+          <span class="plants-category-action">Ürünleri keşfet <span aria-hidden="true">↗</span></span>
+        </a>
+        <a class="plants-category-card plants-garden-card" href="#/plants/garden" aria-label="Bahçe bitkilerini görüntüle">
+          <img src="assets/plants/bean.jpg" alt="" class="plants-category-photo">
+          <span class="plants-category-shade" aria-hidden="true"></span>
+          <span class="plants-category-label"><span class="plants-category-mark" aria-hidden="true">🌱</span> BAHÇE ÜRETİMİ</span>
+          <span class="plants-category-copy"><strong>Bahçe Bitkileri</strong><span>Bahçe üretimine uygun bitkileri ve yetiştirme bilgilerini incele.</span></span>
+          <span class="plants-category-action">Ürünleri keşfet <span aria-hidden="true">↗</span></span>
+        </a>
+      </section>
+      <section class="plants-container" id="plants-container" hidden>
+        <section class="crop-group" id="field-crops-section" aria-labelledby="field-crops-title">
           <header class="crop-group-heading">
             <div><span class="crop-group-kicker">TARIM ALANI</span><h2 id="field-crops-title">Tarla Bitkileri</h2></div>
             <p>Arpa, buğday, çeltik, fiğ, korunga, mercimek, pamuk, şeker pancarı ve yonca</p>
           </header>
           <div class="plants-grid" id="field-crops-grid"></div>
         </section>
-        <section class="crop-group" aria-labelledby="garden-crops-title">
+        <section class="crop-group" id="garden-crops-section" aria-labelledby="garden-crops-title">
           <header class="crop-group-heading">
             <div><span class="crop-group-kicker">BAHÇE ÜRETİMİ</span><h2 id="garden-crops-title">Bahçe Bitkileri</h2></div>
             <p>Fasulye</p>
@@ -315,13 +346,35 @@
       '#/plants': document.getElementById('plants-page')
     };
     function renderRoute() {
-      const route = routePages[window.location.hash] ? window.location.hash : '#/overview';
-      if (window.location.hash !== route) history.replaceState(null, '', route);
+      const requestedRoute = window.location.hash;
+      const category = requestedRoute === '#/plants/field' ? 'field' : requestedRoute === '#/plants/garden' ? 'garden' : 'all';
+      const isPlantCategoryRoute = category !== 'all';
+      const route = routePages[requestedRoute] ? requestedRoute : isPlantCategoryRoute ? '#/plants' : '#/overview';
+      if (!routePages[requestedRoute] && !isPlantCategoryRoute && requestedRoute !== route) history.replaceState(null, '', route);
       appPages.forEach(section => { section.hidden = section === routePages[route] ? false : true; });
       sideNavLinks.forEach(link => {
         if (link.getAttribute('href') === route) link.setAttribute('aria-current', 'page');
         else link.removeAttribute('aria-current');
       });
+      const fieldCrops = document.getElementById('field-crops-section');
+      const gardenCrops = document.getElementById('garden-crops-section');
+      const plantsContainer = document.getElementById('plants-container');
+      if (plantsContainer) plantsContainer.hidden = !isPlantCategoryRoute;
+      if (fieldCrops) fieldCrops.hidden = category !== 'field';
+      if (gardenCrops) gardenCrops.hidden = category !== 'garden';
+      const plantsTitle = document.getElementById('plants-title');
+      const plantsDescription = document.getElementById('plants-description');
+      document.querySelectorAll('.plants-category-card').forEach(link => {
+        const isCurrentCategory = link.getAttribute('href') === requestedRoute;
+        if (isCurrentCategory && isPlantCategoryRoute) link.setAttribute('aria-current', 'location');
+        else link.removeAttribute('aria-current');
+      });
+      if (plantsTitle) plantsTitle.textContent = category === 'field' ? 'Tarla Bitkileri' : category === 'garden' ? 'Bahçe Bitkileri' : 'Tarla ve Bahçe Bitkileri';
+      if (plantsDescription) plantsDescription.textContent = category === 'field'
+        ? 'Tarla bitkilerinin ekim, hasat ve yetiştirme bilgilerini görüntüleyin.'
+        : category === 'garden'
+          ? 'Bahçe bitkilerinin ekim, hasat ve yetiştirme bilgilerini görüntüleyin.'
+          : 'Ürünlerden birini seçerek ekim, hasat ve yetiştirme bilgilerini görüntüleyin.';
       window.scrollTo(0, 0);
       if (route === '#/parcels') requestAnimationFrame(() => window.dispatchEvent(new Event('tarimyol:show-parcels')));
     }
