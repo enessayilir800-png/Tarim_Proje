@@ -31,7 +31,7 @@
       <a class="side-nav-link" href="#/overview" aria-label="Genel bakış" title="Genel bakış" aria-current="page"><span class="side-nav-icon" aria-hidden="true">⌂</span><span>Genel bakış</span></a>
       <a class="side-nav-link" href="#/plan" aria-label="Tarla planı" title="Tarla planı"><span class="side-nav-icon" aria-hidden="true">✳</span><span>Tarla planı</span></a>
       <a class="side-nav-link" href="#/parcels" aria-label="Parsel haritası" title="Parsel haritası"><span class="side-nav-icon" aria-hidden="true">⌖</span><span>Parsel & İlaçlama</span></a>
-      <a class="side-nav-link" href="#/plants" aria-label="Bitkileri tanı" title="Bitkileri tanı"><span class="side-nav-icon" aria-hidden="true">🌱</span><span>Bitkileri tanı</span></a>
+      <a class="side-nav-link" href="#/plants" aria-label="Tarla ve bahçe bitkileri" title="Tarla ve bahçe bitkileri"><span class="side-nav-icon" aria-hidden="true">🌱</span><span>Tarla ve bahçe</span></a>
     </nav>
     <div class="side-nav-farmer-box">
       <button type="button" class="side-nav-farmer-cta" onclick="window.FarmerAuth && window.FarmerAuth.openModal('farmer-auth-modal')">
@@ -59,21 +59,9 @@
     <section class="overview-cards" aria-label="Hızlı erişim">
       <a class="overview-card" href="#/plan"><span class="overview-card-icon">✳</span><span class="overview-card-copy"><small>01 · SEZONUNU PLANLA</small><strong>Tarla planı oluştur</strong><span>Konumunu, toprağını ve ürününü seç.</span></span><span class="overview-card-arrow" aria-hidden="true">↗</span></a>
       <a class="overview-card" href="#/parcels"><span class="overview-card-icon">⌖</span><span class="overview-card-copy"><small>02 · SAHANI İZLE</small><strong>Parsel haritasını aç</strong><span>Parselini bul, çiz ve NDVI verisini incele.</span></span><span class="overview-card-arrow" aria-hidden="true">↗</span></a>
-      <a class="overview-card" href="#/plants"><span class="overview-card-icon">🌱</span><span class="overview-card-copy"><small>03 · BİTKİ REHBERİ</small><strong>Bitkileri tanı</strong><span>Fotoğraflı ürün kartları ve tarımsal bilgiler.</span></span><span class="overview-card-arrow" aria-hidden="true">↗</span></a>
+      <a class="overview-card" href="#/plants"><span class="overview-card-icon">🌱</span><span class="overview-card-copy"><small>03 · ÜRÜN REHBERİ</small><strong>Tarla ve bahçe bitkileri</strong><span>Fotoğraflı ürünler ve yetiştirme bilgileri.</span></span><span class="overview-card-arrow" aria-hidden="true">↗</span></a>
     </section>
 
-    <!-- Ana Sayfa Bitkileri Tanı Vitrini -->
-    <section class="overview-plants-preview">
-      <div class="preview-header">
-        <div>
-          <span class="step">BİTKİ REHBERİ</span>
-          <h2>Bölgenin Başlıca Ürünlerini Tanı</h2>
-          <p>Fotoğraflara tıklayarak ekim, hasat ve yetiştirme koşulları hakkında bilgi alabilirsiniz.</p>
-        </div>
-        <a href="#/plants" class="see-all-plants-btn">Tüm Bitkileri Gör ↗</a>
-      </div>
-      <div class="plants-grid" id="overview-plants-grid"></div>
-    </section>
     <section class="bottom-note"><span class="note-star">✳</span><p><strong>Yerel bilgi değerlidir.</strong> Bu araç genel bir karar desteğidir; ürün çeşidi, toprak analizi, yerel ziraat uzmanı görüşü ve güncel hava tahminleriyle planı doğrula.</p><span class="nasa-wordmark">POWER <small>NASA</small></span></section>
     </section>
 
@@ -167,19 +155,24 @@
     <section class="app-page plants-page" id="plants-page" aria-labelledby="plants-title" hidden>
       <header class="page-heading">
         <span class="eyebrow"><span>TARIMYOL · BİTKİ REHBERİ</span></span>
-        <h1 id="plants-title">Bitkileri Tanı</h1>
-        <p>Bilgi almak istediğin bitkinin üzerine tıkla; ekim, hasat, su ve bakım bilgilerini gör.</p>
+        <h1 id="plants-title">Tarla ve Bahçe Bitkileri</h1>
+        <p>Gönderdiğiniz ürün fotoğraflarından birini seçerek ekim, hasat ve yetiştirme bilgilerini görüntüleyin.</p>
       </header>
       <section class="plants-container">
-        <!-- Kategori Filtreleri -->
-        <div class="plants-filter-bar">
-          <button type="button" class="plant-filter-btn active" data-filter="all">Tümü (9)</button>
-          <button type="button" class="plant-filter-btn" data-filter="Tahıl">🌾 Tahıllar</button>
-          <button type="button" class="plant-filter-btn" data-filter="Baklagil">🫘 Baklagiller</button>
-          <button type="button" class="plant-filter-btn" data-filter="Sebze">🍅 Sebzeler</button>
-          <button type="button" class="plant-filter-btn" data-filter="Endüstri Bitkisi">🏭 Endüstriyel</button>
-        </div>
-        <div class="plants-grid" id="plants-grid"></div>
+        <section class="crop-group" aria-labelledby="field-crops-title">
+          <header class="crop-group-heading">
+            <div><span class="crop-group-kicker">TARIM ALANI</span><h2 id="field-crops-title">Tarla Bitkileri</h2></div>
+            <p>Arpa, buğday, çeltik, fiğ, korunga, mercimek, pamuk, şeker pancarı ve yonca</p>
+          </header>
+          <div class="plants-grid" id="field-crops-grid"></div>
+        </section>
+        <section class="crop-group" aria-labelledby="garden-crops-title">
+          <header class="crop-group-heading">
+            <div><span class="crop-group-kicker">BAHÇE ÜRETİMİ</span><h2 id="garden-crops-title">Bahçe Bitkileri</h2></div>
+            <p>Fasulye</p>
+          </header>
+          <div class="plants-grid garden-crops-grid" id="garden-crops-grid"></div>
+        </section>
       </section>
     </section>
   </main>

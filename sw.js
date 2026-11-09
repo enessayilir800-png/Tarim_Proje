@@ -1,5 +1,5 @@
 // TarımYol - Offline & Service Worker Modülü
-const CACHE_NAME = 'tarimyol-cache-v3';
+const CACHE_NAME = 'tarimyol-cache-v4';
 
 const STATIC_ASSETS = [
   './',
@@ -13,7 +13,17 @@ const STATIC_ASSETS = [
   './pdf-export.js',
   './farmer-auth.js',
   './agro-advisor.js',
-  './manifest.json'
+  './manifest.json',
+  './assets/plants/alfalfa.jpg',
+  './assets/plants/barley.jpg',
+  './assets/plants/bean.jpg',
+  './assets/plants/cotton.jpg',
+  './assets/plants/lentil.jpg',
+  './assets/plants/rice.webp',
+  './assets/plants/sainfoin.jpg',
+  './assets/plants/sugar-beet.webp',
+  './assets/plants/vetch.jpg',
+  './assets/plants/wheat.jpg'
 ];
 
 self.addEventListener('install', (event) => {
