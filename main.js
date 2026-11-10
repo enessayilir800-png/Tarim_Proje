@@ -38,7 +38,79 @@ const CROPS = {
 };
 const MONTHS=['Ocak','Şubat','Mart','Nisan','Mayıs','Haziran','Temmuz','Ağustos','Eylül','Ekim','Kasım','Aralık'];
 const $=id=>document.getElementById(id);
-$('find-location').addEventListener('click',async()=>{const text=$('location').value.trim(),status=$('location-status'),button=$('find-location');if(text.length<2){status.textContent='Bir il, ilçe, köy veya adres yazın.';status.style.color='#a45e44';return}button.disabled=true;button.textContent='Aranıyor…';try{const response=await fetch(`/api/geocode?q=${encodeURIComponent(text)}`),data=await response.json();if(!response.ok)throw new Error(data.error||'Konum bulunamadı.');$('latitude').value=data.latitude.toFixed(6);$('longitude').value=data.longitude.toFixed(6);status.textContent=`✓ ${data.display_name}`;status.style.color='#5b805c'}catch(error){status.textContent=error.message;status.style.color='#a45e44'}finally{button.disabled=false;button.textContent='Konumu bul'}});
+let locationSearchTimer;
+let locationSearchRequest = 0;
+function applyResolvedFarmLocation(location) {
+  const status = $('location-status');
+  $('latitude').value = Number(location.latitude).toFixed(6);
+  $('longitude').value = Number(location.longitude).toFixed(6);
+  if (location.name) $('location').value = location.name;
+  status.textContent = `✓ ${location.name || 'Konum bulundu'}`;
+  status.dataset.state = 'ok';
+  window.dispatchEvent(new CustomEvent('tarimyol:location-resolved', { detail: location }));
+  const form = $('farm-form');
+  if (form.checkValidity()) form.requestSubmit();
+  else status.textContent = `✓ ${location.name || 'Konum bulundu'}. Alan ve ürün bilgilerini tamamla; planın otomatik oluşturulsun.`;
+}
+window.applyResolvedFarmLocation = applyResolvedFarmLocation;
+async function resolveFarmLocation() {
+  const text = $('location').value.trim(), status = $('location-status'), button = $('find-location');
+  if (text.length < 2) {
+    status.textContent = 'Bir il, ilçe, köy veya mevki yazın.';
+    status.dataset.state = 'error';
+    return;
+  }
+  const requestId = ++locationSearchRequest;
+  button.disabled = true;
+  button.textContent = 'Aranıyor…';
+  status.textContent = 'Konum aranıyor…';
+  status.dataset.state = 'loading';
+  try {
+    const response = await fetch(`/api/geocode?q=${encodeURIComponent(text)}`), data = await response.json();
+    if (!response.ok) throw new Error(data.error || data.detail || 'Konum bulunamadı.');
+    if (requestId !== locationSearchRequest) return;
+    const displayName = data.display_name || text;
+    applyResolvedFarmLocation({ latitude: Number(data.latitude), longitude: Number(data.longitude), name: displayName });
+  } catch (error) {
+    if (requestId !== locationSearchRequest) return;
+    status.textContent = error.message;
+    status.dataset.state = 'error';
+  } finally {
+    if (requestId === locationSearchRequest) {
+      button.disabled = false;
+      button.textContent = 'Konumu bul';
+    }
+  }
+}
+$('find-location').addEventListener('click', resolveFarmLocation);
+$('location').addEventListener('input', () => {
+  locationSearchRequest += 1;
+  clearTimeout(locationSearchTimer);
+  const text = $('location').value.trim();
+  if (text.length >= 3) {
+    locationSearchTimer = setTimeout(resolveFarmLocation, 800);
+  } else {
+    $('find-location').disabled = false;
+    $('find-location').textContent = 'Konumu bul';
+    if ($('location-status').dataset.state === 'loading') {
+      $('location-status').textContent = text ? 'Konum için yazmaya devam et.' : 'Konum yazmaya başla veya kayıtlı tarlanı seç.';
+      $('location-status').dataset.state = '';
+    }
+  }
+});
+$('location').addEventListener('keydown', event => {
+  if (event.key === 'Enter') {
+    event.preventDefault();
+    clearTimeout(locationSearchTimer);
+    resolveFarmLocation();
+  }
+});
+function generatePlanAfterLocationIsReady() {
+  const form = $('farm-form');
+  if ($('location-status').dataset.state === 'ok' && form.checkValidity()) form.requestSubmit();
+}
+$('area').addEventListener('change', generatePlanAfterLocationIsReady);
+$('crop').addEventListener('change', generatePlanAfterLocationIsReady);
 const mean=values=>{const valid=values.filter(v=>Number.isFinite(v)&&v>-900);return valid.length?valid.reduce((a,b)=>a+b,0)/valid.length:null};
 const fmt=(v,d=0)=>v===null?'—':v.toLocaleString('tr-TR',{maximumFractionDigits:d,minimumFractionDigits:d});
 function getClimateStats(parameters){const keys=Object.keys(parameters.T2M||{}).filter(k=>/^\d{8}$/.test(k));const years={};keys.forEach(k=>{const m=Number(k.slice(4,6))-1;(years[m]??=[]).push(k)});const monthly=Array.from({length:12},(_,m)=>{const days=years[m]||[];return{temp:mean(days.map(k=>Number(parameters.T2M?.[k]))),rain:mean(days.map(k=>Number(parameters.PRECTOTCORR?.[k]))),humidity:mean(days.map(k=>Number(parameters.RH2M?.[k]))),solar:mean(days.map(k=>Number(parameters.ALLSKY_SFC_SW_DWN?.[k])))}});const rainfall=mean(monthly.map(x=>x.rain===null?null:x.rain*30.4));return{monthly,rainfall,temp:mean(monthly.map(x=>x.temp)),humidity:mean(monthly.map(x=>x.humidity))}}

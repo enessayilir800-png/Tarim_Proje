@@ -172,7 +172,7 @@ const NASA_POWER_API_KEY = "";
       const res = await fetch(localUrl);
       if (res.ok) {
         const data = await res.json();
-        if (data.daily && data.daily.time) return data.daily;
+        if (data.daily && data.daily.time) return normalizeDailyForecast(data.daily);
       }
     } catch (_) {}
 
@@ -180,7 +180,31 @@ const NASA_POWER_API_KEY = "";
     const resRemote = await fetch(remoteUrl);
     if (!resRemote.ok) throw new Error('Hava durumu verisi alınamadı.');
     const remoteData = await resRemote.json();
-    return remoteData.daily;
+    return normalizeDailyForecast(remoteData.daily);
+  }
+
+  function normalizeDailyForecast(daily) {
+    if (!daily || !Array.isArray(daily.time) || daily.time.length === 0) {
+      throw new Error('Tahmin verisi boş döndü.');
+    }
+
+    const aliases = {
+      weathercode: ['weathercode', 'weather_code'],
+      windspeed_10m_max: ['windspeed_10m_max', 'wind_speed_10m_max']
+    };
+    const normalized = { ...daily };
+    Object.entries(aliases).forEach(([target, keys]) => {
+      const values = keys.map(key => daily[key]).find(Array.isArray);
+      if (values) normalized[target] = values;
+    });
+
+    const required = ['weathercode', 'windspeed_10m_max', 'precipitation_sum', 'temperature_2m_max', 'temperature_2m_min'];
+    const missing = required.filter(key => !Array.isArray(normalized[key]) || normalized[key].length === 0);
+    if (missing.length) {
+      throw new Error(`Hava tahmininde gerekli veriler eksik: ${missing.join(', ')}.`);
+    }
+
+    return normalized;
   }
 
   // Veriyi analiz edip arayüze döken ana fonksiyon
@@ -199,10 +223,6 @@ const NASA_POWER_API_KEY = "";
 
     try {
       const daily = await fetchForecast(lat, lon);
-      if (!daily || !daily.time || !daily.time.length) {
-        throw new Error('Tahmin verisi boş döndü.');
-      }
-
       renderAdvisor(daily, lat, lon, fieldInfo);
 
       // Harita üzerine hava durumu rozeti ekle

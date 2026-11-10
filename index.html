@@ -29,8 +29,7 @@
     <span class="side-nav-label">ÇALIŞMA ALANI</span>
     <nav aria-label="Ana menü">
       <a class="side-nav-link" href="#/overview" aria-label="Genel bakış" title="Genel bakış" aria-current="page"><span class="side-nav-icon" aria-hidden="true">⌂</span><span>Genel bakış</span></a>
-      <a class="side-nav-link" href="#/plan" aria-label="Tarla planı" title="Tarla planı"><span class="side-nav-icon" aria-hidden="true">✳</span><span>Tarla planı</span></a>
-      <a class="side-nav-link" href="#/parcels" aria-label="Parsel haritası" title="Parsel haritası"><span class="side-nav-icon" aria-hidden="true">⌖</span><span>Parsel & İlaçlama</span></a>
+      <a class="side-nav-link" href="#/plan" aria-label="Tarla yönetimi" title="Tarla yönetimi"><span class="side-nav-icon" aria-hidden="true">✳</span><span>Tarla yönetimi</span></a>
       <a class="side-nav-link" href="#/plants" aria-label="Tarla ve bahçe bitkileri" title="Tarla ve bahçe bitkileri"><span class="side-nav-icon" aria-hidden="true">🌱</span><span>Tarla ve bahçe</span></a>
     </nav>
     <div class="side-nav-farmer-box">
@@ -57,9 +56,8 @@
     </section>
 
     <section class="overview-cards" aria-label="Hızlı erişim">
-      <a class="overview-card" href="#/plan"><span class="overview-card-icon">✳</span><span class="overview-card-copy"><small>01 · SEZONUNU PLANLA</small><strong>Tarla planı oluştur</strong><span>Konumunu, toprağını ve ürününü seç.</span></span><span class="overview-card-arrow" aria-hidden="true">↗</span></a>
-      <a class="overview-card" href="#/parcels"><span class="overview-card-icon">⌖</span><span class="overview-card-copy"><small>02 · SAHANI İZLE</small><strong>Parsel haritasını aç</strong><span>Parselini bul, çiz ve NDVI verisini incele.</span></span><span class="overview-card-arrow" aria-hidden="true">↗</span></a>
-      <a class="overview-card" href="#/plants"><span class="overview-card-icon">🌱</span><span class="overview-card-copy"><small>03 · ÜRÜN REHBERİ</small><strong>Tarla ve bahçe bitkileri</strong><span>Fotoğraflı ürünler ve yetiştirme bilgileri.</span></span><span class="overview-card-arrow" aria-hidden="true">↗</span></a>
+      <a class="overview-card" href="#/plan"><span class="overview-card-icon">✳</span><span class="overview-card-copy"><small>01 · TARLA YÖNETİMİ</small><strong>Plan, takip ve ilaçlama</strong><span>Sezon planı, parsel haritası ve saha kararları tek ekranda.</span></span><span class="overview-card-arrow" aria-hidden="true">↗</span></a>
+      <a class="overview-card" href="#/plants"><span class="overview-card-icon">🌱</span><span class="overview-card-copy"><small>02 · ÜRÜN REHBERİ</small><strong>Tarla ve bahçe bitkileri</strong><span>Fotoğraflı ürünler ve yetiştirme bilgileri.</span></span><span class="overview-card-arrow" aria-hidden="true">↗</span></a>
     </section>
 
     <section class="crop-category-choices" aria-label="Bitki kategorileri">
@@ -81,17 +79,34 @@
     </section>
 
     <section class="app-page plan-page" id="plan-page" aria-labelledby="plan-title" hidden>
-    <header class="page-heading"><span class="eyebrow"><span>TARIMYOL · SEZON PLANLAMA</span></span><h1 id="plan-title">Tarlan için doğru plan.</h1><p>Tarla bilgilerini gir; konumuna özel iklim, toprak ve ürün verilerini birlikte değerlendirelim.</p></header>
-    <section class="workspace" id="workspace">
+    <header class="page-heading"><span class="eyebrow"><span>TARIMYOL · TARLA YÖNETİMİ</span></span><h1 id="plan-title">Planla, takip et, doğru zamanda müdahale et.</h1><p>Sezon planından parsel haritasına ve hava koşullarına dayalı ilaçlama kararlarına kadar tüm saha araçların tek çalışma alanında.</p>
+      <nav class="field-workflow-nav" aria-label="Tarla yönetimi adımları">
+        <button type="button" data-scroll-target="season-plan"><span>01</span> Sezon planı <span aria-hidden="true">↓</span></button>
+        <button type="button" data-scroll-target="parcel-section"><span>02</span> Parsel ve ilaçlama <span aria-hidden="true">↓</span></button>
+      </nav>
+    </header>
+    <section class="field-location-panel" aria-label="Tarla konumu ve kayıtlı tarla seçimi">
+      <div class="field-location-copy"><span class="step">KONUMUNU SEÇ</span><strong>Planını kendi tarlana göre hazırlayalım.</strong><span>Konumu ara veya kayıtlı tarlalarından birini seç; uygun bilgiler otomatik yüklensin.</span></div>
+      <div class="field-location-controls">
+        <div class="field-location-search">
+          <label for="location">Tarla konumu</label>
+          <div class="input-wrap location-search"><span class="input-icon">⌖</span><input id="location" type="text" autocomplete="off" placeholder="İl, ilçe, köy veya mevki yaz"><button id="find-location" type="button">Konumu bul</button></div>
+        </div>
+        <div class="field-location-saved">
+          <label for="quick-field-select">Kayıtlı tarlam</label>
+          <select id="quick-field-select" aria-label="Plan ve harita için kayıtlı tarla seç">
+            <option value="">Kayıtlı tarlalarından seç</option>
+          </select>
+        </div>
+      </div>
+      <p class="location-status" id="location-status" role="status">Konum yazmaya başla veya kayıtlı tarlanı seç.</p>
+    </section>
+    <section class="workspace" id="season-plan" aria-label="Sezon planı ve ürün analizi">
       <div class="form-panel">
         <div class="section-heading"><div><span class="step">01 / TARLAN</span><h2>Bilgileri gir</h2></div><span class="leaf-icon">✳</span></div>
         <form id="farm-form">
-          <label class="field-label" for="location">Tarla konumu <span>İl, ilçe, köy veya adres</span></label>
-          <div class="input-wrap location-search"><span class="input-icon">⌖</span><input id="location" type="text" placeholder="Örn. Polatlı, Ankara veya köy adı"><button id="find-location" type="button">Konumu bul</button></div>
-          <p class="location-status" id="location-status"></p>
-          <div class="or-divider"><span>veya koordinat gir</span></div>
-          <div class="two-cols coordinate-row"><div class="input-wrap"><span class="input-icon">↕</span><input id="latitude" type="number" step="any" min="-90" max="90" placeholder="Enlem · 39.92"></div><div class="input-wrap"><span class="input-icon">↔</span><input id="longitude" type="number" step="any" min="-180" max="180" placeholder="Boylam · 32.85"></div></div>
-          <p class="hint">Koordinatını bilmiyor musun? <a href="https://www.google.com/maps" target="_blank" rel="noreferrer">Haritalar’da konumunu bul ↗</a></p>
+          <input id="latitude" type="hidden">
+          <input id="longitude" type="hidden">
           <div class="two-cols field-row"><div><label class="field-label" for="area">Tarla büyüklüğü</label><div class="input-wrap"><input id="area" type="number" min="0.1" step="0.1" placeholder="Örn. 25" required><span class="unit">dekar</span></div></div><div><label class="field-label" for="soil">Toprak yapısı</label><select id="soil"><option value="unknown">Bilmiyorum</option><option value="clay">Killi</option><option value="loam">Tınlı</option><option value="sandy">Kumlu</option><option value="silty">Siltli</option><option value="red">Kırmızı toprak</option><option value="white">Beyaz / kireçli toprak</option><option value="gravel">Çakıllı toprak</option><option value="alluvial">Alüvyal / taban toprak</option><option value="saline">Tuzlu / alkali toprak</option><option value="humus">Humuslu / organik maddece zengin</option></select></div></div>
           <label class="field-label crop-label" for="crop">Bu sezon düşündüğün ürün</label>
           <div class="crop-select-wrap"><span class="crop-symbol">♧</span><select id="crop" required><option value="">Ürün seç</option><option value="wheat">Buğday</option><option value="barley">Arpa</option><option value="corn">Mısır</option><option value="sunflower">Ayçiçeği</option><option value="chickpea">Nohut</option><option value="lentil">Mercimek</option><option value="cotton">Pamuk</option><option value="tomato">Domates</option><option value="potato">Patates</option></select><span class="select-arrow">⌄</span></div>
@@ -107,22 +122,11 @@
         <div class="report hidden" id="report"></div>
       </div>
     </section>
-    </section>
-
-    <section class="app-page parcels-page" id="parcels-page" aria-labelledby="parcel-title" hidden>
-      <header class="page-heading"><span class="eyebrow"><span>TARIMYOL · SAHA TAKİBİ</span></span><h1>Parselini haritada izle.</h1><p>Haritada parselini bul veya çiz; uydu görünümünü ve bitki gelişimini tek ekranda takip et.</p></header>
     <section class="parcel-section" id="parcel-section" aria-labelledby="parcel-title">
-      <div class="section-heading"><div><span class="step">03 / PARSEL VE NDVI</span><h2 id="parcel-title">Tarlalarını haritada izle</h2></div><span class="leaf-icon">N</span></div>
+      <div class="section-heading"><div><span class="step">02 / PARSEL VE İLAÇLAMA</span><h2 id="parcel-title">Parselini izle, ilaçlamanı planla</h2></div><span class="leaf-icon">⌖</span></div>
       <p class="parcel-intro">Parsel sınırını haritada işaretle, tarih aralığını seç ve NASA AppEEARS'tan NDVI iste. Son dönem ortalaması parseli renklendirir; ortalama, minimum ve maksimum değerler aşağıda listelenir.</p>
-      <!-- Hızlı Tarla Seçim Çubuğu -->
-      <div class="quick-field-bar">
-        <div class="quick-field-label">
-          <span>🚜</span>
-          <strong>Kayıtlı Tarlanı Seç:</strong>
-        </div>
-        <select id="quick-field-select" aria-label="Kayıtlı tarlalarımdan seç">
-          <option value="">-- Kayıtlı tarlalarından birini seç --</option>
-        </select>
+      <div class="quick-field-bar parcel-field-actions">
+        <div class="quick-field-label"><span>🚜</span><strong>Tarla seçimi ve parsel işlemleri</strong></div>
         <button type="button" class="btn-quick-manage" onclick="window.FarmerAuth && window.FarmerAuth.openModal('farmer-auth-modal')">
           ➕ Yeni Tarla / Parsel Ekle
         </button>
@@ -130,6 +134,7 @@
 
       <div class="parcel-tools">
         <input id="parcel-name" type="text" placeholder="Parsel adı (örn. Kuzey tarla)" aria-label="Parsel adı">
+        <input id="parcel-area" type="number" min="0.1" step="0.1" placeholder="Alan · dekar" aria-label="Parsel alanı, dekar">
         <button id="start-parcel" type="button">Parsel çiz</button>
         <button id="save-parcel" type="button" disabled>Parseli kaydet</button>
         <button id="cancel-parcel" type="button" class="quiet-button" hidden>İptal</button>
@@ -342,14 +347,13 @@
     const routePages = {
       '#/overview': document.getElementById('overview-page'),
       '#/plan': document.getElementById('plan-page'),
-      '#/parcels': document.getElementById('parcels-page'),
       '#/plants': document.getElementById('plants-page')
     };
     function renderRoute() {
       const requestedRoute = window.location.hash;
       const category = requestedRoute === '#/plants/field' ? 'field' : requestedRoute === '#/plants/garden' ? 'garden' : 'all';
       const isPlantCategoryRoute = category !== 'all';
-      const route = routePages[requestedRoute] ? requestedRoute : isPlantCategoryRoute ? '#/plants' : '#/overview';
+      const route = requestedRoute === '#/parcels' ? '#/plan' : routePages[requestedRoute] ? requestedRoute : isPlantCategoryRoute ? '#/plants' : '#/overview';
       if (!routePages[requestedRoute] && !isPlantCategoryRoute && requestedRoute !== route) history.replaceState(null, '', route);
       appPages.forEach(section => { section.hidden = section === routePages[route] ? false : true; });
       sideNavLinks.forEach(link => {
@@ -376,9 +380,15 @@
           ? 'Bahçe bitkilerinin ekim, hasat ve yetiştirme bilgilerini görüntüleyin.'
           : 'Ürünlerden birini seçerek ekim, hasat ve yetiştirme bilgilerini görüntüleyin.';
       window.scrollTo(0, 0);
-      if (route === '#/parcels') requestAnimationFrame(() => window.dispatchEvent(new Event('tarimyol:show-parcels')));
+      if (route === '#/plan') requestAnimationFrame(() => window.dispatchEvent(new Event('tarimyol:show-parcels')));
     }
     window.addEventListener('hashchange', renderRoute);
+    document.querySelectorAll('[data-scroll-target]').forEach(button => {
+      button.addEventListener('click', () => {
+        const target = document.getElementById(button.dataset.scrollTarget);
+        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    });
     renderRoute();
     if ('serviceWorker' in navigator && window.location.protocol !== 'file:') {
       navigator.serviceWorker.register('./sw.js').catch(() => {});

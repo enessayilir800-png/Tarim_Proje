@@ -4,7 +4,7 @@
   const $ = id => document.getElementById(id);
   const status = $('parcel-status');
   if (!window.L) { status.textContent = 'Harita kütüphanesi yüklenemedi. İnternet bağlantısını kontrol edip sayfayı yenile.'; return; }
-  const map = L.map(mapEl).setView([39.0, 35.0], 6);
+  const map = L.map(mapEl, { scrollWheelZoom: false }).setView([39.0, 35.0], 6);
   const streetTiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: '&copy; OpenStreetMap' }).addTo(map);
   // NASA GIBS supplies a rendered 8-day MODIS NDVI raster immediately, while AppEEARS computes parcel statistics in its queue.
   const gibsEpoch = Date.UTC(2016, 6, 30), gibsLagDays = 16;
@@ -28,6 +28,70 @@
   const hasApiNdvi = parcel => Number.isFinite(parcel.ndvi) && Boolean(parcel.ndviSource);
   const escapeHtml = value => String(value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const isoDate = date => `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}-${String(date.getDate()).padStart(2,'0')}`;
+  const parseAreaSquareMeters = value => {
+    if (typeof value === 'number') return Number.isFinite(value) && value > 0 ? value : null;
+    const text = String(value ?? '').trim().replace(/[^\d,.-]/g, '');
+    const normalized = text.includes(',')
+      ? text.replace(/\./g, '').replace(',', '.')
+      : /^\d{1,3}(?:\.\d{3})+$/.test(text) ? text.replace(/\./g, '') : text;
+    const area = Number(normalized);
+    return Number.isFinite(area) && area > 0 ? area : null;
+  };
+  function ringAreaSquareMeters(ring) {
+    if (!Array.isArray(ring) || ring.length < 3) return 0;
+    const earthRadius = 6371008.8;
+    let total = 0;
+    for (let index = 0; index < ring.length; index += 1) {
+      const current = ring[index], next = ring[(index + 1) % ring.length];
+      if (!Array.isArray(current) || !Array.isArray(next)) continue;
+      const lon1 = Number(current[0]) * Math.PI / 180, lat1 = Number(current[1]) * Math.PI / 180;
+      const lon2 = Number(next[0]) * Math.PI / 180, lat2 = Number(next[1]) * Math.PI / 180;
+      if (![lon1, lat1, lon2, lat2].every(Number.isFinite)) continue;
+      total += (lon2 - lon1) * (2 + Math.sin(lat1) + Math.sin(lat2));
+    }
+    return Math.abs(total * earthRadius * earthRadius / 2);
+  }
+  function geometryAreaSquareMeters(geometry) {
+    if (!geometry?.coordinates) return 0;
+    const polygonArea = polygon => {
+      if (!Array.isArray(polygon) || !polygon.length) return 0;
+      return Math.max(0, ringAreaSquareMeters(polygon[0]) - polygon.slice(1).reduce((sum, hole) => sum + ringAreaSquareMeters(hole), 0));
+    };
+    if (geometry.type === 'Polygon') return polygonArea(geometry.coordinates);
+    if (geometry.type === 'MultiPolygon') return geometry.coordinates.reduce((sum, polygon) => sum + polygonArea(polygon), 0);
+    return 0;
+  }
+  function areaDekarForGeometry(geometry) {
+    const squareMeters = geometryAreaSquareMeters(geometry);
+    return squareMeters > 0 ? squareMeters / 1000 : null;
+  }
+  window.getSavedParcelAreaForField = field => {
+    if (!field) return null;
+    const normalize = value => String(value || '').trim().toLocaleLowerCase('tr-TR');
+    const fieldName = normalize(field.name);
+    const block = normalize(field.block), parcelNumber = normalize(field.parcel);
+    const neighborhood = normalize(field.neighborhood);
+    const match = parcels.find(parcel => {
+      if (fieldName && normalize(parcel.name) === fieldName) return true;
+      const properties = parcel.properties || {};
+      const sameCadastre = block && parcelNumber &&
+        normalize(properties.adaNo) === block &&
+        normalize(properties.parselNo) === parcelNumber;
+      const sameNeighborhood = !neighborhood || normalize(properties.mahalleAd) === neighborhood;
+      return sameCadastre && sameNeighborhood;
+    });
+    if (!match) return null;
+    const officialArea = parseAreaSquareMeters(match.properties?.alan);
+    return officialArea ? officialArea / 1000 : areaDekarForGeometry(geometryFor(match));
+  };
+  let inferredLegacyArea = false;
+  parcels.forEach(parcel => {
+    if (Number.isFinite(Number(parcel.area)) && Number(parcel.area) > 0) return;
+    const officialArea = parseAreaSquareMeters(parcel.properties?.alan);
+    parcel.area = officialArea ? officialArea / 1000 : areaDekarForGeometry(geometryFor(parcel));
+    if (parcel.area) inferredLegacyArea = true;
+  });
+  if (inferredLegacyArea) persist();
   function persist() { localStorage.setItem(key, JSON.stringify(parcels)); }
   if (discardedManualNdvi) persist();
   function geometryFor(parcel) {
@@ -75,7 +139,7 @@
     const end = new Date(), start = new Date(); start.setDate(start.getDate()-60);
     $('parcel-list').innerHTML = parcels.map((p, i) => {
       const insight = ndviInsight(p);
-      return `<article class="parcel-card"><div class="parcel-card-head"><h3>${escapeHtml(p.name)}</h3><button type="button" data-remove="${i}">Sil</button></div><div class="ndvi-date-row"><label>Baslangic<input type="date" data-start="${i}" value="${isoDate(start)}"></label><label>Bitis<input type="date" data-end="${i}" value="${isoDate(end)}"></label></div><button type="button" class="ndvi-fetch" data-ndvi-fetch="${i}">NASA'dan NDVI getir</button><small data-ndvi-status="${i}">${hasApiNdvi(p) ? `Son NASA olcumu: ${p.ndvi.toFixed(3)} - ${p.ndviSource}` : 'MODIS - 250 m - 16 gunluk olcum'}</small>${p.ndviSeries?.length && hasApiNdvi(p) ? `<details class="ndvi-history"><summary>${p.ndviSeries.length} donem verisini gor</summary>${p.ndviSeries.map(x=>`<div><span>${escapeHtml(x.date)}</span><b>${x.mean.toFixed(3)}</b><span>min ${x.min.toFixed(3)} - max ${x.max.toFixed(3)}</span></div>`).join('')}</details>` : ''}<div class="ndvi-analysis"><strong>${escapeHtml(insight.title)}</strong><p>${escapeHtml(insight.summary)}</p>${insight.trend ? `<p>${escapeHtml(insight.trend)}</p>` : ''}${insight.range ? `<small>${escapeHtml(insight.range)}</small>` : ''}<small>Yorum mevsime/urun turune gore degisir. MODIS 250 m oldugundan kucuk parsellerde komsu alanlar olcume karisabilir.</small></div></article>`;
+      return `<article class="parcel-card"><div class="parcel-card-head"><h3>${escapeHtml(p.name)}</h3><button type="button" data-remove="${i}">Sil</button></div>${Number.isFinite(Number(p.area)) && Number(p.area) > 0 ? `<small class="parcel-area-note">Parsel alanı: ${Number(p.area).toLocaleString('tr-TR', {maximumFractionDigits:2})} dekar${p.properties?.alan ? ' · TKGM' : p.geometry || p.points?.length ? ' · Harita sınırından hesaplandı' : ''}</small>` : ''}<div class="ndvi-date-row"><label>Baslangic<input type="date" data-start="${i}" value="${isoDate(start)}"></label><label>Bitis<input type="date" data-end="${i}" value="${isoDate(end)}"></label></div><button type="button" class="ndvi-fetch" data-ndvi-fetch="${i}">NASA'dan NDVI getir</button><small data-ndvi-status="${i}">${hasApiNdvi(p) ? `Son NASA olcumu: ${p.ndvi.toFixed(3)} - ${p.ndviSource}` : 'MODIS - 250 m - 16 gunluk olcum'}</small>${p.ndviSeries?.length && hasApiNdvi(p) ? `<details class="ndvi-history"><summary>${p.ndviSeries.length} donem verisini gor</summary>${p.ndviSeries.map(x=>`<div><span>${escapeHtml(x.date)}</span><b>${x.mean.toFixed(3)}</b><span>min ${x.min.toFixed(3)} - max ${x.max.toFixed(3)}</span></div>`).join('')}</details>` : ''}<div class="ndvi-analysis"><strong>${escapeHtml(insight.title)}</strong><p>${escapeHtml(insight.summary)}</p>${insight.trend ? `<p>${escapeHtml(insight.trend)}</p>` : ''}${insight.range ? `<small>${escapeHtml(insight.range)}</small>` : ''}<small>Yorum mevsime/urun turune gore degisir. MODIS 250 m oldugundan kucuk parsellerde komsu alanlar olcume karisabilir.</small></div></article>`;
     }).join('');
   }
   function stopDrawing(message) { drawing = false; points = []; draftLayer.clearLayers(); $('start-parcel').textContent = 'Parsel çiz'; $('save-parcel').disabled = true; $('cancel-parcel').hidden = true; status.textContent = message; }
@@ -95,7 +159,18 @@
   $('save-parcel').addEventListener('click', () => {
     if (points.length < 3) return;
     const name = $('parcel-name').value.trim() || `Parsel ${parcels.length + 1}`;
-    parcels.push({id: `${Date.now()}-${Math.random().toString(36).slice(2,7)}`, name, points, ndvi: null});
+    const parcelPoints = points.map(point => [...point]);
+    const geometry = geometryFor({ points: parcelPoints });
+    const area = areaDekarForGeometry(geometry);
+    parcels.push({id: `${Date.now()}-${Math.random().toString(36).slice(2,7)}`, name, points: parcelPoints, area, ndvi: null});
+    const center = L.latLngBounds(parcelPoints).getCenter();
+    lastActiveParcel = { name, points: parcelPoints, geometry, area, lat: center.lat, lon: center.lng };
+    if (area) {
+      $('parcel-area').value = area.toFixed(2);
+      $('area').value = area.toFixed(2);
+    }
+    $('latitude').value = center.lat.toFixed(6);
+    $('longitude').value = center.lng.toFixed(6);
     persist(); stopDrawing(`${name} kaydedildi. NDVI değerini aşağıdan gir.`); map.doubleClickZoom.enable(); $('parcel-name').value = ''; redraw();
   });
   $('parcel-list').addEventListener('click', async event => {
@@ -261,8 +336,8 @@
       if (!prov && lastActiveParcel.province) prov = lastActiveParcel.province;
       if (!dist && lastActiveParcel.district) dist = lastActiveParcel.district;
       if (!neigh && lastActiveParcel.neighborhood) neigh = lastActiveParcel.neighborhood;
-      if (isNaN(lat)) lat = lastActiveParcel.lat;
-      if (isNaN(lon)) lon = lastActiveParcel.lon;
+      if (Number.isFinite(Number(lastActiveParcel.lat))) lat = Number(lastActiveParcel.lat);
+      if (Number.isFinite(Number(lastActiveParcel.lon))) lon = Number(lastActiveParcel.lon);
     }
 
     if (!name) name = `Tarla (Ada ${block || '—'} / Parsel ${parcelNo || '—'})`;
@@ -272,6 +347,14 @@
       lat = center.lat;
       lon = center.lng;
     }
+    const enteredArea = Number($('parcel-area')?.value);
+    const area = Number.isFinite(enteredArea) && enteredArea > 0 ? enteredArea : Number(lastActiveParcel?.area);
+    if (!Number.isFinite(area) || area <= 0) {
+      status.textContent = 'Tarlanın gerçek alanı bilinmiyor. Kaydetmeden önce alanı dekar olarak gir.';
+      $('parcel-area')?.focus();
+      return;
+    }
+    $('area').value = area;
 
     if (window.FarmerAuth && window.FarmerAuth.saveField) {
       const saved = window.FarmerAuth.saveField({
@@ -281,13 +364,13 @@
         neighborhood: neigh === 'Mahalle seç' ? '' : neigh,
         block,
         parcel: parcelNo,
-        area: 25,
-        crop: 'wheat',
+        area,
+        crop: $('crop')?.value || 'wheat',
         lat,
         lon
       });
 
-      alert(`✓ "${saved.name}" (Ada: ${saved.block || '—'}, Parsel: ${saved.parcel || '—'}) çiftçi hesabınıza başarıyla kaydedildi!\n\nArtık "Tarlalarımdan Seç" butonuna basarak istediğiniz zaman tek tıkla yükleyebilirsiniz.`);
+      alert(`✓ "${saved.name}" · ${saved.area.toLocaleString('tr-TR')} dekar (Ada: ${saved.block || '—'}, Parsel: ${saved.parcel || '—'}) çiftçi hesabınıza kaydedildi.`);
     }
   });
 
@@ -322,7 +405,10 @@
       const properties = result.properties || {};
       const name = `${properties.mahalleAd || neighborhood.selectedOptions[0].text} · Ada ${properties.adaNo || block} / Parsel ${properties.parselNo || parcelNo}`;
       const bounds = L.geoJSON(result.geometry).getBounds();
-      parcels.push({id:`tkgm-${Date.now()}-${Math.random().toString(36).slice(2,6)}`, name, geometry:result.geometry, points:[], source:'TKGM', properties, ndvi:null});
+      const officialAreaSquareMeters = parseAreaSquareMeters(properties.alan);
+      const geometryArea = areaDekarForGeometry(result.geometry);
+      const area = officialAreaSquareMeters ? officialAreaSquareMeters / 1000 : geometryArea;
+      parcels.push({id:`tkgm-${Date.now()}-${Math.random().toString(36).slice(2,6)}`, name, geometry:result.geometry, points:[], area, source:'TKGM', properties, ndvi:null});
       persist(); redraw(); map.fitBounds(bounds, {padding:[35,35], maxZoom:17});
       const center = bounds.getCenter();
       if ($('latitude')) $('latitude').value = center.lat.toFixed(6);
@@ -337,9 +423,13 @@
         neighborhood: properties.mahalleAd || neighborhood.selectedOptions[0]?.text || '',
         block,
         parcel: parcelNo,
+        geometry: result.geometry,
+        area,
         lat: center.lat,
         lon: center.lng
       };
+      if (area) $('parcel-area').value = area.toFixed(2);
+      if (area) $('area').value = area.toFixed(2);
 
       // Tarlanın konumuna göre anında İlaçlama, Gübreleme ve Sulama analizi çalıştır!
       if (window.AgroAdvisor && window.AgroAdvisor.loadForCoordinates) {
@@ -358,10 +448,10 @@
       const response = await fetch(`/api/geocode?q=${encodeURIComponent(query)}`), result = await response.json();
       if (!response.ok) throw new Error(result.detail || result.error || 'Konum bulunamadı.');
       const point = [Number(result.latitude), Number(result.longitude)];
-      map.flyTo(point, 15, {duration: 1.2});
-      if (searchMarker) searchMarker.remove();
-      searchMarker = L.marker(point).addTo(map).bindPopup(escapeHtml(result.display_name || query)).openPopup();
-      tkgmStatus.textContent = `${result.display_name || query} · Harita konuma yaklaştırıldı. Ada/parsel sorgusu için aşağıdaki alanları kullan.`;
+      const location = { latitude: point[0], longitude: point[1], name: result.display_name || query };
+      if (window.applyResolvedFarmLocation) window.applyResolvedFarmLocation(location);
+      else window.dispatchEvent(new CustomEvent('tarimyol:location-resolved', { detail: location }));
+      tkgmStatus.textContent = `${location.name} · Harita konuma yaklaştırıldı. Ada/parsel sorgusu için aşağıdaki alanları kullan.`;
 
       lastActiveParcel = {
         name: query,
@@ -370,16 +460,16 @@
         province: query.split(',')[0] || query
       };
 
-      if (window.AgroAdvisor && window.AgroAdvisor.loadForCoordinates) {
-        window.AgroAdvisor.loadForCoordinates(point[0], point[1], { name: query, displayName: result.display_name });
-      }
     } catch (error) { tkgmStatus.textContent = error.message; }
     finally { button.disabled = false; }
   }
   $('parcel-search-btn').addEventListener('click', searchPlace);
   $('parcel-search-input').addEventListener('keydown', event => { if (event.key === 'Enter') { event.preventDefault(); searchPlace(); } });
   $('latitude')?.addEventListener('change', centerFromInputs); $('longitude')?.addEventListener('change', centerFromInputs);
-  const geocodeButton = $('find-location'); geocodeButton?.addEventListener('click', () => [300, 800, 1600].forEach(delay => setTimeout(centerFromInputs, delay)));
+  $('parcel-area')?.addEventListener('input', event => {
+    const area = Number(event.currentTarget.value);
+    if (Number.isFinite(area) && area > 0) $('area').value = area;
+  });
   $('ndvi-check')?.addEventListener('click', async event => {
     const button = event.currentTarget, output = $('ndvi-connection-status');
     button.disabled = true; output.dataset.state = ''; output.textContent = 'AppEEARS tokeni doğrulanıyor…';
@@ -394,6 +484,25 @@
         ? 'Yerel API sunucusuna ulaşılamadı. python server.py çalışıyor olmalı.'
         : `${error.message} · Geçerli API tokenı için python setup_appeears.py çalıştır.`;
     } finally { button.disabled = false; }
+  });
+  window.addEventListener('tarimyol:location-resolved', event => {
+    const { latitude, longitude, name } = event.detail || {};
+    if (!Number.isFinite(latitude) || !Number.isFinite(longitude)) return;
+    const point = [latitude, longitude];
+    map.flyTo(point, 13, { duration: .8 });
+    if (searchMarker) searchMarker.remove();
+    searchMarker = L.marker(point).addTo(map).bindPopup(escapeHtml(name || 'Tarla konumu')).openPopup();
+    if (window.AgroAdvisor && window.AgroAdvisor.loadForCoordinates) {
+      window.AgroAdvisor.loadForCoordinates(latitude, longitude, { name: name || 'Tarla konumu' });
+    }
+  });
+  window.addEventListener('tarimyol:field-selected', event => {
+    const field = event.detail;
+    if (!field) return;
+    window.focusFieldOnMap?.(field);
+    if (window.AgroAdvisor && window.AgroAdvisor.loadForCoordinates) {
+      window.AgroAdvisor.loadForCoordinates(Number(field.lat), Number(field.lon), field);
+    }
   });
   window.addEventListener('tarimyol:show-parcels', () => map.invalidateSize());
   redraw(); setTimeout(() => map.invalidateSize(), 150);

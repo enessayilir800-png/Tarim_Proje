@@ -67,6 +67,8 @@
     const user = getActiveUser();
     const uId = user?.id || 'varsayilan_ciftci';
     const fields = getFields(uId);
+    const area = Number(fieldData.area);
+    if (!Number.isFinite(area) || area <= 0) throw new Error('Tarla alanı 0’dan büyük olmalıdır.');
 
     const newField = {
       id: fieldData.id || `tarla_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
@@ -76,7 +78,7 @@
       neighborhood: (fieldData.neighborhood || '').trim(),
       block: (fieldData.block || '').trim(),      // Ada No
       parcel: (fieldData.parcel || '').trim(),    // Parsel No
-      area: parseFloat(fieldData.area) || 20,     // Dekar
+      area,
       crop: fieldData.crop || 'wheat',
       cropName: fieldData.cropName || 'Buğday',
       lat: parseFloat(fieldData.lat) || 38.9637,
@@ -112,6 +114,42 @@
     window.dispatchEvent(new CustomEvent('tarimyol:fields-change', { detail: fields }));
   }
 
+  function applyFieldToPlan(field) {
+    const mappedArea = window.getSavedParcelAreaForField?.(field);
+    if (Number.isFinite(mappedArea) && mappedArea > 0 &&
+      (!Number.isFinite(Number(field.area)) || Math.abs(Number(field.area) - mappedArea) > 0.01)) {
+      field.area = mappedArea;
+      saveField(field);
+    }
+    const locInput = document.getElementById('location');
+    const latInput = document.getElementById('latitude');
+    const lonInput = document.getElementById('longitude');
+    const areaInput = document.getElementById('area');
+    const parcelAreaInput = document.getElementById('parcel-area');
+    const cropSelect = document.getElementById('crop');
+    const locStatus = document.getElementById('location-status');
+    const quickSelect = document.getElementById('quick-field-select');
+    const locationParts = [field.province, field.district, field.neighborhood].filter(Boolean);
+
+    if (locInput) locInput.value = [...locationParts, field.name].filter(Boolean).join(' · ');
+    if (latInput && Number.isFinite(Number(field.lat))) latInput.value = Number(field.lat).toFixed(6);
+    if (lonInput && Number.isFinite(Number(field.lon))) lonInput.value = Number(field.lon).toFixed(6);
+    if (areaInput) areaInput.value = Number(field.area) > 0 ? field.area : '';
+    if (parcelAreaInput) parcelAreaInput.value = Number(field.area) > 0 ? Number(field.area).toFixed(2) : '';
+    if (cropSelect && field.crop && [...cropSelect.options].some(option => option.value === field.crop)) {
+      cropSelect.value = field.crop;
+    }
+    if (quickSelect) quickSelect.value = field.id;
+    if (locStatus) {
+      locStatus.textContent = `✓ ${field.name} · ${locationParts.join(' / ') || 'Kayıtlı tarla'} · ${Number(field.area) > 0 ? `${field.area} dekar` : 'alan bilgisi girilmemiş'}`;
+      locStatus.dataset.state = 'ok';
+    }
+
+    window.dispatchEvent(new CustomEvent('tarimyol:field-selected', { detail: field }));
+    const form = document.getElementById('farm-form');
+    if (form?.checkValidity()) form.requestSubmit();
+  }
+
   // Tarlayı Plan Sayfasına Aktar
   function loadFieldToPlan(fieldId) {
     const fields = getFields();
@@ -121,23 +159,7 @@
     window.location.hash = '#/plan';
 
     setTimeout(() => {
-      const locInput = document.getElementById('location');
-      const latInput = document.getElementById('latitude');
-      const lonInput = document.getElementById('longitude');
-      const areaInput = document.getElementById('area');
-      const cropSelect = document.getElementById('crop');
-      const locStatus = document.getElementById('location-status');
-
-      if (locInput) locInput.value = `${field.province} ${field.district} ${field.neighborhood} (Ada:${field.block} Parsel:${field.parcel})`.trim();
-      if (latInput) latInput.value = field.lat.toFixed(6);
-      if (lonInput) lonInput.value = field.lon.toFixed(6);
-      if (areaInput) areaInput.value = field.area;
-      if (cropSelect && field.crop) cropSelect.value = field.crop;
-      if (locStatus) {
-        locStatus.textContent = `✓ "${field.name}" seçildi (Ada: ${field.block}, Parsel: ${field.parcel}). "Yol haritamı oluştur"a basabilirsiniz.`;
-        locStatus.style.color = '#2e6a43';
-      }
-
+      applyFieldToPlan(field);
       closeModal('farmer-auth-modal');
     }, 150);
   }
@@ -148,19 +170,11 @@
     const field = fields.find(f => f.id === fieldId);
     if (!field) return;
 
-    window.location.hash = '#/parcels';
+    window.location.hash = '#/plan';
     closeModal('farmer-auth-modal');
 
     setTimeout(() => {
-      if (window.focusFieldOnMap) {
-        window.focusFieldOnMap(field);
-      }
-      if (window.AgroAdvisor && window.AgroAdvisor.loadForCoordinates) {
-        window.AgroAdvisor.loadForCoordinates(field.lat, field.lon, field);
-      }
-      // Hızlı seçim kutusunu da eşle
-      const quickSelect = document.getElementById('quick-field-select');
-      if (quickSelect) quickSelect.value = field.id;
+      applyFieldToPlan(field);
     }, 200);
   }
 
@@ -248,7 +262,7 @@
               <h4>🌾 ${escapeHtml(f.name)}</h4>
               <span class="field-loc-text">📍 ${escapeHtml(locParts || 'Konum belirtilmedi')}</span>
             </div>
-            <span class="field-crop-chip">${escapeHtml(cropName)} · ${f.area} Dekar</span>
+            <span class="field-crop-chip">${escapeHtml(cropName)} · ${Number.isFinite(Number(f.area)) && Number(f.area) > 0 ? `${Number(f.area).toLocaleString('tr-TR')} Dekar` : 'Alan belirtilmedi'}</span>
           </div>
           
           <div class="field-cadastre-badge">
@@ -346,7 +360,7 @@
       const neighborhood = document.getElementById('field-neighborhood-input')?.value.trim() || '';
       const block = document.getElementById('field-block-input')?.value.trim() || '';
       const parcel = document.getElementById('field-parcel-input')?.value.trim() || '';
-      const area = parseFloat(document.getElementById('field-area-input')?.value) || 20;
+      const area = Number(document.getElementById('field-area-input')?.value);
       const crop = document.getElementById('field-crop-select')?.value || 'wheat';
 
       const saved = saveField({
