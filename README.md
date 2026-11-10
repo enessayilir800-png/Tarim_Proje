@@ -3,6 +3,7 @@
 TarımYol, FastAPI tabanlı tarımsal karar destek uygulamasıdır. Mevcut web arayüzü aynı uygulamadan sunulur.
 
 Arayüzde tarla planı, parsel haritası ve hava koşullarına dayalı saha kararları tek Tarla Yönetimi ekranında; ürün rehberi ise ayrı ekranda sunulur.
+Bitki Rehberi'nde Tarla Bitkileri ve Bahçe Bitkileri kategorileri ürün kartlarıyla sunulur. Kartlar ürünlerin ekim/dikim ve hasat zamanlarını, yetiştiği bölgeleri ve yetiştiricilik notlarını içerir; bahçe ürünleri meyvecilik, sert kabuklu meyveler, turunçgiller, bağcılık ve sebzecilik alt gruplarında listelenir.
 Tarla Yönetimi ekranındaki konum araması koordinatları otomatik bulur; geçerli ürün ve alan bilgileri girildiğinde sezon planı oluşturulur. Kayıtlı tarla seçildiğinde konum, ürün ve alan forma aktarılır, plan ve saha görünümü seçilen tarlaya göre güncellenir.
 Parsel alanı TKGM alan bilgisinden (m² → dekar) alınır; çizilen sınırdan küresel geometri hesabıyla tahmin edilir. Alan verisi yoksa sabit bir büyüklük varsayılmaz ve kayıt öncesi kullanıcıdan gerçek alanı girmesi istenir.
 
