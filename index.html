@@ -190,7 +190,45 @@
         <p id="tkgm-status" role="status">İl, ilçe ve mahalleyi seç; ada ve parsel numaralarını yaz.</p>
       </div>
       <div id="parcel-map" aria-label="Parselleri isaretleme haritasi"></div>
-      <div class="ndvi-legend"><span><i style="background:#c94f42"></i> Düşük NDVI</span><span><i style="background:#e8bd45"></i> Orta</span><span><i style="background:#58a65c"></i> Yüksek</span><small>NASA GIBS MODIS Terra NDVI · 8 günlük görsel harita katmanı</small></div>
+      <div class="ndvi-legend"><span><i style="background:#c94f42"></i> Düşük NDVI</span><span><i style="background:#e8bd45"></i> Orta</span><span><i style="background:#58a65c"></i> Yüksek</span><small>Haritanın sağ üstünden NDVI, EVI, SMAP toprak nemi, LST yüzey sıcaklığı ve SRTM yükselti katmanlarını açıp kapatın.</small></div>
+      <section class="field-layer-gallery" aria-labelledby="field-layer-gallery-title">
+        <header class="field-layer-gallery-heading">
+          <div>
+            <span class="step">TARLAN · 5 VERİ KATMANI</span>
+            <h3 id="field-layer-gallery-title">Tarlanı farklı gözlerle gör</h3>
+            <p>Beş harita aynı tarla konumunu izler. Haritayı sürükleyerek çevreyi incele; bir katmanı büyük haritada aç.</p>
+          </div>
+          <div class="field-layer-location" id="field-layer-location" role="status">Tarla konumu bekleniyor</div>
+        </header>
+        <div class="field-layer-grid">
+          <article class="field-layer-card">
+            <div class="field-layer-card-heading"><span class="field-layer-icon vegetation">ND</span><div><h4>Bitki örtüsü · NDVI</h4><small>MODIS Terra · 8 günlük</small></div></div>
+            <div class="field-layer-map" id="ndvi-preview-map" role="img" aria-label="Tarlanın NDVI mini haritası"></div>
+            <div class="field-layer-card-footer"><span>Yeşil bitki yoğunluğu</span><button type="button" data-focus-layer="ndvi">Büyük haritada aç ↗</button></div>
+          </article>
+          <article class="field-layer-card">
+            <div class="field-layer-card-heading"><span class="field-layer-icon vegetation">EV</span><div><h4>Bitki canlılığı · EVI</h4><small>MODIS Terra · 8 günlük</small></div></div>
+            <div class="field-layer-map" id="evi-preview-map" role="img" aria-label="Tarlanın EVI mini haritası"></div>
+            <div class="field-layer-card-footer"><span>Gelişmiş bitki indeksi</span><button type="button" data-focus-layer="evi">Büyük haritada aç ↗</button></div>
+          </article>
+          <article class="field-layer-card">
+            <div class="field-layer-card-heading"><span class="field-layer-icon moisture">SM</span><div><h4>Toprak nemi · SMAP</h4><small>NASA SMAP · yüzey</small></div></div>
+            <div class="field-layer-map" id="smap-preview-map" role="img" aria-label="Tarlanın SMAP toprak nemi mini haritası"></div>
+            <div class="field-layer-card-footer"><span>Uydu tabanlı nem tahmini</span><button type="button" data-focus-layer="smap">Büyük haritada aç ↗</button></div>
+          </article>
+          <article class="field-layer-card">
+            <div class="field-layer-card-heading"><span class="field-layer-icon temperature">°C</span><div><h4>Yüzey sıcaklığı · LST</h4><small>MODIS Terra · gündüz</small></div></div>
+            <div class="field-layer-map" id="lst-preview-map" role="img" aria-label="Tarlanın LST yüzey sıcaklığı mini haritası"></div>
+            <div class="field-layer-card-footer"><span>8 günlük sıcaklık görünümü</span><button type="button" data-focus-layer="lst">Büyük haritada aç ↗</button></div>
+          </article>
+          <article class="field-layer-card">
+            <div class="field-layer-card-heading"><span class="field-layer-icon elevation">▲</span><div><h4>Yükselti · SRTM</h4><small>NASA SRTM · arazi</small></div></div>
+            <div class="field-layer-map" id="srtm-preview-map" role="img" aria-label="Tarlanın SRTM yükselti mini haritası"></div>
+            <div class="field-layer-card-footer"><span>Arazi şekli ve yükselti</span><button type="button" data-focus-layer="srtm">Büyük haritada aç ↗</button></div>
+          </article>
+        </div>
+        <p class="field-layer-note">Zemin haritası © OpenStreetMap katkıcıları · Uydu katmanları NASA GIBS. Veriler bölgesel ölçektedir; küçük parsellerdeki farklılıkları tek başına göstermez, ölçüm tarihine ve piksel çözünürlüğüne bağlıdır.</p>
+      </section>
       
       <!-- Akıllı Tarımsal Karar Haritası & Eylem Planı (İlaçlama, Gübreleme, Sulama - Rüzgar & Yağmur Analizli) -->
       <div id="agro-advisor-container" class="agro-advisor-container"></div>

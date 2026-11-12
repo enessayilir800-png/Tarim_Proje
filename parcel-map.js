@@ -11,7 +11,29 @@
   const gibsDay = Math.floor((Date.now() - gibsEpoch) / 86400000) - gibsLagDays;
   const gibsDate = new Date(gibsEpoch + Math.floor(gibsDay / 8) * 8 * 86400000).toISOString().slice(0, 10);
   const ndviTiles = L.tileLayer(`https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/MODIS_Terra_NDVI_8Day/default/${gibsDate}/GoogleMapsCompatible_Level9/{z}/{y}/{x}.png`, { maxNativeZoom: 9, maxZoom: 19, opacity: .68, attribution: '&copy; NASA GIBS MODIS Terra NDVI 8-day' }).addTo(map);
-  L.control.layers({'Street map': streetTiles}, {[`NASA NDVI (${gibsDate})`]: ndviTiles}, {collapsed: true}).addTo(map);
+  const eviTiles = L.tileLayer('https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/MODIS_Terra_EVI_8Day/default/GoogleMapsCompatible_Level9/{z}/{y}/{x}.png', { maxNativeZoom: 9, maxZoom: 19, opacity: .68, attribution: '&copy; NASA GIBS MODIS Terra EVI 8-day' });
+  const smapTiles = L.tileLayer('https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/SMAP_L4_Analyzed_Surface_Soil_Moisture/default/GoogleMapsCompatible_Level6/{z}/{y}/{x}.png', { maxNativeZoom: 6, maxZoom: 19, opacity: .72, attribution: '&copy; NASA GIBS SMAP L4' });
+  const lstTiles = L.tileLayer('https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/MODIS_Terra_L3_Land_Surface_Temp_8Day_Day/default/GoogleMapsCompatible_Level7/{z}/{y}/{x}.png', { maxNativeZoom: 7, maxZoom: 19, opacity: .68, attribution: '&copy; NASA GIBS MODIS Terra daytime LST 8-day' });
+  const srtmTiles = L.tileLayer('https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/SRTM_Color_Index/default/GoogleMapsCompatible_Level12/{z}/{y}/{x}.png', { maxNativeZoom: 12, maxZoom: 19, opacity: .72, attribution: '&copy; NASA GIBS SRTM' });
+  L.control.layers(
+    {'Sokak haritası · OpenStreetMap': streetTiles},
+    {
+      [`NDVI · MODIS Terra (${gibsDate})`]: ndviTiles,
+      'EVI · MODIS Terra (8 günlük)': eviTiles,
+      'Toprak nemi · SMAP L4': smapTiles,
+      'Yüzey sıcaklığı · MODIS Terra (gündüz, 8 günlük)': lstTiles,
+      'Yükselti · SRTM': srtmTiles
+    },
+    {collapsed: false}
+  ).addTo(map);
+  const previewLayerConfigs = [
+    {id:'ndvi', mapId:'ndvi-preview-map', layer:ndviTiles, url:`https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/MODIS_Terra_NDVI_8Day/default/${gibsDate}/GoogleMapsCompatible_Level9/{z}/{y}/{x}.png`, maxNativeZoom:9, opacity:.68, attribution:'&copy; NASA GIBS MODIS Terra NDVI 8-day'},
+    {id:'evi', mapId:'evi-preview-map', layer:eviTiles, url:'https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/MODIS_Terra_EVI_8Day/default/GoogleMapsCompatible_Level9/{z}/{y}/{x}.png', maxNativeZoom:9, opacity:.68, attribution:'&copy; NASA GIBS MODIS Terra EVI 8-day'},
+    {id:'smap', mapId:'smap-preview-map', layer:smapTiles, url:'https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/SMAP_L4_Analyzed_Surface_Soil_Moisture/default/GoogleMapsCompatible_Level6/{z}/{y}/{x}.png', maxNativeZoom:6, opacity:.72, attribution:'&copy; NASA GIBS SMAP L4'},
+    {id:'lst', mapId:'lst-preview-map', layer:lstTiles, url:'https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/MODIS_Terra_L3_Land_Surface_Temp_8Day_Day/default/GoogleMapsCompatible_Level7/{z}/{y}/{x}.png', maxNativeZoom:7, opacity:.68, attribution:'&copy; NASA GIBS MODIS Terra daytime LST 8-day'},
+    {id:'srtm', mapId:'srtm-preview-map', layer:srtmTiles, url:'https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/SRTM_Color_Index/default/GoogleMapsCompatible_Level12/{z}/{y}/{x}.png', maxNativeZoom:12, opacity:.72, attribution:'&copy; NASA GIBS SRTM'}
+  ];
+  const mainLayersById = Object.fromEntries(previewLayerConfigs.map(config => [config.id, config.layer]));
   const layer = L.featureGroup().addTo(map);
   const draftLayer = L.featureGroup().addTo(map);
   const key = 'tarimyol-parcels-v1';
@@ -100,6 +122,106 @@
     if (ring.length && (ring[0][0] !== ring[ring.length-1][0] || ring[0][1] !== ring[ring.length-1][1])) ring.push([...ring[0]]);
     return {type:'Polygon', coordinates:[ring]};
   }
+  const previewMaps = new Map();
+  const previewMarkers = new Map();
+  const previewBoundaries = new Map();
+  let selectedPreviewField = null;
+  let syncingPreviewMaps = false;
+  function matchingParcelForField(field) {
+    if (!field) return null;
+    const normalize = value => String(value || '').trim().toLocaleLowerCase('tr-TR');
+    const name = normalize(field.name), block = normalize(field.block), parcelNumber = normalize(field.parcel);
+    const neighborhood = normalize(field.neighborhood);
+    return parcels.find(item => {
+      if (name && normalize(item.name) === name) return true;
+      const properties = item.properties || {};
+      return block && parcelNumber &&
+        normalize(properties.adaNo) === block &&
+        normalize(properties.parselNo) === parcelNumber &&
+        (!neighborhood || normalize(properties.mahalleAd) === neighborhood);
+    }) || null;
+  }
+  function syncPreviewMaps(sourceMap) {
+    if (syncingPreviewMaps) return;
+    syncingPreviewMaps = true;
+    const center = sourceMap.getCenter(), zoom = sourceMap.getZoom();
+    previewMaps.forEach(otherMap => {
+      if (otherMap !== sourceMap) otherMap.setView(center, zoom, {animate:false});
+    });
+    syncingPreviewMaps = false;
+  }
+  function setPreviewField(field, zoom = 12) {
+    if (!field) return;
+    const lat = Number(field.lat ?? field.latitude), lon = Number(field.lon ?? field.longitude);
+    if (!Number.isFinite(lat) || !Number.isFinite(lon) || Math.abs(lat) > 90 || Math.abs(lon) > 180) return;
+    selectedPreviewField = field;
+    const point = [lat, lon];
+    syncingPreviewMaps = true;
+    previewMaps.forEach((previewMap, id) => {
+      previewMap.setView(point, zoom, {animate:false});
+      const marker = previewMarkers.get(id);
+      if (marker) marker.setLatLng(point).setPopupContent(escapeHtml(field.name || 'Tarla konumu'));
+      const boundary = previewBoundaries.get(id);
+      if (boundary) {
+        boundary.clearLayers();
+        const parcel = matchingParcelForField(field);
+        if (parcel) L.geoJSON(geometryFor(parcel), {style:{color:'#174c35', weight:2, fillColor:'#69a77a', fillOpacity:.2}}).addTo(boundary);
+      }
+    });
+    syncingPreviewMaps = false;
+    const locationParts = [field.province, field.district, field.neighborhood].filter(Boolean);
+    $('field-layer-location').textContent = `📍 ${field.name || 'Tarla konumu'}${locationParts.length ? ` · ${locationParts.join(' / ')}` : ''}`;
+  }
+  previewLayerConfigs.forEach(config => {
+    const element = $(config.mapId);
+    if (!element) return;
+    const previewMap = L.map(element, {zoomControl:false, attributionControl:false, scrollWheelZoom:false, doubleClickZoom:true, keyboard:false}).setView([39, 35], 6);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom:19, attribution:'&copy; OpenStreetMap'}).addTo(previewMap);
+    L.tileLayer(config.url, {maxNativeZoom:config.maxNativeZoom, maxZoom:19, opacity:config.opacity, attribution:config.attribution}).addTo(previewMap);
+    const marker = L.marker([39, 35], {
+      icon:L.divIcon({className:'field-layer-pin-wrap', html:'<span class="field-layer-pin"></span>', iconSize:[18,18], iconAnchor:[9,9]})
+    }).bindPopup('Tarla konumu').addTo(previewMap);
+    const boundary = L.featureGroup().addTo(previewMap);
+    previewMaps.set(config.id, previewMap);
+    previewMarkers.set(config.id, marker);
+    previewBoundaries.set(config.id, boundary);
+    previewMap.on('moveend', () => syncPreviewMaps(previewMap));
+  });
+  document.querySelectorAll('[data-focus-layer]').forEach(button => button.addEventListener('click', () => {
+    const selectedLayer = mainLayersById[button.dataset.focusLayer];
+    if (!selectedLayer) return;
+    Object.values(mainLayersById).forEach(item => { if (map.hasLayer(item)) map.removeLayer(item); });
+    selectedLayer.addTo(map);
+    if (selectedPreviewField) {
+      const lat = Number(selectedPreviewField.lat ?? selectedPreviewField.latitude);
+      const lon = Number(selectedPreviewField.lon ?? selectedPreviewField.longitude);
+      if (Number.isFinite(lat) && Number.isFinite(lon)) map.flyTo([lat, lon], 14, {duration:.6});
+    }
+    mapEl.scrollIntoView({behavior:'smooth', block:'center'});
+  }));
+  function initializePreviewField() {
+    if (selectedPreviewField) return;
+    const latitude = Number($('latitude')?.value), longitude = Number($('longitude')?.value);
+    if (Number.isFinite(latitude) && Number.isFinite(longitude) && $('latitude')?.value && $('longitude')?.value) {
+      setPreviewField({latitude, longitude, name:$('location')?.value || 'Seçili tarla'});
+      return;
+    }
+    const firstField = window.FarmerAuth?.getFields?.()[0];
+    if (firstField) setPreviewField(firstField);
+  }
+  window.addEventListener('tarimyol:fields-change', () => {
+    const firstField = window.FarmerAuth?.getFields?.()[0];
+    if (firstField) setPreviewField(firstField);
+  });
+  window.addEventListener('tarimyol:auth-change', () => {
+    selectedPreviewField = null;
+    const firstField = window.FarmerAuth?.getFields?.()[0];
+    if (firstField) setPreviewField(firstField);
+    else initializePreviewField();
+  });
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initializePreviewField, {once:true});
+  else initializePreviewField();
+  setTimeout(initializePreviewField, 250);
   function redrawMap() {
     layer.clearLayers();
     parcels.forEach(parcel => {
@@ -223,7 +345,11 @@
     const latText = $('latitude')?.value, lonText = $('longitude')?.value;
     if (!latText || !lonText) return;
     const lat = Number(latText), lon = Number(lonText);
-    if (Number.isFinite(lat) && Number.isFinite(lon) && Math.abs(lat) <= 90 && Math.abs(lon) <= 180) { map.setView([lat, lon], 14); status.textContent = 'Harita konumu güncellendi. Parseli çizmek için “Parsel çiz”e bas.'; }
+    if (Number.isFinite(lat) && Number.isFinite(lon) && Math.abs(lat) <= 90 && Math.abs(lon) <= 180) {
+      map.setView([lat, lon], 14);
+      setPreviewField({lat, lon, name:$('location')?.value || 'Seçili tarla'});
+      status.textContent = 'Harita konumu güncellendi. Parseli çizmek için “Parsel çiz”e bas.';
+    }
   };
   const fillSelect = (select, options, placeholder) => {
     select.replaceChildren(new Option(placeholder, ''));
@@ -490,6 +616,7 @@
     if (!Number.isFinite(latitude) || !Number.isFinite(longitude)) return;
     const point = [latitude, longitude];
     map.flyTo(point, 13, { duration: .8 });
+    setPreviewField({lat:latitude, lon:longitude, name:name || 'Tarla konumu'});
     if (searchMarker) searchMarker.remove();
     searchMarker = L.marker(point).addTo(map).bindPopup(escapeHtml(name || 'Tarla konumu')).openPopup();
     if (window.AgroAdvisor && window.AgroAdvisor.loadForCoordinates) {
@@ -499,11 +626,18 @@
   window.addEventListener('tarimyol:field-selected', event => {
     const field = event.detail;
     if (!field) return;
+    setPreviewField(field);
     window.focusFieldOnMap?.(field);
     if (window.AgroAdvisor && window.AgroAdvisor.loadForCoordinates) {
       window.AgroAdvisor.loadForCoordinates(Number(field.lat), Number(field.lon), field);
     }
   });
-  window.addEventListener('tarimyol:show-parcels', () => map.invalidateSize());
-  redraw(); setTimeout(() => map.invalidateSize(), 150);
+  window.addEventListener('tarimyol:show-parcels', () => {
+    map.invalidateSize();
+    previewMaps.forEach(previewMap => previewMap.invalidateSize());
+  });
+  redraw(); setTimeout(() => {
+    map.invalidateSize();
+    previewMaps.forEach(previewMap => previewMap.invalidateSize());
+  }, 150);
 })();

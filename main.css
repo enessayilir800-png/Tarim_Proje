@@ -209,6 +209,34 @@ body{background:radial-gradient(ellipse at 78% 6%,#e6e9d8 0,transparent 34%),var
 .bottom-note{display:flex;align-items:center;gap:14px;padding:17px 20px}
 .bottom-note p{flex:1}
 footer{display:flex;justify-content:space-between;align-items:center;gap:12px;font-size:11px}
+.field-layer-gallery{margin:19px 0 22px;padding:20px;border:1px solid #e5e9dd;border-radius:18px;background:linear-gradient(145deg,#f8faf4 0%,#f2f5eb 100%)}
+.field-layer-gallery-heading{display:flex;align-items:center;justify-content:space-between;gap:18px;margin-bottom:16px}
+.field-layer-gallery-heading .step{color:#648064}
+.field-layer-gallery-heading h3{margin:5px 0 3px;color:#243f31;font:700 20px 'Bricolage Grotesque',sans-serif;letter-spacing:-.3px}
+.field-layer-gallery-heading p{margin:0;color:#778477;font-size:11px;line-height:1.55}
+.field-layer-location{max-width:320px;padding:9px 12px;border:1px solid #dfe7d9;border-radius:999px;background:#fff;color:#355840;font-size:11px;font-weight:600;line-height:1.45}
+.field-layer-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:11px}
+.field-layer-card{min-width:0;overflow:hidden;border:1px solid #e4e9df;border-radius:13px;background:#fff;box-shadow:0 5px 15px #283e2609;transition:transform .18s,box-shadow .18s,border-color .18s}
+.field-layer-card:hover{transform:translateY(-2px);border-color:#cddbc9;box-shadow:0 10px 24px #283e2613}
+.field-layer-card-heading{display:flex;align-items:center;gap:9px;min-height:58px;padding:10px 11px}
+.field-layer-icon{display:grid;flex:0 0 32px;width:32px;height:32px;place-items:center;border-radius:10px;background:#eaf3e9;color:#367348;font-size:10px;font-weight:800;letter-spacing:-.4px}
+.field-layer-icon.moisture{background:#e8f2f6;color:#397896}
+.field-layer-icon.temperature{background:#fbefe4;color:#bd7040}
+.field-layer-icon.elevation{background:#efeee5;color:#77724e;font-size:14px}
+.field-layer-card-heading h4{margin:0;color:#334a38;font-size:11px;line-height:1.35}
+.field-layer-card-heading small{display:block;margin-top:3px;color:#8a968a;font-size:9px;line-height:1.3}
+.field-layer-map{height:142px;border-block:1px solid #edf0e9;background:#edf2e8}
+.field-layer-map.leaflet-container{z-index:0;font:inherit}
+.field-layer-card-footer{display:flex;align-items:center;justify-content:space-between;gap:6px;padding:8px 10px;color:#839083;font-size:9px}
+.field-layer-card-footer button{flex:0 0 auto;padding:5px 7px;border:0;border-radius:6px;background:#edf4e9;color:#376844;font:600 9px 'DM Sans',sans-serif;cursor:pointer}
+.field-layer-card-footer button:hover{background:#dfeedd}
+.field-layer-card-footer button:focus-visible{outline:2px solid #8da981;outline-offset:2px}
+.field-layer-pin-wrap{border:0;background:transparent}
+.field-layer-pin{display:block;width:15px;height:15px;border:3px solid #fff;border-radius:50%;background:#286946;box-shadow:0 1px 7px #183e3080}
+.field-layer-note{margin:12px 1px 0;color:#879286;font-size:9px;line-height:1.55}
+@media(max-width:1050px){.field-layer-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:680px){.field-layer-gallery{padding:15px 12px;border-radius:14px}.field-layer-gallery-heading{align-items:flex-start;flex-direction:column;gap:10px}.field-layer-gallery-heading h3{font-size:18px}.field-layer-location{max-width:100%;border-radius:9px}.field-layer-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.field-layer-card-heading{gap:7px;padding:8px;min-height:55px}.field-layer-card-heading h4{font-size:10px}.field-layer-map{height:126px}.field-layer-card-footer{align-items:flex-start;flex-direction:column;min-height:48px;padding:7px 8px}.field-layer-card-footer button{font-size:9px}}
+@media(max-width:370px){.field-layer-grid{grid-template-columns:1fr}.field-layer-map{height:155px}.field-layer-card-footer{align-items:center;flex-direction:row}}
 @media(max-width:1180px){.hero{padding-left:34px;padding-right:34px}}
 @media(max-width:900px){
   body{padding-left:78px}
