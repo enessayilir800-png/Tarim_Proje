@@ -52,12 +52,73 @@
         <p>Toprağını tanı, sezonu güvenle planla. Konumuna özel iklim ve toprak verilerini ekimden hasada uzanan bir yol haritasına dönüştür.</p>
         <div class="hero-tags"><span>FAO-56 su dengesi</span><span>Konuma özel iklim</span><span>Uydu ve parsel takibi</span></div>
       </div>
-      <div class="hero-art" aria-hidden="true"><div class="sun"></div><div class="field field-one"></div><div class="field field-two"></div><div class="field field-three"></div><div class="art-label"><span>SAHA VERİSİ · 2026</span><strong>Her karar<br>topraktan başlar.</strong></div><div class="art-coords">NASA POWER · FAO-56</div><div class="art-pin"><span></span><strong>Parselin hazır</strong><small>Konumunu ekleyerek başla</small></div></div>
+      <div class="hero-art" id="overview-hazard-stage" role="region" aria-label="Tarlanın hava ve risk özeti" aria-live="polite">
+        <div class="sun" aria-hidden="true"></div><div class="field field-one" aria-hidden="true"></div><div class="field field-two" aria-hidden="true"></div><div class="field field-three" aria-hidden="true"></div>
+        <div class="art-label" aria-hidden="true"><span>SAHA VERİSİ · 2026</span><strong>Her karar<br>topraktan başlar.</strong></div><div class="art-coords" aria-hidden="true">NASA POWER · FAO-56</div><div class="art-pin" aria-hidden="true"><span></span><strong>Parselin hazır</strong><small>Konumunu ekleyerek başla</small></div>
+        <section class="overview-hazard-panel hidden" id="overview-hazard-panel" aria-labelledby="overview-hazard-title">
+          <header class="overview-hazard-header">
+            <div><span class="overview-hazard-kicker">TARLA RİSK BÜLTENİ · 10 GÜN</span><h2 id="overview-hazard-title">Tarlan için güncel durum</h2><p id="overview-hazard-location"></p></div>
+            <span class="overview-hazard-state" id="overview-hazard-state" role="status">Veri bekleniyor</span>
+          </header>
+          <div class="overview-hazard-grid">
+            <article class="overview-risk-card" data-risk="rain" data-level="pending"><span aria-hidden="true">🌧️</span><div><small>YAĞIŞ</small><strong id="overview-rain-status">Veri bekleniyor</strong><p id="overview-rain-detail"></p></div></article>
+            <article class="overview-risk-card" data-risk="hail" data-level="pending"><span aria-hidden="true">⛈️</span><div><small>DOLU / FIRTINA</small><strong id="overview-hail-status">Veri bekleniyor</strong><p id="overview-hail-detail"></p></div></article>
+            <article class="overview-risk-card" data-risk="fire" data-level="pending"><span aria-hidden="true">🔥</span><div><small>AKTİF YANGIN</small><strong id="overview-fire-status">Veri bekleniyor</strong><p id="overview-fire-detail"></p></div></article>
+            <article class="overview-risk-card" data-risk="heat" data-level="pending"><span aria-hidden="true">🌡️</span><div><small>SICAK / DON RİSKİ</small><strong id="overview-heat-status">Veri bekleniyor</strong><p id="overview-heat-detail"></p></div></article>
+          </div>
+          <p class="overview-hazard-source" id="overview-hazard-source">Hava tahmini Open-Meteo’dan; yangın tespiti varsa NASA FIRMS’ten alınır.</p>
+          <a class="overview-hazard-link" href="#/plan">Plan ve ilaçlama ayrıntıları <span aria-hidden="true">↗</span></a>
+        </section>
+      </div>
     </section>
 
     <section class="overview-cards" aria-label="Hızlı erişim">
-      <a class="overview-card" href="#/plan"><span class="overview-card-icon">✳</span><span class="overview-card-copy"><small>01 · TARLA YÖNETİMİ</small><strong>Plan, takip ve ilaçlama</strong><span>Sezon planı, parsel haritası ve saha kararları tek ekranda.</span></span><span class="overview-card-arrow" aria-hidden="true">↗</span></a>
-      <a class="overview-card" href="#/plants"><span class="overview-card-icon">🌱</span><span class="overview-card-copy"><small>02 · ÜRÜN REHBERİ</small><strong>Tarla ve bahçe bitkileri</strong><span>Fotoğraflı ürünler ve yetiştirme bilgileri.</span></span><span class="overview-card-arrow" aria-hidden="true">↗</span></a>
+      <a class="overview-card overview-card-field" href="#/plan">
+        <span class="overview-card-copy"><small>01 · TARLA YÖNETİMİ</small><strong>Plan, takip ve ilaçlama</strong><span>Sezon planı, parsel haritası ve saha kararları tek ekranda.</span><span class="overview-card-cta">Tarlayı keşfet <span aria-hidden="true">↗</span></span></span>
+        <span class="overview-card-scene overview-map-scene" aria-hidden="true">
+          <svg class="overview-map-art" viewBox="0 0 320 210" preserveAspectRatio="xMidYMid slice">
+            <rect width="320" height="210" fill="#e9eddb"/>
+            <path d="M-20 174 75 110l80 15 74-82 112 15v175H-20Z" fill="#d4dfbd"/>
+            <path d="m-12 21 93 47 81-17 73 43 94-13M-8 95l89 18 73-43 92 14 82-33M38 216l56-79 71-12 56-82M187 225l-9-67 53-61 8-65" fill="none" stroke="#fffdf3" stroke-width="8" stroke-linecap="round"/>
+            <path d="m-12 21 93 47 81-17 73 43 94-13M-8 95l89 18 73-43 92 14 82-33M38 216l56-79 71-12 56-82M187 225l-9-67 53-61 8-65" fill="none" stroke="#d1c9a9" stroke-width="1.5" stroke-linecap="round"/>
+            <path d="m132 28 45 4 24 48-30 47-53-9-16-43Z" fill="#b9cf91" stroke="#829b68" stroke-width="2"/>
+            <path d="m132 28 45 4 24 48-30 47-53-9-16-43Z" fill="none" stroke="#fffdf3" stroke-width="1" stroke-dasharray="4 4"/>
+            <path d="M121 43 183 97M111 64l60 52M139 32l-29 59M156 30l-31 86M175 33l-32 82" stroke="#8faa72" stroke-width="2" opacity=".8"/>
+            <circle class="overview-map-pulse" cx="153" cy="76" r="28" fill="none" stroke="#fffdf3" stroke-width="2"/>
+            <circle cx="153" cy="76" r="7" fill="#fffdf3"/><circle cx="153" cy="76" r="3" fill="#39704b"/>
+          </svg>
+          <span class="overview-map-tag"><span class="overview-map-dot"></span> PARSEL 04 <span>·</span> 2,8 ha</span>
+          <span class="overview-map-caption">Ada · parsel görünümü</span>
+        </span>
+        <span class="overview-card-arrow" aria-hidden="true">↗</span>
+      </a>
+      <a class="overview-card overview-card-plants" href="#/plants">
+        <span class="overview-card-copy"><small>02 · ÜRÜN REHBERİ</small><strong>Tarla ve bahçe bitkileri</strong><span>Fotoğraflı ürünler ve yetiştirme bilgileri.</span><span class="overview-card-cta">Bitkileri tanı <span aria-hidden="true">↗</span></span></span>
+        <span class="overview-card-scene overview-plant-scene" aria-hidden="true">
+          <svg class="overview-map-art" viewBox="0 0 320 210" preserveAspectRatio="xMidYMid slice">
+            <rect width="320" height="210" fill="#e8eddb"/>
+            <path d="M-15 152 67 95l75 18 57-49 140 18v145H-15Z" fill="#cedcb5"/>
+            <path d="m-4 17 81 42 73-10 73 46 97-12M-8 83l76 15 82-48 61 39 116-36M39 219l39-78 77-22 60-73M202 220l-8-64 51-65 10-69" fill="none" stroke="#fffdf3" stroke-width="8" stroke-linecap="round"/>
+            <path d="m-4 17 81 42 73-10 73 46 97-12M-8 83l76 15 82-48 61 39 116-36M39 219l39-78 77-22 60-73M202 220l-8-64 51-65 10-69" fill="none" stroke="#d1c9a9" stroke-width="1.5" stroke-linecap="round"/>
+            <path d="m119 41 59 6 24 43-34 46-58-10-12-47Z" fill="#b8cd8e" stroke="#829b68" stroke-width="2"/>
+            <path d="m119 41 59 6 24 43-34 46-58-10-12-47Z" fill="none" stroke="#fffdf3" stroke-width="1" stroke-dasharray="4 4"/>
+            <path d="M114 57 190 112M107 74l66 49M133 43l-27 56M151 44l-28 77M170 46l-30 78" stroke="#8faa72" stroke-width="2" opacity=".8"/>
+            <g transform="translate(151 96)">
+              <g class="overview-growing-plant">
+              <path d="M0 24V-19" fill="none" stroke="#386b45" stroke-width="4" stroke-linecap="round"/>
+              <path d="M0 4c-20-1-24-14-23-20 14-1 24 6 23 20Z" fill="#558b50"/>
+              <path d="M0-5C1-22 14-27 22-26 23-12 14-4 0-5Z" fill="#78a957"/>
+              <path d="M0-17c-9-10-6-21 0-27 10 8 10 18 0 27Z" fill="#9abb68"/>
+              <path d="M-13 25h26l-4 5h-18Z" fill="#9a7652"/>
+              </g>
+            </g>
+            <circle class="overview-plant-pulse" cx="151" cy="77" r="38" fill="none" stroke="#fffdf3" stroke-width="2"/>
+          </svg>
+          <span class="overview-map-tag"><span class="overview-map-dot"></span> ÜRÜN ALANI <span>·</span> BÜYÜME</span>
+          <span class="overview-map-caption">Ekimden hasada bitki rehberi</span>
+        </span>
+        <span class="overview-card-arrow" aria-hidden="true">↗</span>
+      </a>
     </section>
 
     <section class="crop-category-choices" aria-label="Bitki kategorileri">
@@ -113,28 +174,27 @@
         <button type="button" data-scroll-target="parcel-section"><span>02</span> Parsel ve ilaçlama <span aria-hidden="true">↓</span></button>
       </nav>
     </header>
-    <section class="field-location-panel" aria-label="Tarla konumu ve kayıtlı tarla seçimi">
-      <div class="field-location-copy"><span class="step">KONUMUNU SEÇ</span><strong>Planını kendi tarlana göre hazırlayalım.</strong><span>Konumu ara veya kayıtlı tarlalarından birini seç; uygun bilgiler otomatik yüklensin.</span></div>
-      <div class="field-location-controls">
-        <div class="field-location-search">
-          <label for="location">Tarla konumu</label>
-          <div class="input-wrap location-search"><span class="input-icon">⌖</span><input id="location" type="text" autocomplete="off" placeholder="İl, ilçe, köy veya mevki yaz"><button id="find-location" type="button">Konumu bul</button></div>
-        </div>
-        <div class="field-location-saved">
-          <label for="quick-field-select">Kayıtlı tarlam</label>
-          <select id="quick-field-select" aria-label="Plan ve harita için kayıtlı tarla seç">
-            <option value="">Kayıtlı tarlalarından seç</option>
-          </select>
-        </div>
-      </div>
-      <p class="location-status" id="location-status" role="status">Konum yazmaya başla veya kayıtlı tarlanı seç.</p>
-    </section>
     <section class="workspace" id="season-plan" aria-label="Sezon planı ve ürün analizi">
       <div class="form-panel">
         <div class="section-heading"><div><span class="step">01 / TARLAN</span><h2>Bilgileri gir</h2></div><span class="leaf-icon">✳</span></div>
         <form id="farm-form">
           <input id="latitude" type="hidden">
           <input id="longitude" type="hidden">
+          <fieldset class="form-field-card location-field-card">
+            <legend>Konum ve kayıtlı tarla</legend>
+            <p>Konumunu ara veya kayıtlı tarlalarından birini seç.</p>
+            <div class="field-location-controls">
+              <div class="field-location-search">
+                <label for="location">Tarla konumu</label>
+                <div class="input-wrap location-search"><span class="input-icon">⌖</span><input id="location" type="text" autocomplete="off" placeholder="İl, ilçe, köy veya mevki yaz"><button id="find-location" type="button">Konumu bul</button></div>
+              </div>
+              <div class="field-location-saved">
+                <label for="quick-field-select">Kayıtlı tarlam</label>
+                <select id="quick-field-select" aria-label="Plan ve harita için kayıtlı tarla seç"><option value="">Kayıtlı tarlalarından seç</option></select>
+              </div>
+            </div>
+            <p class="location-status" id="location-status" role="status">Konum yazmaya başla veya kayıtlı tarlanı seç.</p>
+          </fieldset>
           <div class="two-cols field-row"><div><label class="field-label" for="area">Tarla büyüklüğü</label><div class="input-wrap"><input id="area" type="number" min="0.1" step="0.1" placeholder="Örn. 25" required><span class="unit">dekar</span></div></div><div><label class="field-label" for="soil">Toprak yapısı</label><select id="soil"><option value="unknown">Bilmiyorum</option><option value="clay">Killi</option><option value="loam">Tınlı</option><option value="sandy">Kumlu</option><option value="silty">Siltli</option><option value="red">Kırmızı toprak</option><option value="white">Beyaz / kireçli toprak</option><option value="gravel">Çakıllı toprak</option><option value="alluvial">Alüvyal / taban toprak</option><option value="saline">Tuzlu / alkali toprak</option><option value="humus">Humuslu / organik maddece zengin</option></select></div></div>
           <label class="field-label crop-label" for="crop">Bu sezon düşündüğün ürün</label>
           <div class="crop-select-wrap"><span class="crop-symbol">♧</span><select id="crop" required><option value="">Ürün seç</option><option value="wheat">Buğday</option><option value="barley">Arpa</option><option value="corn">Mısır</option><option value="sunflower">Ayçiçeği</option><option value="chickpea">Nohut</option><option value="lentil">Mercimek</option><option value="cotton">Pamuk</option><option value="tomato">Domates</option><option value="potato">Patates</option></select><span class="select-arrow">⌄</span></div>
@@ -668,6 +728,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.2/jspdf.umd.min.js"></script>
   <script src="main.js"></script>
+  <script src="overview-hazards.js"></script>
   <script src="parcel-map.js"></script>
   <script src="plants.js"></script>
   <script src="charts.js"></script>
