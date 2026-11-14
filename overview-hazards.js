@@ -32,15 +32,15 @@
     const unavailable = levels.some(level => level === 'unavailable');
     const state = document.getElementById('overview-hazard-state');
 
-    if (risks) state.textContent = `${risks} risk sinyali`;
-    else if (waiting) state.textContent = 'Veriler yükleniyor';
-    else if (unavailable) state.textContent = 'Kısmi veri';
-    else if (forecastComplete && fireComplete) state.textContent = 'Belirgin risk yok';
+    if (risks) state.textContent = `${risks} risk alert${risks === 1 ? '' : 's'}`;
+    else if (waiting) state.textContent = 'Loading data';
+    else if (unavailable) state.textContent = 'Partial data';
+    else if (forecastComplete && fireComplete) state.textContent = 'No significant risks detected';
   }
 
   function readableDate(date) {
     const parsed = new Date(`${date}T12:00:00`);
-    return Number.isNaN(parsed.getTime()) ? date : parsed.toLocaleDateString('tr-TR', { day: 'numeric', month: 'short' });
+    return Number.isNaN(parsed.getTime()) ? date : parsed.toLocaleDateString('en', { day: 'numeric', month: 'short' });
   }
 
   function numericValues(values) {
@@ -168,7 +168,7 @@
     fireCachePromise = null;
     panel.classList.remove('hidden');
     stage.classList.add('has-hazards');
-    document.getElementById('overview-hazard-state').textContent = 'Veriler yükleniyor';
+    document.getElementById('overview-hazard-state').textContent = 'Loading data';
 
     const locationInput = document.getElementById('location');
     const savedField = document.getElementById('quick-field-select');
@@ -177,7 +177,7 @@
       || (savedField.selectedIndex > 0 ? savedField.options[savedField.selectedIndex].text : '');
     const cropName = crop.options[crop.selectedIndex]?.text;
     document.getElementById('overview-hazard-location').textContent = [selectedLocation, cropName].filter(Boolean).join(' · ');
-    document.getElementById('overview-hazard-source').textContent = 'Hava: Open-Meteo · Yangın: NASA FIRMS uydu tespiti. Bu özet erken uyarıdır; yerel saha kontrolünün yerini tutmaz.';
+    document.getElementById('overview-hazard-source').textContent = 'Weather: Open-Meteo · Fire: NASA FIRMS satellite detections. This is an early-warning summary and does not replace local field checks.';
 
     Object.keys(cards).forEach(type => setCard(type, 'pending', 'Veri bekleniyor', 'Seçilen tarla için veri alınıyor.'));
     const currentRequestId = requestId;

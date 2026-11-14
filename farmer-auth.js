@@ -68,7 +68,7 @@
     const uId = user?.id || 'varsayilan_ciftci';
     const fields = getFields(uId);
     const area = Number(fieldData.area);
-    if (!Number.isFinite(area) || area <= 0) throw new Error('Tarla alanı 0’dan büyük olmalıdır.');
+    if (!Number.isFinite(area) || area <= 0) throw new Error('Field area must be greater than 0.');
 
     const newField = {
       id: fieldData.id || `tarla_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
@@ -141,7 +141,7 @@
     }
     if (quickSelect) quickSelect.value = field.id;
     if (locStatus) {
-      locStatus.textContent = `✓ ${field.name} · ${locationParts.join(' / ') || 'Kayıtlı tarla'} · ${Number(field.area) > 0 ? `${field.area} dekar` : 'alan bilgisi girilmemiş'}`;
+      locStatus.textContent = `✓ ${field.name} · ${locationParts.join(' / ') || 'Saved field'} · ${Number(field.area) > 0 ? `${field.area} decares` : 'area not provided'}`;
       locStatus.dataset.state = 'ok';
     }
 
@@ -188,10 +188,10 @@
     if (userBtn && badgeText) {
       if (user) {
         userBtn.classList.add('logged-in');
-        badgeText.innerHTML = `👨‍🌾 <strong>${escapeHtml(user.name)}</strong> (${fieldsCount} Tarla)`;
+        badgeText.innerHTML = `👨‍🌾 <strong>${escapeHtml(user.name)}</strong> (${fieldsCount} fields)`;
       } else {
         userBtn.classList.remove('logged-in');
-        badgeText.innerHTML = `🌾 <span>Tarlalarım & Çiftçi Girişi (${fieldsCount})</span>`;
+        badgeText.innerHTML = `🌾 <span>My Fields & Sign In (${fieldsCount})</span>`;
       }
     }
 
@@ -204,7 +204,7 @@
     if (!select) return;
 
     const fields = getFields();
-    select.innerHTML = '<option value="">🚜 -- Kayıtlı Tarlalarından Birini Seç --</option>' +
+    select.innerHTML = '<option value="">🚜 -- Select one of your saved fields --</option>' +
       fields.map(f => {
         const adaParsel = (f.block && f.parcel) ? `[Ada: ${f.block} / Parsel: ${f.parcel}]` : '';
         return `<option value="${escapeHtml(f.id)}">${escapeHtml(f.name)} ${adaParsel}</option>`;
@@ -337,7 +337,7 @@
 
       const loginStatus = document.getElementById('farmer-login-status');
       if (loginStatus) {
-        loginStatus.textContent = `✓ Hoş geldin, ${name}! Tarlaların bu cihaza kaydedildi.`;
+        loginStatus.textContent = `✓ Welcome, ${name}! Your fields have been saved on this device.`;
         loginStatus.style.color = '#2e6a43';
       }
     });
@@ -369,7 +369,7 @@
 
       addFieldForm.reset();
       switchTab('tab-my-fields');
-      alert(`✓ "${saved.name}" (Ada: ${saved.block}, Parsel: ${saved.parcel}) başarıyla kaydedildi! Artık her açtığınızda tek tıkla yükleyebilirsiniz.`);
+      alert(`✓ "${saved.name}" (Block: ${saved.block}, Parcel: ${saved.parcel}) saved successfully! You can now load it with one click whenever you return.`);
     });
 
     // Liste Tıklama Olayları

@@ -3,7 +3,7 @@
   if (!mapEl) return;
   const $ = id => document.getElementById(id);
   const status = $('parcel-status');
-  if (!window.L) { status.textContent = 'Harita kütüphanesi yüklenemedi. İnternet bağlantısını kontrol edip sayfayı yenile.'; return; }
+  if (!window.L) { status.textContent = 'The map library could not be loaded. Check your internet connection and refresh the page.'; return; }
   const map = L.map(mapEl, { scrollWheelZoom: false }).setView([39.0, 35.0], 6);
   const streetTiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: '&copy; OpenStreetMap' }).addTo(map);
   // NASA GIBS supplies a rendered 8-day MODIS NDVI raster immediately, while AppEEARS computes parcel statistics in its queue.
@@ -170,7 +170,7 @@
     });
     syncingPreviewMaps = false;
     const locationParts = [field.province, field.district, field.neighborhood].filter(Boolean);
-    $('field-layer-location').textContent = `📍 ${field.name || 'Tarla konumu'}${locationParts.length ? ` · ${locationParts.join(' / ')}` : ''}`;
+    $('field-layer-location').textContent = `📍 ${field.name || 'Field location'}${locationParts.length ? ` · ${locationParts.join(' / ')}` : ''}`;
   }
   previewLayerConfigs.forEach(config => {
     const element = $(config.mapId);
@@ -235,7 +235,7 @@
   function ndviInsight(parcel) {
     const value = parcel.ndvi;
     if (!hasApiNdvi(parcel)) return {
-      title: 'NASA NDVI olcumu bekleniyor',
+      title: 'Waiting for NASA NDVI measurement',
       summary: 'Parsel icin NASA verisini getirince olculen NDVI ve tarla yorumu burada otomatik gorunur. Manuel deger kullanilmiyor.'
     };
     let summary;
@@ -255,7 +255,7 @@
     const range = latest && Number.isFinite(latest.min) && Number.isFinite(latest.max)
       ? `Son olcum min ${latest.min.toFixed(3)} - max ${latest.max.toFixed(3)}${latest.pixels ? ` - ${latest.pixels} MODIS pikseli` : ''}.`
       : '';
-    return {title: `Olculen NDVI: ${value.toFixed(3)}`, summary, trend, range};
+    return {title: `Measured NDVI: ${value.toFixed(3)}`, summary, trend, range};
   }
   function renderList() {
     const end = new Date(), start = new Date(); start.setDate(start.getDate()-60);
@@ -264,9 +264,9 @@
       return `<article class="parcel-card"><div class="parcel-card-head"><h3>${escapeHtml(p.name)}</h3><button type="button" data-remove="${i}">Sil</button></div>${Number.isFinite(Number(p.area)) && Number(p.area) > 0 ? `<small class="parcel-area-note">Parsel alanı: ${Number(p.area).toLocaleString('tr-TR', {maximumFractionDigits:2})} dekar${p.properties?.alan ? ' · TKGM' : p.geometry || p.points?.length ? ' · Harita sınırından hesaplandı' : ''}</small>` : ''}<div class="ndvi-date-row"><label>Baslangic<input type="date" data-start="${i}" value="${isoDate(start)}"></label><label>Bitis<input type="date" data-end="${i}" value="${isoDate(end)}"></label></div><button type="button" class="ndvi-fetch" data-ndvi-fetch="${i}">NASA'dan NDVI getir</button><small data-ndvi-status="${i}">${hasApiNdvi(p) ? `Son NASA olcumu: ${p.ndvi.toFixed(3)} - ${p.ndviSource}` : 'MODIS - 250 m - 16 gunluk olcum'}</small>${p.ndviSeries?.length && hasApiNdvi(p) ? `<details class="ndvi-history"><summary>${p.ndviSeries.length} donem verisini gor</summary>${p.ndviSeries.map(x=>`<div><span>${escapeHtml(x.date)}</span><b>${x.mean.toFixed(3)}</b><span>min ${x.min.toFixed(3)} - max ${x.max.toFixed(3)}</span></div>`).join('')}</details>` : ''}<div class="ndvi-analysis"><strong>${escapeHtml(insight.title)}</strong><p>${escapeHtml(insight.summary)}</p>${insight.trend ? `<p>${escapeHtml(insight.trend)}</p>` : ''}${insight.range ? `<small>${escapeHtml(insight.range)}</small>` : ''}<small>Yorum mevsime/urun turune gore degisir. MODIS 250 m oldugundan kucuk parsellerde komsu alanlar olcume karisabilir.</small></div></article>`;
     }).join('');
   }
-  function stopDrawing(message) { drawing = false; points = []; draftLayer.clearLayers(); $('start-parcel').textContent = 'Parsel çiz'; $('save-parcel').disabled = true; $('cancel-parcel').hidden = true; status.textContent = message; }
+  function stopDrawing(message) { drawing = false; points = []; draftLayer.clearLayers(); $('start-parcel').textContent = 'Draw parcel'; $('save-parcel').disabled = true; $('cancel-parcel').hidden = true; status.textContent = message; }
   $('start-parcel').addEventListener('click', () => {
-    drawing = true; points = []; draftLayer.clearLayers(); $('start-parcel').textContent = 'Haritaya köşe ekle'; $('save-parcel').disabled = true; $('cancel-parcel').hidden = false; status.textContent = 'Sınır köşelerini haritaya tıklayarak ekle (en az 3 nokta).'; map.doubleClickZoom.disable();
+    drawing = true; points = []; draftLayer.clearLayers(); $('start-parcel').textContent = 'Add boundary points'; $('save-parcel').disabled = true; $('cancel-parcel').hidden = false; status.textContent = 'Click the map to add boundary points (at least 3 points).'; map.doubleClickZoom.disable();
   });
   $('cancel-parcel').addEventListener('click', () => { stopDrawing('Çizim iptal edildi.'); map.doubleClickZoom.enable(); });
   map.on('click', event => {
@@ -276,7 +276,7 @@
     if (draftLine) draftLayer.removeLayer(draftLine);
     if (points.length >= 2) draftLine = L.polyline(points, {color: '#235b3b', dashArray: '5 5'}).addTo(draftLayer);
     $('save-parcel').disabled = points.length < 3;
-    status.textContent = `${points.length} köşe işaretlendi${points.length < 3 ? ' · kaydetmek için en az 3 köşe gerekli' : ' · parseli kaydedebilirsin'}`;
+    status.textContent = `${points.length} boundary point${points.length === 1 ? '' : 's'} marked${points.length < 3 ? ' · at least 3 points are required to save' : ' · parcel is ready to save'}`;
   });
   $('save-parcel').addEventListener('click', () => {
     if (points.length < 3) return;
@@ -302,15 +302,15 @@
     if (!parcel) return;
     const card = button.closest('.parcel-card'), message = card.querySelector('[data-ndvi-status]');
     const start = card.querySelector('[data-start]').value, end = card.querySelector('[data-end]').value;
-    if (!start || !end || start > end) { message.textContent = 'Geçerli bir tarih aralığı seç.'; return; }
-    button.disabled = true; message.textContent = 'AppEEARS alan isteği gönderiliyor…';
+    if (!start || !end || start > end) { message.textContent = 'Select a valid date range.'; return; }
+    button.disabled = true; message.textContent = 'Submitting AppEEARS area request…';
     try {
       // text/plain is a CORS-simple content type. This avoids a browser OPTIONS
       // preflight when Live Server (5500) calls the local API (8000).
       const submitted = await fetch('/api/ndvi/task', {method:'POST', headers:{'Content-Type':'text/plain;charset=UTF-8'}, body:JSON.stringify({name:parcel.name,start,end,geometry:geometryFor(parcel)})});
       const task = await submitted.json();
       if (!submitted.ok) throw new Error([task.error, task.details].filter(Boolean).join(' · ') || 'AppEEARS isteği gönderilemedi.');
-      message.textContent = `NASA isteği sırada (${task.task_id}). İşlenmesi birkaç dakika sürebilir.`;
+      message.textContent = `NASA request queued (${task.task_id}). Processing may take several minutes.`;
       let result;
       const submittedAt = Date.now();
       for (let attempt=0; attempt<80; attempt++) {
@@ -348,7 +348,7 @@
     if (Number.isFinite(lat) && Number.isFinite(lon) && Math.abs(lat) <= 90 && Math.abs(lon) <= 180) {
       map.setView([lat, lon], 14);
       setPreviewField({lat, lon, name:$('location')?.value || 'Seçili tarla'});
-      status.textContent = 'Harita konumu güncellendi. Parseli çizmek için “Parsel çiz”e bas.';
+      status.textContent = 'Map location updated. Select “Draw parcel” to outline a parcel.';
     }
   };
   const fillSelect = (select, options, placeholder) => {
@@ -397,7 +397,7 @@
     lastActiveParcel = { ...field, lat, lon };
 
     if (status) {
-      status.textContent = `"${field.name}" (Ada: ${field.block}, Parsel: ${field.parcel}) haritada gösteriliyor.`;
+      status.textContent = `Showing "${field.name}" (Block: ${field.block}, Parcel: ${field.parcel}) on the map.`;
     }
   };
 
@@ -476,7 +476,7 @@
     const enteredArea = Number($('parcel-area')?.value);
     const area = Number.isFinite(enteredArea) && enteredArea > 0 ? enteredArea : Number(lastActiveParcel?.area);
     if (!Number.isFinite(area) || area <= 0) {
-      status.textContent = 'Tarlanın gerçek alanı bilinmiyor. Kaydetmeden önce alanı dekar olarak gir.';
+      status.textContent = 'The actual field area is unknown. Enter the area in decares before saving.';
       $('parcel-area')?.focus();
       return;
     }
@@ -501,25 +501,25 @@
   });
 
   const province = $('tkgm-province'), district = $('tkgm-district'), neighborhood = $('tkgm-neighborhood'), tkgmStatus = $('tkgm-status');
-  loadLocations('province', '', province, 'İl seç').then(() => { tkgmStatus.textContent = 'TKGM il listesi hazır.'; }).catch(error => { tkgmStatus.textContent = error.message; });
+  loadLocations('province', '', province, 'Select province').then(() => { tkgmStatus.textContent = 'TKGM province list is ready.'; }).catch(error => { tkgmStatus.textContent = error.message; });
   province.addEventListener('change', async () => {
     fillSelect(district, [], 'İlçe seç'); fillSelect(neighborhood, [], 'Mahalle seç');
     if (!province.value) return;
-    tkgmStatus.textContent = 'İlçeler yükleniyor…';
-    try { await loadLocations('district', province.value, district, 'İlçe seç'); tkgmStatus.textContent = 'İlçe seç.'; }
+    tkgmStatus.textContent = 'Loading districts…';
+    try { await loadLocations('district', province.value, district, 'Select district'); tkgmStatus.textContent = 'Select a district.'; }
     catch (error) { tkgmStatus.textContent = error.message; }
   });
   district.addEventListener('change', async () => {
     fillSelect(neighborhood, [], 'Mahalle seç');
     if (!district.value) return;
-    tkgmStatus.textContent = 'Mahalleler yükleniyor…';
-    try { await loadLocations('neighborhood', district.value, neighborhood, 'Mahalle seç'); tkgmStatus.textContent = 'Mahalle seç.'; }
+    tkgmStatus.textContent = 'Loading neighborhoods…';
+    try { await loadLocations('neighborhood', district.value, neighborhood, 'Select neighborhood'); tkgmStatus.textContent = 'Select a neighborhood.'; }
     catch (error) { tkgmStatus.textContent = error.message; }
   });
   $('tkgm-find').addEventListener('click', async event => {
     const button = event.currentTarget, block = $('tkgm-block').value.trim(), parcelNo = $('tkgm-parcel').value.trim();
-    if (!neighborhood.value || !block || !parcelNo) { tkgmStatus.textContent = 'İl, ilçe, mahalle, ada ve parsel bilgilerini tamamla.'; return; }
-    button.disabled = true; tkgmStatus.textContent = 'TKGM parseli aranıyor…';
+    if (!neighborhood.value || !block || !parcelNo) { tkgmStatus.textContent = 'Complete the province, district, neighborhood, block, and parcel details.'; return; }
+    button.disabled = true; tkgmStatus.textContent = 'Searching TKGM for the parcel…';
     try {
       const query = new URLSearchParams({neighborhood_id:neighborhood.value, block, parcel:parcelNo});
       const path = `/api/tkgm/parcel?${query}`;
@@ -540,7 +540,7 @@
       if ($('latitude')) $('latitude').value = center.lat.toFixed(6);
       if ($('longitude')) $('longitude').value = center.lng.toFixed(6);
       const detail = [properties.ilAd,properties.ilceAd,properties.mahalleAd].filter(Boolean).join(' / ');
-      tkgmStatus.innerHTML = `✓ <strong>${name}</strong>${detail ? ` · ${detail}` : ''}${properties.alan ? ` · ${properties.alan} m²` : ''} haritaya eklendi. <span style="color:#2e6a43;font-weight:600;">(Hesabınıza kaydetmek için yukarıdaki "Tarlalarıma Kaydet"e basabilirsiniz)</span>`;
+      tkgmStatus.innerHTML = `✓ <strong>${name}</strong>${detail ? ` · ${detail}` : ''}${properties.alan ? ` · ${properties.alan} m²` : ''} added to the map. <span style="color:#2e6a43;font-weight:600;">(Use "Save to My Fields" above to store it in your account.)</span>`;
 
       lastActiveParcel = {
         name,
@@ -568,8 +568,8 @@
   });
   async function searchPlace() {
     const query = $('parcel-search-input').value.trim(), button = $('parcel-search-btn');
-    if (query.length < 2) { tkgmStatus.textContent = 'Bir il, ilçe, köy veya mevkii yaz.'; return; }
-    button.disabled = true; tkgmStatus.textContent = 'Konum aranıyor…';
+    if (query.length < 2) { tkgmStatus.textContent = 'Enter a province, district, village, or place name.'; return; }
+    button.disabled = true; tkgmStatus.textContent = 'Searching for location…';
     try {
       const response = await fetch(`/api/geocode?q=${encodeURIComponent(query)}`), result = await response.json();
       if (!response.ok) throw new Error(result.detail || result.error || 'Konum bulunamadı.');
@@ -577,7 +577,7 @@
       const location = { latitude: point[0], longitude: point[1], name: result.display_name || query };
       if (window.applyResolvedFarmLocation) window.applyResolvedFarmLocation(location);
       else window.dispatchEvent(new CustomEvent('tarimyol:location-resolved', { detail: location }));
-      tkgmStatus.textContent = `${location.name} · Harita konuma yaklaştırıldı. Ada/parsel sorgusu için aşağıdaki alanları kullan.`;
+      tkgmStatus.textContent = `${location.name} · Map centered on the location. Use the fields below to search by block and parcel.`;
 
       lastActiveParcel = {
         name: query,
@@ -598,12 +598,12 @@
   });
   $('ndvi-check')?.addEventListener('click', async event => {
     const button = event.currentTarget, output = $('ndvi-connection-status');
-    button.disabled = true; output.dataset.state = ''; output.textContent = 'AppEEARS tokeni doğrulanıyor…';
+    button.disabled = true; output.dataset.state = ''; output.textContent = 'Validating AppEEARS token…';
     try {
       const response = await fetch('/api/ndvi/health');
       const result = await response.json();
       if (!response.ok || !result.connected) throw new Error(result.error || 'NASA tokenı doğrulanamadı.');
-      output.dataset.state = 'ok'; output.textContent = `Bağlantı çalışıyor · ${result.product}`;
+      output.dataset.state = 'ok'; output.textContent = `Connection successful · ${result.product}`;
     } catch (error) {
       output.dataset.state = 'error';
       output.textContent = error.message === 'Failed to fetch'

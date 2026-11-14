@@ -1,80 +1,80 @@
 <!doctype html>
-<html lang="tr">
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#16302a">
-  <meta name="description" content="TarımYol ile tarlan için iklim, toprak ve ürün verilerine dayalı sezon planı oluştur.">
+  <meta name="description" content="Create a seasonal farm plan with climate, soil, and crop data using TarımYol.">
   <link rel="manifest" href="manifest.json">
-  <title>TarımYol | Tarımsal Karar Desteği</title>
+  <title>TarımYol | Agricultural Decision Support</title>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
   <link rel="stylesheet" href="main.css">
   <style>.location-search{margin-bottom:0}.location-search input{padding-left:8px}.location-search button{height:28px;margin-right:7px;border:0;border-radius:5px;background:#edf4e8;color:#4b754d;font:600 10px 'DM Sans',sans-serif;padding:0 10px;cursor:pointer;white-space:nowrap}.location-status{min-height:14px;font-size:10px;color:#6b8469;margin:5px 0 3px}.or-divider{display:flex;align-items:center;gap:8px;color:#a0aaa0;font-size:9px;margin:4px 0 8px}.or-divider:before,.or-divider:after{content:'';height:1px;background:#edf0eb;flex:1}</style>
 </head>
 <body>
   <header class="topbar">
-    <a class="brand" href="#/overview" aria-label="TarımYol ana sayfa"><span class="brand-mark">T</span><span>Tarım<span class="brand-light">Yol</span></span></a>
+    <a class="brand" href="#/overview" aria-label="TarımYol home"><span class="brand-mark">T</span><span>Tarım<span class="brand-light">Yol</span></span></a>
     <div class="top-links">
       <span class="top-chip"><strong>NASA</strong> POWER</span>
       <span class="top-chip">SoilGrids</span>
-      <span class="top-chip">Açık veri</span>
+      <span class="top-chip">Open data</span>
     </div>
     <div class="topbar-actions">
-      <button type="button" class="top-action-btn top-farmer-btn" id="farmer-auth-btn" title="Kayıtlı Ada ve Parsellerimi Yönet">
-        <span id="farmer-badge-text">👨‍🌾 <span>Tarlalarım & Çiftçi Girişi</span></span>
+      <button type="button" class="top-action-btn top-farmer-btn" id="farmer-auth-btn" title="Manage my saved fields and parcels">
+        <span id="farmer-badge-text">👨‍🌾 <span>My Fields & Sign In</span></span>
       </button>
     </div>
   </header>
   <aside class="side-nav">
-    <span class="side-nav-label">ÇALIŞMA ALANI</span>
-    <nav aria-label="Ana menü">
-      <a class="side-nav-link" href="#/overview" aria-label="Genel bakış" title="Genel bakış" aria-current="page"><span class="side-nav-icon" aria-hidden="true">⌂</span><span>Genel bakış</span></a>
-      <a class="side-nav-link" href="#/plan" aria-label="Tarla yönetimi" title="Tarla yönetimi"><span class="side-nav-icon" aria-hidden="true">✳</span><span>Tarla yönetimi</span></a>
-      <a class="side-nav-link" href="#/plants" aria-label="Tarla ve bahçe bitkileri" title="Tarla ve bahçe bitkileri"><span class="side-nav-icon" aria-hidden="true">🌱</span><span>Tarla ve bahçe</span></a>
+    <span class="side-nav-label">WORKSPACE</span>
+    <nav aria-label="Main menu">
+      <a class="side-nav-link" href="#/overview" aria-label="Overview" title="Overview" aria-current="page"><span class="side-nav-icon" aria-hidden="true">⌂</span><span>Overview</span></a>
+      <a class="side-nav-link" href="#/plan" aria-label="Field management" title="Field management"><span class="side-nav-icon" aria-hidden="true">✳</span><span>Field management</span></a>
+      <a class="side-nav-link" href="#/plants" aria-label="Field and horticultural crops" title="Field and horticultural crops"><span class="side-nav-icon" aria-hidden="true">🌱</span><span>Crops</span></a>
     </nav>
     <div class="side-nav-farmer-box">
       <button type="button" class="side-nav-farmer-cta" onclick="window.FarmerAuth && window.FarmerAuth.openModal('farmer-auth-modal')">
         <span class="cta-icon">🌾</span>
         <div class="cta-copy">
-          <strong>Tarlalarım & Giriş</strong>
-          <small>Ada & Parsellerini Kaydet</small>
+          <strong>My Fields & Sign In</strong>
+          <small>Save your blocks & parcels</small>
         </div>
       </button>
     </div>
-    <div class="side-nav-note"><span class="side-nav-note-icon" aria-hidden="true">✦</span><strong>Toprağını tanı,<br>sezonu planla.</strong><small>NASA POWER · SoilGrids</small></div>
+    <div class="side-nav-note"><span class="side-nav-note-icon" aria-hidden="true">✦</span><strong>Know your soil,<br>plan your season.</strong><small>NASA POWER · SoilGrids</small></div>
   </aside>
   <main id="app">
     <section class="app-page overview-page" id="overview-page" aria-labelledby="overview-title">
     <section class="hero">
       <div class="hero-copy">
-        <div class="eyebrow"><span>TARIMYOL · TARIM YÖNETİMİ</span><span class="eyebrow-line"></span><span>NASA POWER VERİSİ</span></div>
-        <h1 id="overview-title">Tarlan için<br><em>akıllı bir yol haritası.</em></h1>
-        <p>Toprağını tanı, sezonu güvenle planla. Konumuna özel iklim ve toprak verilerini ekimden hasada uzanan bir yol haritasına dönüştür.</p>
-        <div class="hero-tags"><span>FAO-56 su dengesi</span><span>Konuma özel iklim</span><span>Uydu ve parsel takibi</span></div>
+        <div class="eyebrow"><span>TARIMYOL · FIELD MANAGEMENT</span><span class="eyebrow-line"></span><span>NASA POWER DATA</span></div>
+        <h1 id="overview-title">A smarter<br><em>roadmap for your farm.</em></h1>
+        <p>Understand your soil and plan the season with confidence. Turn location-specific climate and soil data into a practical plan from planting through harvest.</p>
+        <div class="hero-tags"><span>FAO-56 water balance</span><span>Local climate data</span><span>Satellite & parcel monitoring</span></div>
       </div>
-      <div class="hero-art" id="overview-hazard-stage" role="region" aria-label="Tarlanın hava ve risk özeti" aria-live="polite">
+      <div class="hero-art" id="overview-hazard-stage" role="region" aria-label="Field weather and risk summary" aria-live="polite">
         <div class="sun" aria-hidden="true"></div><div class="field field-one" aria-hidden="true"></div><div class="field field-two" aria-hidden="true"></div><div class="field field-three" aria-hidden="true"></div>
-        <div class="art-label" aria-hidden="true"><span>SAHA VERİSİ · 2026</span><strong>Her karar<br>topraktan başlar.</strong></div><div class="art-coords" aria-hidden="true">NASA POWER · FAO-56</div><div class="art-pin" aria-hidden="true"><span></span><strong>Parselin hazır</strong><small>Konumunu ekleyerek başla</small></div>
+        <div class="art-label" aria-hidden="true"><span>FIELD DATA · 2026</span><strong>Every decision<br>starts with the soil.</strong></div><div class="art-coords" aria-hidden="true">NASA POWER · FAO-56</div><div class="art-pin" aria-hidden="true"><span></span><strong>Your parcel is ready</strong><small>Start by adding its location</small></div>
         <section class="overview-hazard-panel hidden" id="overview-hazard-panel" aria-labelledby="overview-hazard-title">
           <header class="overview-hazard-header">
-            <div><span class="overview-hazard-kicker">TARLA RİSK BÜLTENİ · 10 GÜN</span><h2 id="overview-hazard-title">Tarlan için güncel durum</h2><p id="overview-hazard-location"></p></div>
-            <span class="overview-hazard-state" id="overview-hazard-state" role="status">Veri bekleniyor</span>
+            <div><span class="overview-hazard-kicker">FIELD RISK OUTLOOK · 10 DAYS</span><h2 id="overview-hazard-title">Current conditions for your field</h2><p id="overview-hazard-location"></p></div>
+            <span class="overview-hazard-state" id="overview-hazard-state" role="status">Waiting for data</span>
           </header>
           <div class="overview-hazard-grid">
-            <article class="overview-risk-card" data-risk="rain" data-level="pending"><span aria-hidden="true">🌧️</span><div><small>YAĞIŞ</small><strong id="overview-rain-status">Veri bekleniyor</strong><p id="overview-rain-detail"></p></div></article>
+            <article class="overview-risk-card" data-risk="rain" data-level="pending"><span aria-hidden="true">🌧️</span><div><small>RAIN</small><strong id="overview-rain-status">Waiting for data</strong><p id="overview-rain-detail"></p></div></article>
             <article class="overview-risk-card" data-risk="hail" data-level="pending"><span aria-hidden="true">⛈️</span><div><small>DOLU / FIRTINA</small><strong id="overview-hail-status">Veri bekleniyor</strong><p id="overview-hail-detail"></p></div></article>
-            <article class="overview-risk-card" data-risk="fire" data-level="pending"><span aria-hidden="true">🔥</span><div><small>AKTİF YANGIN</small><strong id="overview-fire-status">Veri bekleniyor</strong><p id="overview-fire-detail"></p></div></article>
-            <article class="overview-risk-card" data-risk="heat" data-level="pending"><span aria-hidden="true">🌡️</span><div><small>SICAK / DON RİSKİ</small><strong id="overview-heat-status">Veri bekleniyor</strong><p id="overview-heat-detail"></p></div></article>
+            <article class="overview-risk-card" data-risk="fire" data-level="pending"><span aria-hidden="true">🔥</span><div><small>ACTIVE FIRES</small><strong id="overview-fire-status">Waiting for data</strong><p id="overview-fire-detail"></p></div></article>
+            <article class="overview-risk-card" data-risk="heat" data-level="pending"><span aria-hidden="true">🌡️</span><div><small>HEAT / FROST RISK</small><strong id="overview-heat-status">Waiting for data</strong><p id="overview-heat-detail"></p></div></article>
           </div>
-          <p class="overview-hazard-source" id="overview-hazard-source">Hava tahmini Open-Meteo’dan; yangın tespiti varsa NASA FIRMS’ten alınır.</p>
-          <a class="overview-hazard-link" href="#/plan">Plan ve ilaçlama ayrıntıları <span aria-hidden="true">↗</span></a>
+          <p class="overview-hazard-source" id="overview-hazard-source">Weather forecasts come from Open-Meteo; fire detections, when available, come from NASA FIRMS.</p>
+          <a class="overview-hazard-link" href="#/plan">Planning and spraying details <span aria-hidden="true">↗</span></a>
         </section>
       </div>
     </section>
 
-    <section class="overview-cards" aria-label="Hızlı erişim">
+    <section class="overview-cards" aria-label="Quick access">
       <a class="overview-card overview-card-field" href="#/plan">
-        <span class="overview-card-copy"><small>01 · TARLA YÖNETİMİ</small><strong>Plan, takip ve ilaçlama</strong><span>Sezon planı, parsel haritası ve saha kararları tek ekranda.</span><span class="overview-card-cta">Tarlayı keşfet <span aria-hidden="true">↗</span></span></span>
+        <span class="overview-card-copy"><small>01 · FIELD MANAGEMENT</small><strong>Plan, monitor, and act</strong><span>Season planning, parcel maps, and field guidance in one workspace.</span><span class="overview-card-cta">Explore your field <span aria-hidden="true">↗</span></span></span>
         <span class="overview-card-scene overview-map-scene" aria-hidden="true">
           <svg class="overview-map-art" viewBox="0 0 320 210" preserveAspectRatio="xMidYMid slice">
             <rect width="320" height="210" fill="#e9eddb"/>
@@ -88,12 +88,12 @@
             <circle cx="153" cy="76" r="7" fill="#fffdf3"/><circle cx="153" cy="76" r="3" fill="#39704b"/>
           </svg>
           <span class="overview-map-tag"><span class="overview-map-dot"></span> PARSEL 04 <span>·</span> 2,8 ha</span>
-          <span class="overview-map-caption">Ada · parsel görünümü</span>
+          <span class="overview-map-caption">Block · parcel view</span>
         </span>
         <span class="overview-card-arrow" aria-hidden="true">↗</span>
       </a>
       <a class="overview-card overview-card-plants" href="#/plants">
-        <span class="overview-card-copy"><small>02 · ÜRÜN REHBERİ</small><strong>Tarla ve bahçe bitkileri</strong><span>Fotoğraflı ürünler ve yetiştirme bilgileri.</span><span class="overview-card-cta">Bitkileri tanı <span aria-hidden="true">↗</span></span></span>
+        <span class="overview-card-copy"><small>02 · CROP GUIDE</small><strong>Field and horticultural crops</strong><span>Crop profiles, growing guidance, and photos.</span><span class="overview-card-cta">Explore crops <span aria-hidden="true">↗</span></span></span>
         <span class="overview-card-scene overview-plant-scene" aria-hidden="true">
           <svg class="overview-map-art" viewBox="0 0 320 210" preserveAspectRatio="xMidYMid slice">
             <rect width="320" height="210" fill="#e8eddb"/>
@@ -114,459 +114,459 @@
             </g>
             <circle class="overview-plant-pulse" cx="151" cy="77" r="38" fill="none" stroke="#fffdf3" stroke-width="2"/>
           </svg>
-          <span class="overview-map-tag"><span class="overview-map-dot"></span> ÜRÜN ALANI <span>·</span> BÜYÜME</span>
-          <span class="overview-map-caption">Ekimden hasada bitki rehberi</span>
+          <span class="overview-map-tag"><span class="overview-map-dot"></span> CROP AREA <span>·</span> GROWING</span>
+          <span class="overview-map-caption">A crop guide from planting through harvest</span>
         </span>
         <span class="overview-card-arrow" aria-hidden="true">↗</span>
       </a>
     </section>
 
-    <section class="crop-category-choices" aria-label="Bitki kategorileri">
-      <a class="plants-category-card crop-field-card" href="#/plants/field" aria-label="Tarla bitkilerini görüntüle">
+    <section class="crop-category-choices" aria-label="Crop categories">
+      <a class="plants-category-card crop-field-card" href="#/plants/field" aria-label="View field crops">
         <img src="assets/plants/wheat.jpg" alt="" class="plants-category-photo">
         <span class="plants-category-shade" aria-hidden="true"></span>
-        <span class="plants-category-label"><span class="plants-category-mark" aria-hidden="true">🌾</span> TARLA BİTKİLERİ</span>
-        <span class="plants-category-copy"><strong>Tarla Bitkileri</strong><span>Tahıl, yemeklik baklagil ve endüstriyel tarla ürünleri rehberi.</span></span>
-        <span class="plants-category-action">Ürünleri keşfet <span aria-hidden="true">↗</span></span>
+        <span class="plants-category-label"><span class="plants-category-mark" aria-hidden="true">🌾</span> FIELD CROPS</span>
+        <span class="plants-category-copy"><strong>Field Crops</strong><span>A guide to cereals, food legumes, and industrial crops.</span></span>
+        <span class="plants-category-action">Explore crops <span aria-hidden="true">↗</span></span>
       </a>
-      <a class="plants-category-card crop-garden-card" href="#/plants/garden" aria-label="Meyve ve bağ bitkilerini görüntüle">
+      <a class="plants-category-card crop-garden-card" href="#/plants/garden" aria-label="View fruit and vine crops">
         <img src="assets/plants/apple.jpg" alt="" class="plants-category-photo">
         <span class="plants-category-shade" aria-hidden="true"></span>
-        <span class="plants-category-label"><span class="plants-category-mark" aria-hidden="true">🍎</span> MEYVE & BAĞ</span>
-        <span class="plants-category-copy"><strong>Meyvecilik & Bağ</strong><span>Meyve ağaçları, sert kabuklular, narenciye ve bağcılık rehberi.</span></span>
-        <span class="plants-category-action">Ürünleri keşfet <span aria-hidden="true">↗</span></span>
+        <span class="plants-category-label"><span class="plants-category-mark" aria-hidden="true">🍎</span> FRUIT & VINES</span>
+        <span class="plants-category-copy"><strong>Fruit & Viticulture</strong><span>A guide to fruit trees, nuts, citrus, and grape production.</span></span>
+        <span class="plants-category-action">Explore crops <span aria-hidden="true">↗</span></span>
       </a>
-      <a class="plants-category-card crop-vegetable-card" href="#/plants/vegetable" aria-label="Sebze bitkilerini görüntüle">
+      <a class="plants-category-card crop-vegetable-card" href="#/plants/vegetable" aria-label="View vegetable crops">
         <img src="assets/plants/tomato.jpg" alt="" class="plants-category-photo">
         <span class="plants-category-shade" aria-hidden="true"></span>
-        <span class="plants-category-label"><span class="plants-category-mark" aria-hidden="true">🍅</span> SEBZE ÜRETİMİ</span>
-        <span class="plants-category-copy"><strong>Sebze Bitkileri</strong><span>Açık alan ve örtüaltı sofralık sebzeler, fide ve hasat takvimi.</span></span>
-        <span class="plants-category-action">Ürünleri keşfet <span aria-hidden="true">↗</span></span>
+        <span class="plants-category-label"><span class="plants-category-mark" aria-hidden="true">🍅</span> VEGETABLE PRODUCTION</span>
+        <span class="plants-category-copy"><strong>Vegetable Crops</strong><span>Field and greenhouse vegetables, transplanting, and harvest windows.</span></span>
+        <span class="plants-category-action">Explore crops <span aria-hidden="true">↗</span></span>
       </a>
-      <a class="plants-category-card crop-medicinal-card" href="#/plants/medicinal" aria-label="Tıbbi bitkileri görüntüle">
+      <a class="plants-category-card crop-medicinal-card" href="#/plants/medicinal" aria-label="View medicinal plants">
         <img src="assets/plants/thyme.jpg" alt="" class="plants-category-photo">
         <span class="plants-category-shade" aria-hidden="true"></span>
-        <span class="plants-category-label"><span class="plants-category-mark" aria-hidden="true">🌿</span> FİTOTERAPİ & SAĞLIK</span>
-        <span class="plants-category-copy"><strong>Tıbbi Bitkiler</strong><span>Adaçayı, kantaron, ekinezya ve şifalı tıbbi türler rehberi.</span></span>
-        <span class="plants-category-action">Ürünleri keşfet <span aria-hidden="true">↗</span></span>
+        <span class="plants-category-label"><span class="plants-category-mark" aria-hidden="true">🌿</span> HERBS & WELLNESS</span>
+        <span class="plants-category-copy"><strong>Medicinal Plants</strong><span>A guide to sage, St. John's wort, echinacea, and other medicinal species.</span></span>
+        <span class="plants-category-action">Explore crops <span aria-hidden="true">↗</span></span>
       </a>
-      <a class="plants-category-card crop-aromatic-card" href="#/plants/aromatic" aria-label="Aromatik bitkileri görüntüle">
+      <a class="plants-category-card crop-aromatic-card" href="#/plants/aromatic" aria-label="View aromatic plants">
         <img src="assets/plants/lavender.jpg" alt="" class="plants-category-photo">
         <span class="plants-category-shade" aria-hidden="true"></span>
-        <span class="plants-category-label"><span class="plants-category-mark" aria-hidden="true">🌸</span> UÇUCU YAĞ & BAHARAT</span>
-        <span class="plants-category-copy"><strong>Aromatik Bitkiler</strong><span>Lavanta, kekik, biberiye ve nane gibi uçucu yağ bitkileri.</span></span>
-        <span class="plants-category-action">Ürünleri keşfet <span aria-hidden="true">↗</span></span>
+        <span class="plants-category-label"><span class="plants-category-mark" aria-hidden="true">🌸</span> ESSENTIAL OILS & SPICES</span>
+        <span class="plants-category-copy"><strong>Aromatic Plants</strong><span>Essential oil and spice crops such as lavender, thyme, rosemary, and mint.</span></span>
+        <span class="plants-category-action">Explore crops <span aria-hidden="true">↗</span></span>
       </a>
-      <a class="plants-category-card crop-forage-card" href="#/plants/forage" aria-label="Yem bitkilerini görüntüle">
+      <a class="plants-category-card crop-forage-card" href="#/plants/forage" aria-label="View forage crops">
         <img src="assets/plants/alfalfa.jpg" alt="" class="plants-category-photo">
         <span class="plants-category-shade" aria-hidden="true"></span>
         <span class="plants-category-label"><span class="plants-category-mark" aria-hidden="true">🍀</span> KABA YEM & MERA</span>
-        <span class="plants-category-copy"><strong>Yem Bitkileri</strong><span>Yonca, korunga ve fiğ gibi protein zengini kaba yemler.</span></span>
-        <span class="plants-category-action">Ürünleri keşfet <span aria-hidden="true">↗</span></span>
+        <span class="plants-category-copy"><strong>Forage Crops</strong><span>Protein-rich forage such as alfalfa, sainfoin, and vetch.</span></span>
+        <span class="plants-category-action">Explore crops <span aria-hidden="true">↗</span></span>
       </a>
     </section>
     </section>
 
     <section class="app-page plan-page" id="plan-page" aria-labelledby="plan-title" hidden>
-    <header class="page-heading"><span class="eyebrow"><span>TARIMYOL · TARLA YÖNETİMİ</span></span><h1 id="plan-title">Planla, takip et, doğru zamanda müdahale et.</h1><p>Sezon planından parsel haritasına ve hava koşullarına dayalı ilaçlama kararlarına kadar tüm saha araçların tek çalışma alanında.</p>
-      <nav class="field-workflow-nav" aria-label="Tarla yönetimi adımları">
-        <button type="button" data-scroll-target="season-plan"><span>01</span> Sezon planı <span aria-hidden="true">↓</span></button>
-        <button type="button" data-scroll-target="parcel-section"><span>02</span> Parsel ve ilaçlama <span aria-hidden="true">↓</span></button>
+    <header class="page-heading"><span class="eyebrow"><span>TARIMYOL · FIELD MANAGEMENT</span></span><h1 id="plan-title">Plan, monitor, and act at the right time.</h1><p>All your field tools in one workspace, from seasonal planning and parcel mapping to weather-informed spraying guidance.</p>
+      <nav class="field-workflow-nav" aria-label="Field management steps">
+        <button type="button" data-scroll-target="season-plan"><span>01</span> Season plan <span aria-hidden="true">↓</span></button>
+        <button type="button" data-scroll-target="parcel-section"><span>02</span> Parcel and spraying <span aria-hidden="true">↓</span></button>
       </nav>
     </header>
-    <section class="workspace" id="season-plan" aria-label="Sezon planı ve ürün analizi">
+    <section class="workspace" id="season-plan" aria-label="Season plan and crop analysis">
       <div class="form-panel">
         <div class="section-heading"><div><span class="step">01 / TARLAN</span><h2>Bilgileri gir</h2></div><span class="leaf-icon">✳</span></div>
         <form id="farm-form">
           <input id="latitude" type="hidden">
           <input id="longitude" type="hidden">
           <fieldset class="form-field-card location-field-card">
-            <legend>Konum ve kayıtlı tarla</legend>
-            <p>Konumunu ara veya kayıtlı tarlalarından birini seç.</p>
+            <legend>Location and saved fields</legend>
+            <p>Search for a location or select one of your saved fields.</p>
             <div class="field-location-controls">
               <div class="field-location-search">
-                <label for="location">Tarla konumu</label>
-                <div class="input-wrap location-search"><span class="input-icon">⌖</span><input id="location" type="text" autocomplete="off" placeholder="İl, ilçe, köy veya mevki yaz"><button id="find-location" type="button">Konumu bul</button></div>
+                <label for="location">Field location</label>
+                <div class="input-wrap location-search"><span class="input-icon">⌖</span><input id="location" type="text" autocomplete="off" placeholder="Enter a province, district, village, or place"><button id="find-location" type="button">Find location</button></div>
               </div>
               <div class="field-location-saved">
-                <label for="quick-field-select">Kayıtlı tarlam</label>
-                <select id="quick-field-select" aria-label="Plan ve harita için kayıtlı tarla seç"><option value="">Kayıtlı tarlalarından seç</option></select>
+                <label for="quick-field-select">Saved field</label>
+                <select id="quick-field-select" aria-label="Select a saved field for planning and mapping"><option value="">Select a saved field</option></select>
               </div>
             </div>
-            <p class="location-status" id="location-status" role="status">Konum yazmaya başla veya kayıtlı tarlanı seç.</p>
+            <p class="location-status" id="location-status" role="status">Start typing a location or select a saved field.</p>
           </fieldset>
-          <div class="two-cols field-row"><div><label class="field-label" for="area">Tarla büyüklüğü</label><div class="input-wrap"><input id="area" type="number" min="0.1" step="0.1" placeholder="Örn. 25" required><span class="unit">dekar</span></div></div><div><label class="field-label" for="soil">Toprak yapısı</label><select id="soil"><option value="unknown">Bilmiyorum</option><option value="clay">Killi</option><option value="loam">Tınlı</option><option value="sandy">Kumlu</option><option value="silty">Siltli</option><option value="red">Kırmızı toprak</option><option value="white">Beyaz / kireçli toprak</option><option value="gravel">Çakıllı toprak</option><option value="alluvial">Alüvyal / taban toprak</option><option value="saline">Tuzlu / alkali toprak</option><option value="humus">Humuslu / organik maddece zengin</option></select></div></div>
-          <label class="field-label crop-label" for="crop">Bu sezon düşündüğün ürün</label>
-          <div class="crop-select-wrap"><span class="crop-symbol">♧</span><select id="crop" required><option value="">Ürün seç</option><option value="wheat">Buğday</option><option value="barley">Arpa</option><option value="corn">Mısır</option><option value="sunflower">Ayçiçeği</option><option value="chickpea">Nohut</option><option value="lentil">Mercimek</option><option value="cotton">Pamuk</option><option value="tomato">Domates</option><option value="potato">Patates</option></select><span class="select-arrow">⌄</span></div>
-          <label class="check-row"><input id="irrigation" type="checkbox"><span class="fake-check"></span><span>Sulama imkânım var</span></label>
-          <div class="two-cols field-row preference-row"><div><label class="field-label" for="priority">Önceliğim</label><select id="priority"><option value="soil">Toprak sağlığı</option><option value="water">Suyu korumak</option><option value="yield">Verim ve gelir</option><option value="risk">Düşük risk / dayanıklılık</option></select></div><div><label class="field-label" for="previous-crop">Geçen yıl ne ekildi?</label><select id="previous-crop"><option value="none">Bilmiyorum / boş</option><option value="wheat">Buğday</option><option value="barley">Arpa</option><option value="corn">Mısır</option><option value="sunflower">Ayçiçeği</option><option value="chickpea">Nohut</option><option value="lentil">Mercimek</option><option value="cotton">Pamuk</option><option value="tomato">Domates</option><option value="potato">Patates</option></select></div></div>
-          <button class="submit-button" type="submit"><span>Yol haritamı oluştur</span><span class="button-arrow">↗</span></button>
-          <div class="form-foot"><span class="lock-icon">◈</span> Konum bilgilerin yalnızca bu analiz için kullanılır.</div>
+          <div class="two-cols field-row"><div><label class="field-label" for="area">Field area</label><div class="input-wrap"><input id="area" type="number" min="0.1" step="0.1" placeholder="e.g. 25" required><span class="unit">decares</span></div></div><div><label class="field-label" for="soil">Soil type</label><select id="soil"><option value="unknown">I don't know</option><option value="clay">Clay</option><option value="loam">Loam</option><option value="sandy">Sandy</option><option value="silty">Silty</option><option value="red">Red soil</option><option value="white">White / calcareous soil</option><option value="gravel">Gravelly soil</option><option value="alluvial">Alluvial / lowland soil</option><option value="saline">Saline / alkaline soil</option><option value="humus">Humus-rich / high organic matter</option></select></div></div>
+          <label class="field-label crop-label" for="crop">Crop planned for this season</label>
+          <div class="crop-select-wrap"><span class="crop-symbol">♧</span><select id="crop" required><option value="">Select a crop</option><option value="wheat">Wheat</option><option value="barley">Barley</option><option value="corn">Corn</option><option value="sunflower">Sunflower</option><option value="chickpea">Chickpea</option><option value="lentil">Lentil</option><option value="cotton">Cotton</option><option value="tomato">Tomato</option><option value="potato">Potato</option></select><span class="select-arrow">⌄</span></div>
+          <label class="check-row"><input id="irrigation" type="checkbox"><span class="fake-check"></span><span>I have access to irrigation</span></label>
+          <div class="two-cols field-row preference-row"><div><label class="field-label" for="priority">My priority</label><select id="priority"><option value="soil">Soil health</option><option value="water">Conserve water</option><option value="yield">Yield and income</option><option value="risk">Lower risk / resilience</option></select></div><div><label class="field-label" for="previous-crop">What was grown last year?</label><select id="previous-crop"><option value="none">I don't know / leave blank</option><option value="wheat">Wheat</option><option value="barley">Barley</option><option value="corn">Corn</option><option value="sunflower">Sunflower</option><option value="chickpea">Chickpea</option><option value="lentil">Lentil</option><option value="cotton">Cotton</option><option value="tomato">Tomato</option><option value="potato">Potato</option></select></div></div>
+          <button class="submit-button" type="submit"><span>Create my farm plan</span><span class="button-arrow">↗</span></button>
+          <div class="form-foot"><span class="lock-icon">◈</span> Your location is used only for this analysis.</div>
         </form>
       </div>
       <div class="results-panel" id="results-panel">
-        <div class="results-empty" id="empty-state"><div class="empty-illustration"><span class="empty-sun"></span><span class="empty-hill hill-a"></span><span class="empty-hill hill-b"></span><span class="empty-sprout">♧</span></div><span class="step">02 / ANALİZİN</span><h2>Sezon planın burada<br>hayat bulacak.</h2><p>Tarla bilgilerini doldur. Konumuna ait NASA POWER iklim verileriyle sana özel bir plan hazırlayalım.</p><div class="empty-source"><span class="source-orbit">✳</span><span><strong>NASA POWER</strong><small>Günlük meteorolojik ve güneş verisi</small></span></div></div>
-        <div class="loading-state hidden" id="loading-state"><div class="loader"></div><span class="step">NASA POWER VERİSİ ALINIYOR</span><h2>İklim verilerini<br>inceliyoruz…</h2><p>Konumuna ait son üç tamamlanmış yılın günlük verileri yükleniyor.</p></div>
+        <div class="results-empty" id="empty-state"><div class="empty-illustration"><span class="empty-sun"></span><span class="empty-hill hill-a"></span><span class="empty-hill hill-b"></span><span class="empty-sprout">♧</span></div><span class="step">02 / YOUR ANALYSIS</span><h2>Your seasonal plan<br>will appear here.</h2><p>Enter your field details and we'll prepare a tailored plan using NASA POWER climate data for your location.</p><div class="empty-source"><span class="source-orbit">✳</span><span><strong>NASA POWER</strong><small>Daily weather and solar data</small></span></div></div>
+        <div class="loading-state hidden" id="loading-state"><div class="loader"></div><span class="step">FETCHING NASA POWER DATA</span><h2>Analyzing climate<br>data…</h2><p>Loading daily data for the last three complete years at your location.</p></div>
         <div class="report hidden" id="report"></div>
       </div>
     </section>
     <section class="parcel-section" id="parcel-section" aria-labelledby="parcel-title">
-      <div class="section-heading"><div><span class="step">02 / PARSEL VE İLAÇLAMA</span><h2 id="parcel-title">Parselini izle, ilaçlamanı planla</h2></div><span class="leaf-icon">⌖</span></div>
-      <p class="parcel-intro">Parsel sınırını haritada işaretle, tarih aralığını seç ve NASA AppEEARS'tan NDVI iste. Son dönem ortalaması parseli renklendirir; ortalama, minimum ve maksimum değerler aşağıda listelenir.</p>
+      <div class="section-heading"><div><span class="step">02 / PARCEL & SPRAYING</span><h2 id="parcel-title">Monitor your parcel and plan spraying</h2></div><span class="leaf-icon">⌖</span></div>
+      <p class="parcel-intro">Mark your parcel boundary on the map, choose a date range, and request NDVI from NASA AppEEARS. The latest period's mean colors the parcel; mean, minimum, and maximum values are listed below.</p>
       <div class="quick-field-bar parcel-field-actions">
-        <div class="quick-field-label"><span>🚜</span><strong>Tarla seçimi ve parsel işlemleri</strong></div>
+        <div class="quick-field-label"><span>🚜</span><strong>Field selection and parcel tools</strong></div>
         <button type="button" class="btn-quick-manage" onclick="window.FarmerAuth && window.FarmerAuth.openModal('farmer-auth-modal')">
-          ➕ Yeni Tarla / Parsel Ekle
+          ➕ Add a Field / Parcel
         </button>
       </div>
 
       <div class="parcel-tools">
-        <input id="parcel-name" type="text" placeholder="Parsel adı (örn. Kuzey tarla)" aria-label="Parsel adı">
-        <input id="parcel-area" type="number" min="0.1" step="0.1" placeholder="Alan · dekar" aria-label="Parsel alanı, dekar">
-        <button id="start-parcel" type="button">Parsel çiz</button>
-        <button id="save-parcel" type="button" disabled>Parseli kaydet</button>
-        <button id="cancel-parcel" type="button" class="quiet-button" hidden>İptal</button>
-        <button id="btn-save-to-farmer" type="button" class="btn-farmer-save" title="Bu parseli çiftçi hesabınıza kaydeder">💾 Tarlalarıma Kaydet</button>
-        <button id="btn-open-farmer-fields" type="button" class="btn-farmer-list" onclick="window.FarmerAuth && window.FarmerAuth.openModal('farmer-auth-modal')">🌾 Tarlalarımdan Seç</button>
-        <span id="parcel-status" role="status">Harita yükleniyor...</span>
+        <input id="parcel-name" type="text" placeholder="Parcel name (e.g. North field)" aria-label="Parcel name">
+        <input id="parcel-area" type="number" min="0.1" step="0.1" placeholder="Area · decares" aria-label="Parcel area, decares">
+        <button id="start-parcel" type="button">Draw parcel</button>
+        <button id="save-parcel" type="button" disabled>Save parcel</button>
+        <button id="cancel-parcel" type="button" class="quiet-button" hidden>Cancel</button>
+        <button id="btn-save-to-farmer" type="button" class="btn-farmer-save" title="Save this parcel to your farmer account">💾 Save to My Fields</button>
+        <button id="btn-open-farmer-fields" type="button" class="btn-farmer-list" onclick="window.FarmerAuth && window.FarmerAuth.openModal('farmer-auth-modal')">🌾 Choose from My Fields</button>
+        <span id="parcel-status" role="status">Loading map...</span>
       </div>
       <div class="tkgm-search">
-        <div class="tkgm-search-title"><strong>Konum veya parsel numarasıyla bul</strong><span>Yeri adıyla ara ya da resmi il, ilçe, mahalle, ada ve parsel bilgilerini gir</span></div>
+        <div class="tkgm-search-title"><strong>Find by location or parcel number</strong><span>Search by place name or enter the official province, district, neighborhood, block, and parcel details</span></div>
         <div class="place-search-fields">
-          <input id="parcel-search-input" type="text" placeholder="Örn: Diyarbakır Kayapınar veya Malatya Akçadağ" aria-label="Tarla arama">
-          <button id="parcel-search-btn" type="button">Konumu bul ⌕</button>
+          <input id="parcel-search-input" type="text" placeholder="e.g. Kayapınar, Diyarbakır or Akçadağ, Malatya" aria-label="Search fields">
+          <button id="parcel-search-btn" type="button">Find location ⌕</button>
         </div>
         <div class="parcel-id-search">
-          <label class="parcel-id-label" for="tkgm-province">TKGM ada / parsel sorgula</label>
+          <label class="parcel-id-label" for="tkgm-province">Search TKGM block / parcel</label>
           <div class="tkgm-fields">
-            <select id="tkgm-province" aria-label="İl"><option value="">İl seç</option></select>
-            <select id="tkgm-district" aria-label="İlçe" disabled><option value="">Önce il seç</option></select>
-            <select id="tkgm-neighborhood" aria-label="Mahalle" disabled><option value="">Önce ilçe seç</option></select>
-            <input id="tkgm-block" type="text" inputmode="numeric" maxlength="10" autocomplete="off" placeholder="Ada no" aria-label="Ada numarası">
-            <input id="tkgm-parcel" type="text" inputmode="numeric" maxlength="10" autocomplete="off" placeholder="Parsel no" aria-label="Parsel numarası">
-            <button id="tkgm-find" type="button">Parseli bul</button>
+            <select id="tkgm-province" aria-label="Province"><option value="">Select province</option></select>
+            <select id="tkgm-district" aria-label="District" disabled><option value="">Select a province first</option></select>
+            <select id="tkgm-neighborhood" aria-label="Neighborhood" disabled><option value="">Select a district first</option></select>
+            <input id="tkgm-block" type="text" inputmode="numeric" maxlength="10" autocomplete="off" placeholder="Block no." aria-label="Block number">
+            <input id="tkgm-parcel" type="text" inputmode="numeric" maxlength="10" autocomplete="off" placeholder="Parcel no." aria-label="Parcel number">
+            <button id="tkgm-find" type="button">Find parcel</button>
           </div>
         </div>
-        <p id="tkgm-status" role="status">İl, ilçe ve mahalleyi seç; ada ve parsel numaralarını yaz.</p>
+        <p id="tkgm-status" role="status">Select a province, district, and neighborhood, then enter the block and parcel numbers.</p>
       </div>
-      <div id="parcel-map" aria-label="Parselleri isaretleme haritasi"></div>
-      <div class="ndvi-legend"><span><i style="background:#c94f42"></i> Düşük NDVI</span><span><i style="background:#e8bd45"></i> Orta</span><span><i style="background:#58a65c"></i> Yüksek</span><small>Haritanın sağ üstünden NDVI, EVI, SMAP toprak nemi, LST yüzey sıcaklığı ve SRTM yükselti katmanlarını açıp kapatın.</small></div>
+      <div id="parcel-map" aria-label="Map for marking parcels"></div>
+      <div class="ndvi-legend"><span><i style="background:#c94f42"></i> Low NDVI</span><span><i style="background:#e8bd45"></i> Medium</span><span><i style="background:#58a65c"></i> High</span><small>Use the map controls at the upper right to toggle NDVI, EVI, SMAP soil moisture, LST surface temperature, and SRTM elevation layers.</small></div>
       <section class="field-layer-gallery" aria-labelledby="field-layer-gallery-title">
         <header class="field-layer-gallery-heading">
           <div>
-            <span class="step">TARLAN · 5 VERİ KATMANI</span>
-            <h3 id="field-layer-gallery-title">Tarlanı farklı gözlerle gör</h3>
-            <p>Beş harita aynı tarla konumunu izler. Haritayı sürükleyerek çevreyi incele; bir katmanı büyük haritada aç.</p>
+            <span class="step">YOUR FIELD · 5 DATA LAYERS</span>
+            <h3 id="field-layer-gallery-title">See your field from different perspectives</h3>
+            <p>All five maps follow the same field location. Drag a map to explore the area, or open a layer on the main map.</p>
           </div>
-          <div class="field-layer-location" id="field-layer-location" role="status">Tarla konumu bekleniyor</div>
+          <div class="field-layer-location" id="field-layer-location" role="status">Waiting for field location</div>
         </header>
         <div class="field-layer-grid">
           <article class="field-layer-card">
-            <div class="field-layer-card-heading"><span class="field-layer-icon vegetation">ND</span><div><h4>Bitki örtüsü · NDVI</h4><small>MODIS Terra · 8 günlük</small></div></div>
-            <div class="field-layer-map" id="ndvi-preview-map" role="img" aria-label="Tarlanın NDVI mini haritası"></div>
-            <div class="field-layer-card-footer"><span>Yeşil bitki yoğunluğu</span><button type="button" data-focus-layer="ndvi">Büyük haritada aç ↗</button></div>
+            <div class="field-layer-card-heading"><span class="field-layer-icon vegetation">ND</span><div><h4>Vegetation · NDVI</h4><small>MODIS Terra · 8-day</small></div></div>
+            <div class="field-layer-map" id="ndvi-preview-map" role="img" aria-label="Field NDVI mini map"></div>
+            <div class="field-layer-card-footer"><span>Green vegetation density</span><button type="button" data-focus-layer="ndvi">Open on main map ↗</button></div>
           </article>
           <article class="field-layer-card">
-            <div class="field-layer-card-heading"><span class="field-layer-icon vegetation">EV</span><div><h4>Bitki canlılığı · EVI</h4><small>MODIS Terra · 8 günlük</small></div></div>
-            <div class="field-layer-map" id="evi-preview-map" role="img" aria-label="Tarlanın EVI mini haritası"></div>
-            <div class="field-layer-card-footer"><span>Gelişmiş bitki indeksi</span><button type="button" data-focus-layer="evi">Büyük haritada aç ↗</button></div>
+            <div class="field-layer-card-heading"><span class="field-layer-icon vegetation">EV</span><div><h4>Vegetation vigor · EVI</h4><small>MODIS Terra · 8-day</small></div></div>
+            <div class="field-layer-map" id="evi-preview-map" role="img" aria-label="Field EVI mini map"></div>
+            <div class="field-layer-card-footer"><span>Enhanced vegetation index</span><button type="button" data-focus-layer="evi">Open on main map ↗</button></div>
           </article>
           <article class="field-layer-card">
-            <div class="field-layer-card-heading"><span class="field-layer-icon moisture">SM</span><div><h4>Toprak nemi · SMAP</h4><small>NASA SMAP · yüzey</small></div></div>
-            <div class="field-layer-map" id="smap-preview-map" role="img" aria-label="Tarlanın SMAP toprak nemi mini haritası"></div>
-            <div class="field-layer-card-footer"><span>Uydu tabanlı nem tahmini</span><button type="button" data-focus-layer="smap">Büyük haritada aç ↗</button></div>
+            <div class="field-layer-card-heading"><span class="field-layer-icon moisture">SM</span><div><h4>Soil moisture · SMAP</h4><small>NASA SMAP · surface</small></div></div>
+            <div class="field-layer-map" id="smap-preview-map" role="img" aria-label="Field SMAP soil moisture mini map"></div>
+            <div class="field-layer-card-footer"><span>Satellite-based moisture estimate</span><button type="button" data-focus-layer="smap">Open on main map ↗</button></div>
           </article>
           <article class="field-layer-card">
-            <div class="field-layer-card-heading"><span class="field-layer-icon temperature">°C</span><div><h4>Yüzey sıcaklığı · LST</h4><small>MODIS Terra · gündüz</small></div></div>
-            <div class="field-layer-map" id="lst-preview-map" role="img" aria-label="Tarlanın LST yüzey sıcaklığı mini haritası"></div>
-            <div class="field-layer-card-footer"><span>8 günlük sıcaklık görünümü</span><button type="button" data-focus-layer="lst">Büyük haritada aç ↗</button></div>
+            <div class="field-layer-card-heading"><span class="field-layer-icon temperature">°C</span><div><h4>Surface temperature · LST</h4><small>MODIS Terra · daytime</small></div></div>
+            <div class="field-layer-map" id="lst-preview-map" role="img" aria-label="Field LST surface temperature mini map"></div>
+            <div class="field-layer-card-footer"><span>8-day temperature view</span><button type="button" data-focus-layer="lst">Open on main map ↗</button></div>
           </article>
           <article class="field-layer-card">
-            <div class="field-layer-card-heading"><span class="field-layer-icon elevation">▲</span><div><h4>Yükselti · SRTM</h4><small>NASA SRTM · arazi</small></div></div>
-            <div class="field-layer-map" id="srtm-preview-map" role="img" aria-label="Tarlanın SRTM yükselti mini haritası"></div>
-            <div class="field-layer-card-footer"><span>Arazi şekli ve yükselti</span><button type="button" data-focus-layer="srtm">Büyük haritada aç ↗</button></div>
+            <div class="field-layer-card-heading"><span class="field-layer-icon elevation">▲</span><div><h4>Elevation · SRTM</h4><small>NASA SRTM · terrain</small></div></div>
+            <div class="field-layer-map" id="srtm-preview-map" role="img" aria-label="Field SRTM elevation mini map"></div>
+            <div class="field-layer-card-footer"><span>Terrain and elevation</span><button type="button" data-focus-layer="srtm">Open on main map ↗</button></div>
           </article>
         </div>
-        <p class="field-layer-note">Zemin haritası © OpenStreetMap katkıcıları · Uydu katmanları NASA GIBS. Veriler bölgesel ölçektedir; küçük parsellerdeki farklılıkları tek başına göstermez, ölçüm tarihine ve piksel çözünürlüğüne bağlıdır.</p>
+        <p class="field-layer-note">Base map © OpenStreetMap contributors · Satellite layers from NASA GIBS. Data is regional in scale and may not show variation within small parcels; results depend on acquisition date and pixel resolution.</p>
       </section>
       
-      <!-- Akıllı Tarımsal Karar Haritası & Eylem Planı (İlaçlama, Gübreleme, Sulama - Rüzgar & Yağmur Analizli) -->
+      <!-- Smart agricultural decision map and action plan: spraying, fertilization, and irrigation guidance based on wind and rain -->
       <div id="agro-advisor-container" class="agro-advisor-container"></div>
       <div id="parcel-list" class="parcel-list"></div>
-      <div class="ndvi-connect"><button id="ndvi-check" type="button">AppEEARS bağlantısını kontrol et</button><span id="ndvi-connection-status" role="status">Token yalnızca yerel sunucudan NASA'ya gönderilir.</span></div>
-      <p class="parcel-disclaimer">NASA/AppEEARS isteği için geçerli bir AppEEARS token'ı gerekir; yaklaşık 48 saatte bir yenilenir. MODIS 250 m piksel çözünürlüğündedir ve küçük parsellerde komşu alanları da etkileyebilir. Parsel çizimleri bu tarayıcıda saklanır.</p>
+      <div class="ndvi-connect"><button id="ndvi-check" type="button">Check AppEEARS connection</button><span id="ndvi-connection-status" role="status">The token is sent to NASA only from the local server.</span></div>
+      <p class="parcel-disclaimer">A valid AppEEARS token is required for NASA/AppEEARS requests and must be refreshed about every 48 hours. MODIS pixels are 250 m wide and may include neighboring areas for small parcels. Parcel drawings are stored in this browser.</p>
     </section>
     </section>
 
     <section class="app-page plants-page" id="plants-page" aria-labelledby="plants-title" hidden>
       <header class="page-heading">
-        <span class="eyebrow"><span>TARIMYOL · BİTKİ REHBERİ</span></span>
-        <h1 id="plants-title">Bitki Türleri ve Ürün Rehberi</h1>
-        <p id="plants-description">İncelemek istediğiniz bitki türünü seçerek ekim, hasat ve detaylı yetiştirme rehberini görüntüleyin.</p>
+        <span class="eyebrow"><span>TARIMYOL · CROP GUIDE</span></span>
+        <h1 id="plants-title">Crop Species and Growing Guide</h1>
+        <p id="plants-description">Choose a crop to explore planting and harvest windows and detailed growing guidance.</p>
       </header>
-      <section class="plants-category-choices" aria-label="Bitki türü seçin">
-        <a class="plants-category-card plants-field-card" href="#/plants/field" aria-label="Tarla bitkilerini görüntüle">
+      <section class="plants-category-choices" aria-label="Choose a crop category">
+        <a class="plants-category-card plants-field-card" href="#/plants/field" aria-label="View field crops">
           <img src="assets/plants/wheat.jpg" alt="" class="plants-category-photo">
           <span class="plants-category-shade" aria-hidden="true"></span>
-          <span class="plants-category-label"><span class="plants-category-mark" aria-hidden="true">🌾</span> TARLA BİTKİLERİ</span>
-          <span class="plants-category-copy"><strong>Tarla Bitkileri</strong><span>Tahıl, baklagil ve endüstri bitkileri için ürün kartları.</span></span>
-          <span class="plants-category-action">Ürünleri keşfet <span aria-hidden="true">↗</span></span>
+          <span class="plants-category-label"><span class="plants-category-mark" aria-hidden="true">🌾</span> FIELD CROPS</span>
+          <span class="plants-category-copy"><strong>Field Crops</strong><span>Crop profiles for cereals, legumes, and industrial crops.</span></span>
+          <span class="plants-category-action">Explore crops <span aria-hidden="true">↗</span></span>
         </a>
-        <a class="plants-category-card plants-garden-card" href="#/plants/garden" aria-label="Meyve ve bağ bitkilerini görüntüle">
+        <a class="plants-category-card plants-garden-card" href="#/plants/garden" aria-label="View fruit and vine crops">
           <img src="assets/plants/apple.jpg" alt="" class="plants-category-photo">
           <span class="plants-category-shade" aria-hidden="true"></span>
-          <span class="plants-category-label"><span class="plants-category-mark" aria-hidden="true">🍎</span> MEYVE & BAĞ</span>
-          <span class="plants-category-copy"><strong>Meyvecilik & Bağ</strong><span>Meyve ağaçları, sert kabuklular ve bağcılık rehberi.</span></span>
-          <span class="plants-category-action">Ürünleri keşfet <span aria-hidden="true">↗</span></span>
+          <span class="plants-category-label"><span class="plants-category-mark" aria-hidden="true">🍎</span> FRUIT & VINES</span>
+          <span class="plants-category-copy"><strong>Fruit & Viticulture</strong><span>A guide to fruit trees, nuts, and grape production.</span></span>
+          <span class="plants-category-action">Explore crops <span aria-hidden="true">↗</span></span>
         </a>
-        <a class="plants-category-card plants-vegetable-card" href="#/plants/vegetable" aria-label="Sebze bitkilerini görüntüle">
+        <a class="plants-category-card plants-vegetable-card" href="#/plants/vegetable" aria-label="View vegetable crops">
           <img src="assets/plants/tomato.jpg" alt="" class="plants-category-photo">
           <span class="plants-category-shade" aria-hidden="true"></span>
-          <span class="plants-category-label"><span class="plants-category-mark" aria-hidden="true">🍅</span> SEBZE ÜRETİMİ</span>
-          <span class="plants-category-copy"><strong>Sebze Bitkileri</strong><span>Açık alan ve örtüaltı sebze dikim ve hasat takvimi.</span></span>
-          <span class="plants-category-action">Ürünleri keşfet <span aria-hidden="true">↗</span></span>
+          <span class="plants-category-label"><span class="plants-category-mark" aria-hidden="true">🍅</span> VEGETABLE PRODUCTION</span>
+          <span class="plants-category-copy"><strong>Vegetable Crops</strong><span>Field and greenhouse vegetables, planting, and harvest windows.</span></span>
+          <span class="plants-category-action">Explore crops <span aria-hidden="true">↗</span></span>
         </a>
-        <a class="plants-category-card plants-medicinal-card" href="#/plants/medicinal" aria-label="Tıbbi bitkileri görüntüle">
+        <a class="plants-category-card plants-medicinal-card" href="#/plants/medicinal" aria-label="View medicinal plants">
           <img src="assets/plants/thyme.jpg" alt="" class="plants-category-photo">
           <span class="plants-category-shade" aria-hidden="true"></span>
-          <span class="plants-category-label"><span class="plants-category-mark" aria-hidden="true">🌿</span> FİTOTERAPİ & SAĞLIK</span>
-          <span class="plants-category-copy"><strong>Tıbbi Bitkiler</strong><span>Adaçayı, kantaron, ekinezya ve şifalı tıbbi türler.</span></span>
-          <span class="plants-category-action">Ürünleri keşfet <span aria-hidden="true">↗</span></span>
+          <span class="plants-category-label"><span class="plants-category-mark" aria-hidden="true">🌿</span> HERBS & WELLNESS</span>
+          <span class="plants-category-copy"><strong>Medicinal Plants</strong><span>Sage, St. John's wort, echinacea, and other medicinal species.</span></span>
+          <span class="plants-category-action">Explore crops <span aria-hidden="true">↗</span></span>
         </a>
-        <a class="plants-category-card plants-aromatic-card" href="#/plants/aromatic" aria-label="Aromatik bitkileri görüntüle">
+        <a class="plants-category-card plants-aromatic-card" href="#/plants/aromatic" aria-label="View aromatic plants">
           <img src="assets/plants/lavender.jpg" alt="" class="plants-category-photo">
           <span class="plants-category-shade" aria-hidden="true"></span>
-          <span class="plants-category-label"><span class="plants-category-mark" aria-hidden="true">🌸</span> UÇUCU YAĞ & BAHARAT</span>
-          <span class="plants-category-copy"><strong>Aromatik Bitkiler</strong><span>Lavanta, kekik, biberiye ve nane gibi uçucu yağ bitkileri.</span></span>
-          <span class="plants-category-action">Ürünleri keşfet <span aria-hidden="true">↗</span></span>
+          <span class="plants-category-label"><span class="plants-category-mark" aria-hidden="true">🌸</span> ESSENTIAL OILS & SPICES</span>
+          <span class="plants-category-copy"><strong>Aromatic Plants</strong><span>Essential-oil and spice crops such as lavender, thyme, rosemary, and mint.</span></span>
+          <span class="plants-category-action">Explore crops <span aria-hidden="true">↗</span></span>
         </a>
-        <a class="plants-category-card plants-forage-card" href="#/plants/forage" aria-label="Yem bitkilerini görüntüle">
+        <a class="plants-category-card plants-forage-card" href="#/plants/forage" aria-label="View forage crops">
           <img src="assets/plants/alfalfa.jpg" alt="" class="plants-category-photo">
           <span class="plants-category-shade" aria-hidden="true"></span>
           <span class="plants-category-label"><span class="plants-category-mark" aria-hidden="true">🍀</span> KABA YEM & MERA</span>
-          <span class="plants-category-copy"><strong>Yem Bitkileri</strong><span>Yonca, korunga ve fiğ gibi protein zengini yem bitkileri.</span></span>
-          <span class="plants-category-action">Ürünleri keşfet <span aria-hidden="true">↗</span></span>
+          <span class="plants-category-copy"><strong>Forage Crops</strong><span>Protein-rich forage such as alfalfa, sainfoin, and vetch.</span></span>
+          <span class="plants-category-action">Explore crops <span aria-hidden="true">↗</span></span>
         </a>
       </section>
       <section class="plants-container" id="plants-container" hidden>
-        <nav class="plants-quick-filter-bar" aria-label="Bitki kategorisi hızlı geçiş">
+        <nav class="plants-quick-filter-bar" aria-label="Quick links to crop categories">
           <div class="plants-filter-pills">
             <a href="#/plants/field" class="plants-filter-pill" data-category="field">
               <span class="pill-icon">🌾</span>
-              <span class="pill-text">Tarla Bitkileri</span>
+              <span class="pill-text">Field Crops</span>
               <span class="pill-count">16</span>
             </a>
             <a href="#/plants/garden" class="plants-filter-pill" data-category="garden">
               <span class="pill-icon">🍎</span>
-              <span class="pill-text">Meyve & Bağ</span>
+              <span class="pill-text">Fruit & Vines</span>
               <span class="pill-count">15</span>
             </a>
             <a href="#/plants/vegetable" class="plants-filter-pill" data-category="vegetable">
               <span class="pill-icon">🍅</span>
-              <span class="pill-text">Sebze Üretimi</span>
+              <span class="pill-text">Vegetables</span>
               <span class="pill-count">8</span>
             </a>
             <a href="#/plants/medicinal" class="plants-filter-pill" data-category="medicinal">
               <span class="pill-icon">🌿</span>
-              <span class="pill-text">Tıbbi Bitkiler</span>
+              <span class="pill-text">Medicinal Plants</span>
               <span class="pill-count">6</span>
             </a>
             <a href="#/plants/aromatic" class="plants-filter-pill" data-category="aromatic">
               <span class="pill-icon">🌸</span>
-              <span class="pill-text">Aromatik Bitkiler</span>
+              <span class="pill-text">Aromatic Plants</span>
               <span class="pill-count">6</span>
             </a>
             <a href="#/plants/forage" class="plants-filter-pill" data-category="forage">
               <span class="pill-icon">🍀</span>
-              <span class="pill-text">Yem Bitkileri</span>
+              <span class="pill-text">Forage Crops</span>
               <span class="pill-count">5</span>
             </a>
           </div>
         </nav>
         <section class="crop-group" id="field-crops-section" aria-labelledby="field-crops-title">
           <header class="crop-group-heading">
-            <div><span class="crop-group-kicker">TARIM ALANI</span><h2 id="field-crops-title">Tarla Bitkileri <span class="crop-count-badge">16 Çeşit</span></h2></div>
-            <p>Tahıllar, yemeklik tane baklagiller, endüstri bitkileri ve yem bitkileri</p>
+            <div><span class="crop-group-kicker">AGRICULTURE</span><h2 id="field-crops-title">Field Crops <span class="crop-count-badge">16 crops</span></h2></div>
+            <p>Cereals, food legumes, industrial crops, and forage crops</p>
           </header>
           <div id="field-crops-grid"></div>
           <section class="field-climate-guide" id="field-climate-guide" aria-labelledby="field-climate-title" hidden>
             <header class="field-climate-heading">
-              <span class="crop-group-kicker">TÜRKİYE · İKLİM · TOPRAK</span>
-              <h3 id="field-climate-title">Tarla bitkileri için bölge ve yetişme koşulları</h3>
-              <p class="field-climate-overview">Tarla bitkileri geniş tarım arazilerinde yetiştirilir; gıda, hayvan yemi ve sanayi için temel ürünleri sağlar. Tahıllar, baklagiller, endüstri bitkileri ve yem bitkileri bu gruptadır. Birçoğu tek yıllık olup tohumla çoğalır; patates yumrusuyla üretilir, yonca ve korunga gibi yem bitkileri ise çok yıllık yaşayabilir.</p>
-              <p>Türkiye'nin farklı iklim ve toprak koşulları çok sayıda tarla bitkisinin yetişmesine imkân verir. Aşağıdaki tablolar tahıl, yemeklik tane baklagil, endüstri ve yem bitkilerini yetişme istekleri ile öne çıkan üretim bölgelerine göre ayırır. Bölge bilgileri geneldir; ilçe, rakım, çeşit, ekim zamanı, su kaynağı ve toprak analizi kararı değiştirebilir.</p>
-              <nav class="field-climate-index" aria-label="Tarla bitkileri alt grupları">
-                <a href="#field-cereals">Tahıllar</a>
-                <a href="#field-pulses">Yemeklik tane baklagiller</a>
-                <a href="#field-industrial">Endüstri bitkileri</a>
-                <a href="#field-forage">Yem bitkileri</a>
+              <span class="crop-group-kicker">TÜRKIYE · CLIMATE · SOILS</span>
+              <h3 id="field-climate-title">Regional growing conditions for field crops</h3>
+              <p class="field-climate-overview">Field crops are grown across large agricultural areas and provide essential products for food, animal feed, and industry. This group includes cereals, legumes, industrial crops, and forage crops. Many are annuals grown from seed; potatoes are propagated from tubers, while forage crops such as alfalfa and sainfoin may be perennial.</p>
+              <p>Türkiye's varied climate and soils support a wide range of field crops. The tables below organize cereals, food legumes, industrial crops, and forage crops by their growing requirements and major production regions. Regional guidance is general; district, elevation, cultivar, planting date, water supply, and soil tests may change the best choice.</p>
+              <nav class="field-climate-index" aria-label="Field crop groups">
+                <a href="#field-cereals">Cereals</a>
+                <a href="#field-pulses">Food legumes</a>
+                <a href="#field-industrial">Industrial crops</a>
+                <a href="#field-forage">Forage crops</a>
               </nav>
               </header>
               <div class="field-climate-grid">
                 <section class="field-climate-card" id="field-cereals" aria-labelledby="field-cereals-title">
-                  <h4 id="field-cereals-title">A. Tahıllar · Serin ve sıcak iklim tahılları</h4>
+                  <h4 id="field-cereals-title">A. Cereals · Cool- and warm-season crops</h4>
                   <div class="field-climate-table-wrap"><table class="field-climate-table">
-                    <thead><tr><th scope="col">Bitki türü</th><th scope="col">En verimli iklim ve toprak koşulları</th><th scope="col">Türkiye'de öne çıkan bölgeler</th></tr></thead>
+                    <thead><tr><th scope="col">Crop</th><th scope="col">Favorable climate and soil conditions</th><th scope="col">Major regions in Türkiye</th></tr></thead>
                     <tbody>
-                      <tr><th scope="row">Buğday</th><td>Büyümede serin ve nemli, olgunlaşmada sıcak ve kurak karasal iklim.</td><td>İç Anadolu, Trakya (Marmara), Güneydoğu Anadolu.</td></tr>
-                      <tr><th scope="row">Arpa</th><td>Buğdaya kıyasla soğuğa, kuraklığa ve tuzluluğa daha dayanıklıdır; erken olgunlaşır.</td><td>İç Anadolu, Doğu Anadolu, Güneydoğu Anadolu.</td></tr>
-                      <tr><th scope="row">Mısır</th><td>Sıcak, bol güneşli ve nemli iklim ister; su tüketimi yüksektir.</td><td>Karadeniz (yağışlı), Akdeniz ve Ege (sulu tarım).</td></tr>
-                      <tr><th scope="row">Çeltik (pirinç)</th><td>Çimlenmeden hasada kadar tava alınmış, su tutan tarlada ve yüksek sıcaklıkta yetişir.</td><td>Marmara (Edirne/Ergene Havzası), Karadeniz (Samsun).</td></tr>
-                      <tr><th scope="row">Yulaf</th><td>Serin ve nemli gelişme koşullarına uyumludur.</td><td>Marmara ve Karadeniz.</td></tr>
-                      <tr><th scope="row">Çavdar</th><td>Soğuk koşullara ve verimliliği düşük topraklara diğer tahıllara göre daha toleranslıdır.</td><td>İç Anadolu ve soğuk-yüksek kesimler.</td></tr>
+                      <tr><th scope="row">Wheat</th><td>Cool, moist conditions during growth, followed by warm, dry continental weather for ripening.</td><td>Central Anatolia, Thrace (Marmara), and Southeastern Anatolia.</td></tr>
+                      <tr><th scope="row">Barley</th><td>More tolerant of cold, drought, and salinity than wheat; matures earlier.</td><td>Central Anatolia, Eastern Anatolia, and Southeastern Anatolia.</td></tr>
+                      <tr><th scope="row">Corn</th><td>Needs warm, sunny, humid conditions and has high water demand.</td><td>Black Sea region (rainfed), Mediterranean and Aegean regions (irrigated).</td></tr>
+                      <tr><th scope="row">Rice</th><td>Grown in warm conditions in level, water-retentive fields from establishment through harvest.</td><td>Marmara (Edirne / Ergene Basin) and the Black Sea region (Samsun).</td></tr>
+                      <tr><th scope="row">Oats</th><td>Adapted to cool, moist growing conditions.</td><td>Marmara and the Black Sea region.</td></tr>
+                      <tr><th scope="row">Rye</th><td>More tolerant than other cereals of cold and low-fertility soils.</td><td>Central Anatolia and cold, high-elevation areas.</td></tr>
                     </tbody>
                   </table></div>
                 </section>
                 <section class="field-climate-card" id="field-pulses" aria-labelledby="field-pulses-title">
-                  <h4 id="field-pulses-title">B. Yemeklik tane baklagiller</h4>
+                  <h4 id="field-pulses-title">B. Food legumes</h4>
                   <div class="field-climate-table-wrap"><table class="field-climate-table">
-                    <thead><tr><th scope="col">Bitki türü</th><th scope="col">En verimli iklim ve toprak koşulları</th><th scope="col">Türkiye'de öne çıkan bölgeler</th></tr></thead>
+                    <thead><tr><th scope="col">Crop</th><th scope="col">Favorable climate and soil conditions</th><th scope="col">Major regions in Türkiye</th></tr></thead>
                     <tbody>
-                      <tr><th scope="row">Kırmızı mercimek</th><td>Sıcağa ve şiddetli kuraklığa dayanıklı baklagillerdendir.</td><td>Güneydoğu Anadolu.</td></tr>
-                      <tr><th scope="row">Yeşil mercimek</th><td>Kırmızı mercimeğe göre daha serin iklim koşullarını tolere edebilir.</td><td>İç Anadolu; özellikle Yozgat, Çorum ve Kırşehir.</td></tr>
-                      <tr><th scope="row">Nohut</th><td>Yarı kurak iklim bitkisidir; sıcağa dayanır ve görece fakir topraklarda yetişebilir.</td><td>İç Anadolu, Ege ve Güneydoğu Anadolu.</td></tr>
-                      <tr><th scope="row">Kuru fasulye</th><td>Ilıman gelişme dönemi ile düzenli yağış veya sulama ister.</td><td>İç Anadolu (sulu tarım), Karadeniz ve Doğu Anadolu.</td></tr>
+                      <tr><th scope="row">Red lentil</th><td>Among the legumes adapted to heat and severe drought.</td><td>Southeastern Anatolia.</td></tr>
+                      <tr><th scope="row">Green lentil</th><td>More tolerant of cool conditions than red lentil.</td><td>Central Anatolia, especially Yozgat, Çorum, and Kırşehir.</td></tr>
+                      <tr><th scope="row">Chickpea</th><td>A semi-arid crop that tolerates heat and can grow in relatively poor soils.</td><td>Central Anatolia, the Aegean, and Southeastern Anatolia.</td></tr>
+                      <tr><th scope="row">Dry bean</th><td>Needs a mild growing season with regular rainfall or irrigation.</td><td>Central Anatolia (irrigated production), the Black Sea region, and Eastern Anatolia.</td></tr>
                     </tbody>
                   </table></div>
                 </section>
                 <section class="field-climate-card" id="field-industrial" aria-labelledby="field-industrial-title">
-                  <h4 id="field-industrial-title">C. Endüstri (sanayi) bitkileri</h4>
+                  <h4 id="field-industrial-title">C. Industrial crops</h4>
                   <div class="field-climate-table-wrap"><table class="field-climate-table">
-                    <thead><tr><th scope="col">Bitki türü</th><th scope="col">En verimli iklim ve toprak koşulları</th><th scope="col">Türkiye'de öne çıkan bölgeler</th></tr></thead>
+                    <thead><tr><th scope="col">Crop</th><th scope="col">Favorable climate and soil conditions</th><th scope="col">Major regions in Türkiye</th></tr></thead>
                     <tbody>
-                      <tr><th scope="row">Pamuk</th><td>Uzun, güneşli ve sıcak büyüme sezonu ister; koza oluşumunda bol suya ihtiyaç duyar.</td><td>Güneydoğu Anadolu, Ege ve Çukurova.</td></tr>
-                      <tr><th scope="row">Ayçiçeği</th><td>Gelişmede yeterli su; çiçeklenme ve olgunlaşmada bol güneş ister.</td><td>Marmara (Trakya), İç Anadolu ve Karadeniz.</td></tr>
-                      <tr><th scope="row">Şeker pancarı</th><td>Serin/ılıman iklim, yeterli su ve gece-gündüz arasında sıcaklık farkı ister.</td><td>İç Anadolu (Konya, Eskişehir) ve Doğu Anadolu.</td></tr>
-                      <tr><th scope="row">Tütün</th><td>Ilıman koşullara uyumludur; kıraç ve humusça daha fakir topraklarda yaprak kalitesi artabilir. Uygun koşullar çeşit ve kullanım amacına göre değişir.</td><td>Ege ve Karadeniz.</td></tr>
-                      <tr><th scope="row">Patates (yumru)</th><td>Serin iklimi, gevşek kumlu-tınlı toprağı ve düzenli suyu sever.</td><td>İç Anadolu (Niğde, Nevşehir) ve Ege (Ödemiş).</td></tr>
+                      <tr><th scope="row">Cotton</th><td>Needs a long, sunny, hot growing season and abundant water during boll formation.</td><td>Southeastern Anatolia, the Aegean, and Çukurova.</td></tr>
+                      <tr><th scope="row">Sunflower</th><td>Needs adequate water during growth and plenty of sunshine during flowering and ripening.</td><td>Marmara (Thrace), Central Anatolia, and the Black Sea region.</td></tr>
+                      <tr><th scope="row">Sugar beet</th><td>Needs a cool-to-mild climate, sufficient water, and a day–night temperature range.</td><td>Central Anatolia (Konya, Eskişehir) and Eastern Anatolia.</td></tr>
+                      <tr><th scope="row">Tobacco</th><td>Adapted to mild conditions; leaf quality may improve in dryland, lower-humus soils. Requirements vary by cultivar and end use.</td><td>Aegean and Black Sea regions.</td></tr>
+                      <tr><th scope="row">Potato (tuber)</th><td>Prefers a cool climate, loose sandy loam, and consistent water.</td><td>Central Anatolia (Niğde, Nevşehir) and the Aegean (Ödemiş).</td></tr>
                     </tbody>
                   </table></div>
                 </section>
                 <section class="field-climate-card" id="field-forage" aria-labelledby="field-forage-title">
-                  <h4 id="field-forage-title">D. Yem bitkileri</h4>
+                  <h4 id="field-forage-title">D. Forage crops</h4>
                   <div class="field-climate-table-wrap"><table class="field-climate-table">
-                    <thead><tr><th scope="col">Bitki türü</th><th scope="col">En verimli iklim ve toprak koşulları</th><th scope="col">Türkiye'de öne çıkan bölgeler</th></tr></thead>
+                    <thead><tr><th scope="col">Crop</th><th scope="col">Favorable climate and soil conditions</th><th scope="col">Major regions in Türkiye</th></tr></thead>
                     <tbody>
-                      <tr><th scope="row">Yonca</th><td>Sıcak koşulları sever ve derin köklenir; yüksek verim için düzenli sulama ister.</td><td>İç Anadolu, Ege ve Doğu Anadolu.</td></tr>
-                      <tr><th scope="row">Korunga</th><td>Kireçli, zayıf, kurak ve kıraç topraklara yoncadan daha dayanıklıdır.</td><td>İç Anadolu ve Doğu Anadolu.</td></tr>
-                      <tr><th scope="row">Fiğ</th><td>Serin iklimde, yağışlı koşullarda iyi gelişir.</td><td>İç Anadolu, Karadeniz ve Marmara.</td></tr>
+                      <tr><th scope="row">Alfalfa</th><td>Prefers warm conditions and develops deep roots; regular irrigation supports high yields.</td><td>Central Anatolia, the Aegean, and Eastern Anatolia.</td></tr>
+                      <tr><th scope="row">Sainfoin</th><td>More tolerant than alfalfa of calcareous, poor, dry, and marginal soils.</td><td>Central and Eastern Anatolia.</td></tr>
+                      <tr><th scope="row">Vetch</th><td>Grows well in cool climates with adequate rainfall.</td><td>Central Anatolia, the Black Sea region, and Marmara.</td></tr>
                     </tbody>
                   </table></div>
                 </section>
               </div>
-              <p class="field-climate-source">Kaynak: Kullanıcının sağladığı <em>Tarla Bitkileri Rehberi.pdf</em> ve eklediği yetiştiricilik metni. Bilgiler dört alt grupta düzenlenmiştir. Bölge ve iklim bilgileri genel yönlendirmedir; ekim kararı öncesinde yerel tarım danışmanlığı, güncel su durumu ve toprak analiziyle doğrulanmalıdır.</p>
+              <p class="field-climate-source">Source: The user-provided <em>Field Crops Guide.pdf</em> and accompanying cultivation notes. Information is organized into four groups. Regional and climate guidance is general; confirm local recommendations, current water availability, and soil test results before planting.</p>
           </section>
           <section class="plant-topic-section" aria-labelledby="field-nature-title" hidden>
             <header class="plant-topic-heading">
-              <span class="crop-group-kicker">DOĞAL ALANLAR · BİYOÇEŞİTLİLİK</span>
-              <h3 id="field-nature-title">Tarım alanlarının ötesinde bitki toplulukları</h3>
-              <p>Orman, mera, sulak alan ve bozkırlardaki bitkiler; üretim değerinin yanında suyu, toprağı ve canlı çeşitliliğini destekler.</p>
-              <nav class="field-climate-index" aria-label="Doğal ve özel bitki grupları">
-                <a href="#field-forest">Orman ve endüstriyel ağaçlar</a>
-                <a href="#field-meadow">Doğal çayır ve mera</a>
+              <span class="crop-group-kicker">NATURAL AREAS · BIODIVERSITY</span>
+              <h3 id="field-nature-title">Plant communities beyond farmland</h3>
+              <p>Plants in forests, pastures, wetlands, and steppes support water, soils, and biodiversity as well as providing economic value.</p>
+              <nav class="field-climate-index" aria-label="Natural and specialized plant groups">
+                <a href="#field-forest">Forests and industrial trees</a>
+                <a href="#field-meadow">Natural meadows and pastures</a>
                 <a href="#field-wetland">Su ve sulak alan</a>
-                <a href="#field-endemic">Türkiye endemikleri</a>
-                <a href="#field-weeds">Yabancı otlar</a>
-                <a href="#field-extreme">Ekstrem koşul bitkileri</a>
+                <a href="#field-endemic">Türkiye's endemic plants</a>
+                <a href="#field-weeds">Weeds</a>
+                <a href="#field-extreme">Plants adapted to extreme conditions</a>
               </nav>
             </header>
             <div class="plant-topic-grid">
               <article class="plant-topic-card" id="field-forest">
-                <h4>Orman ve Endüstriyel Ağaçlar</h4>
-                <figure><img src="https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fc/Ergaki%2C_Siberian_pine_forest_with_spruce_trees%2C_Sayan_Mountains%2C_Siberia%2C_Russia.jpg/1280px-Ergaki%2C_Siberian_pine_forest_with_spruce_trees%2C_Sayan_Mountains%2C_Siberia%2C_Russia.jpg" alt="Dağ yamacında gelişen çam ve ladin ormanı" loading="lazy"><figcaption><a href="https://commons.wikimedia.org/wiki/File:Ergaki,_Siberian_pine_forest_with_spruce_trees,_Sayan_Mountains,_Siberia,_Russia.jpg" target="_blank" rel="noopener noreferrer">Fotoğraf ve kaynak: Vyacheslav Argenberg, CC BY 4.0</a></figcaption></figure>
-                <p><strong>Tanım ve kullanım:</strong> Orman ağaçları doğal habitat, karbon depolama, su döngüsü ve toprak korumasında rol oynar; kereste, kâğıt, reçine ve biyokütle sağlar.</p>
-                <p><strong>Yaşam ve çoğalma:</strong> Çam, ladin, sedir, meşe ve kayın gibi türler çok yıllık ve odunsudur. Tohumdan fidan, kavak gibi türlerde çelikle çoğaltma kullanılır; derin kök ve kalınlaşan gövde geliştirirler.</p>
-                <p><strong>İklim ve örnekler:</strong> Ladin ve kayın serin-nemli; kızılçam ve bazı meşeler daha sıcak ve kurak sahalara uyumludur. Toprak derinliği, drenaj, yangın ve kuraklık riski dikkate alınır. Örnekler: kızılçam, karaçam, sarıçam, sedir, ladin, meşe, kayın ve kavak.</p>
+                <h4>Forests and Industrial Trees</h4>
+                <figure><img src="https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fc/Ergaki%2C_Siberian_pine_forest_with_spruce_trees%2C_Sayan_Mountains%2C_Siberia%2C_Russia.jpg/1280px-Ergaki%2C_Siberian_pine_forest_with_spruce_trees%2C_Sayan_Mountains%2C_Siberia%2C_Russia.jpg" alt="Pine and spruce forest on a mountain slope" loading="lazy"><figcaption><a href="https://commons.wikimedia.org/wiki/File:Ergaki,_Siberian_pine_forest_with_spruce_trees,_Sayan_Mountains,_Siberia,_Russia.jpg" target="_blank" rel="noopener noreferrer">Photo and source: Vyacheslav Argenberg, CC BY 4.0</a></figcaption></figure>
+                <p><strong>Overview and uses:</strong> Forest trees support natural habitats, carbon storage, the water cycle, and soil conservation; they also provide timber, paper, resin, and biomass.</p>
+                <p><strong>Life cycle and reproduction:</strong> Pine, spruce, cedar, oak, and beech are perennial woody plants. They are usually propagated from seed; some species, such as poplar, can also be propagated by cuttings. They develop deep roots and woody trunks.</p>
+                <p><strong>Climate and examples:</strong> Spruce and beech favor cool, moist sites, while Turkish red pine and some oaks tolerate warmer, drier areas. Consider soil depth, drainage, fire, and drought risk. Examples include Turkish red pine, black pine, Scots pine, cedar, spruce, oak, beech, and poplar.</p>
               </article>
               <article class="plant-topic-card" id="field-meadow">
-                <h4>Doğal Çayır ve Mera Bitkileri</h4>
-                <figure><img src="https://thumb.wikimedia.org/wikipedia/commons/thumb/1/1b/Alpine_meadows%2C_Grassland%2C_Georgia.jpg/1280px-Alpine_meadows%2C_Grassland%2C_Georgia.jpg" alt="Yabani çiçekler ve otlarla kaplı dağ çayırı" loading="lazy"><figcaption><a href="https://commons.wikimedia.org/wiki/File:Alpine_meadows,_Grassland,_Georgia.jpg" target="_blank" rel="noopener noreferrer">Fotoğraf ve kaynak: Vyacheslav Argenberg, CC BY 4.0</a></figcaption></figure>
-                <p><strong>Tanım ve kullanım:</strong> Çayır ve meralar hayvan yemi üretir; yaban hayatına habitat sunar, erozyonu azaltır ve yağış suyunun tutulmasına katkı verir. Çayırlar çoğunlukla biçilir, meralar otlatılır.</p>
-                <p><strong>Yaşam ve çoğalma:</strong> Topluluklarda çok yıllık buğdaygiller ve baklagiller yaygındır. Yumak oluşturan türler, rizomla yayılan ayrıklar ve kazık köklü yonca/korunga; tohum, kardeşlenme veya toprak altı sürgünleriyle yenilenir.</p>
-                <p><strong>İklim ve örnekler:</strong> Tür bileşimini yağış, yükselti, sıcaklık, toprak derinliği ve otlatma baskısı belirler. Yerel koşullara göre yumak, ayrık, çayır salkımotu, üçgül, yonca, korunga ve geven görülür. Aşırı otlatma örtüyü zayıflatır; dinlendirme ve dönüşümlü otlatma yenilenmeyi destekler.</p>
+                <h4>Natural Meadow and Pasture Plants</h4>
+                <figure><img src="https://thumb.wikimedia.org/wikipedia/commons/thumb/1/1b/Alpine_meadows%2C_Grassland%2C_Georgia.jpg/1280px-Alpine_meadows%2C_Grassland%2C_Georgia.jpg" alt="Mountain meadow covered with wildflowers and grasses" loading="lazy"><figcaption><a href="https://commons.wikimedia.org/wiki/File:Alpine_meadows,_Grassland,_Georgia.jpg" target="_blank" rel="noopener noreferrer">Photo and source: Vyacheslav Argenberg, CC BY 4.0</a></figcaption></figure>
+                <p><strong>Overview and uses:</strong> Meadows and pastures provide livestock forage, habitat for wildlife, erosion control, and rainfall infiltration. Meadows are generally cut for hay, while pastures are grazed.</p>
+                <p><strong>Life cycle and reproduction:</strong> Perennial grasses and legumes are common. Bunchgrasses, rhizomatous couch grasses, and tap-rooted alfalfa or sainfoin regenerate from seed, tillers, or underground shoots.</p>
+                <p><strong>Climate and examples:</strong> Rainfall, elevation, temperature, soil depth, and grazing pressure shape plant communities. Depending on local conditions, examples include fescue, couch grass, meadow foxtail, clover, alfalfa, sainfoin, and Astragalus. Overgrazing weakens plant cover; resting and rotational grazing support recovery.</p>
               </article>
               <article class="plant-topic-card" id="field-wetland">
-                <h4>Su ve Sulak Alan (Sucul) Bitkileri</h4>
-                <figure><img src="https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d3/Reeds_of_Olympos_Beyda%C4%9Flar%C4%B1_National_Park.jpg/1280px-Reeds_of_Olympos_Beyda%C4%9Flar%C4%B1_National_Park.jpg" alt="Olympos Beydağları sulak alanında saz topluluğu" loading="lazy"><figcaption><a href="https://commons.wikimedia.org/wiki/File:Reeds_of_Olympos_Beydağları_National_Park.jpg" target="_blank" rel="noopener noreferrer">Fotoğraf ve kaynak: Nur Çağlar, CC BY-SA 4.0</a></figcaption></figure>
-                <p><strong>Tanım ve kullanım:</strong> Suda veya suya doygun toprakta yaşayan bu bitkiler kıyı erozyonunu azaltır, besin maddelerini tutar ve su canlıları ile kuşlara barınak sağlar.</p>
-                <p><strong>Yaşam ve çoğalma:</strong> Saz ve hasırotunun kökleri çamura tutunurken gövdeleri su üstüne çıkar; nilüferin yaprakları yüzer, su mercimeği serbestçe yüzebilir. Hava boşluklu dokular oksijen taşımaya yardım eder. Tohum, rizom ve bitki parçalarıyla yayılım görülür.</p>
-                <p><strong>İklim ve örnekler:</strong> Su derinliği, akış, ışık, sıcaklık ve tuzluluk tür seçimini belirler. Örnekler: saz (Phragmites), hasırotu (Typha), nilüfer ve su mercimeği. Sulak alanlarda yerel türler tercih edilmeli, istilacı bitkiler doğaya bırakılmamalıdır.</p>
+                <h4>Water and Wetland Plants (Aquatic Plants)</h4>
+                <figure><img src="https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d3/Reeds_of_Olympos_Beyda%C4%9Flar%C4%B1_National_Park.jpg/1280px-Reeds_of_Olympos_Beyda%C4%9Flar%C4%B1_National_Park.jpg" alt="Reed beds in the wetlands of Olympos Beydağları National Park" loading="lazy"><figcaption><a href="https://commons.wikimedia.org/wiki/File:Reeds_of_Olympos_Beydağları_National_Park.jpg" target="_blank" rel="noopener noreferrer">Photo and source: Nur Çağlar, CC BY-SA 4.0</a></figcaption></figure>
+                <p><strong>Overview and uses:</strong> Plants in water or saturated soils reduce shoreline erosion, retain nutrients, and provide habitat for aquatic life and birds.</p>
+                <p><strong>Life cycle and reproduction:</strong> Reeds and cattails anchor in mud while their stems extend above the water. Water lilies have floating leaves, and duckweed floats freely. Air-filled tissues help transport oxygen. These plants spread by seed, rhizomes, and plant fragments.</p>
+                <p><strong>Climate and examples:</strong> Water depth, flow, light, temperature, and salinity determine which species can grow. Examples include common reed (Phragmites), cattail (Typha), water lily, and duckweed. Favor native species in wetlands and never release invasive plants into the wild.</p>
               </article>
               <article class="plant-topic-card" id="field-endemic">
-                <h4>Türkiye’nin Endemik Bitkileri</h4>
-                <figure><img src="https://upload.wikimedia.org/wikipedia/commons/8/87/Verbascum_wiedemannianum.jpg" alt="Anadolu bozkırında endemik Verbascum wiedemannianum" loading="lazy"><figcaption><a href="https://commons.wikimedia.org/wiki/File:Verbascum_wiedemannianum.jpg" target="_blank" rel="noopener noreferrer">Fotoğraf ve kaynak: Gerhard Pils, CC BY-SA 3.0</a></figcaption></figure>
-                <p><strong>Tanım ve kullanım:</strong> Endemik türlerin doğal yayılışı belirli bir coğrafyayla sınırlıdır. Türkiye’nin iklim ve jeoloji çeşitliliği, yalnızca burada doğal olarak bulunan türlerin gelişmesine olanak verir. Endemik olmak tek başına tehlike altında olmak anlamına gelmez.</p>
-                <p><strong>Yaşam ve çoğalma:</strong> Tek yıllık otsular, çok yıllık soğanlılar, çalılar ve ağaçlar bu gruba girebilir. Çoğu tohumla; bazıları soğan, rizom veya yumruyla çoğalır. Doğadan söküm dar yayılışlı popülasyonlara zarar verebilir.</p>
-                <p><strong>İklim ve örnekler:</strong> Dağ, bozkır ve özel jeolojik zeminlere bağlı türlerin istekleri farklıdır; yerel habitat koşulları korunmalıdır. Örnekler: Ankara çiğdemi (Crocus ancyrensis), Eber sarısı (Thermopsis turcica), sevgi çiçeği (Centaurea tchihatcheffii), Kasnak meşesi (Quercus vulcanica) ve Kazdağı göknarı (Abies equi-trojani).</p>
+                <h4>Türkiye's Endemic Plants</h4>
+                <figure><img src="https://upload.wikimedia.org/wikipedia/commons/8/87/Verbascum_wiedemannianum.jpg" alt="Endemic Verbascum wiedemannianum in the Anatolian steppe" loading="lazy"><figcaption><a href="https://commons.wikimedia.org/wiki/File:Verbascum_wiedemannianum.jpg" target="_blank" rel="noopener noreferrer">Photo and source: Gerhard Pils, CC BY-SA 3.0</a></figcaption></figure>
+                <p><strong>Overview and uses:</strong> Endemic species occur naturally only in a specific geographic area. Türkiye's varied climate and geology support species found nowhere else. Endemism alone does not mean a species is threatened.</p>
+                <p><strong>Life cycle and reproduction:</strong> This group includes annual herbs, perennial bulb plants, shrubs, and trees. Most reproduce by seed; some use bulbs, rhizomes, or tubers. Collecting plants from the wild can harm populations with limited ranges.</p>
+                <p><strong>Climate and examples:</strong> Species adapted to mountains, steppe, and specialized geological substrates have distinct needs; protect their local habitats. Examples include Ankara crocus (Crocus ancyrensis), Eber yellow (Thermopsis turcica), love flower (Centaurea tchihatcheffii), Kasnak oak (Quercus vulcanica), and Kazdağı fir (Abies equi-trojani).</p>
               </article>
               <article class="plant-topic-card" id="field-weeds">
-                <h4>Yabancı Otlar (Herboloji)</h4>
-                <figure><img src="https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d7/00_1463_Klatschmohn_%28Papaver_rhoeas%29.jpg/1280px-00_1463_Klatschmohn_%28Papaver_rhoeas%29.jpg" alt="Tarla kenarında yetişen gelincik bitkisi" loading="lazy"><figcaption><a href="https://commons.wikimedia.org/wiki/File:00_1463_Klatschmohn_(Papaver_rhoeas).jpg" target="_blank" rel="noopener noreferrer">Fotoğraf ve kaynak: W. Bulach, CC BY-SA 4.0</a></figcaption></figure>
-                <p><strong>Tanım ve kullanım:</strong> Herboloji yabancı otları ve tarımla ilişkilerini inceler. Tarlada istenmeyen bir bitki başka habitatta polen, nektar ve örtü sağlayabilir; üründe su, ışık ve besin rekabetine yol açabilir.</p>
-                <p><strong>Yaşam ve çoğalma:</strong> Tek yıllık türler tohum bankası oluşturabilir; ayrık ve kanyaş rizomlarla, tarla sarmaşığı kök sürgünleriyle yayılır. Tohum ve bitki parçaları rüzgâr, su, hayvan veya tarım makineleriyle taşınabilir.</p>
-                <p><strong>İklim ve örnekler:</strong> Çimlenme zamanı sıcaklık, nem, ışık ve toprak işlemeye bağlıdır. Yabani yulaf, tilki kuyruğu, gelincik, sirken, kanyaş, ayrık ve tarla sarmaşığı yaygın örneklerdir. Yönetimde münavebe, temiz tohumluk ve mekanik/kültürel yöntemler değerlendirilir; ilaç kararları tanı ve ruhsat etiketine dayanmalıdır.</p>
+                <h4>Weeds (Weed Science)</h4>
+                <figure><img src="https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d7/00_1463_Klatschmohn_%28Papaver_rhoeas%29.jpg/1280px-00_1463_Klatschmohn_%28Papaver_rhoeas%29.jpg" alt="Poppy growing along a field edge" loading="lazy"><figcaption><a href="https://commons.wikimedia.org/wiki/File:00_1463_Klatschmohn_(Papaver_rhoeas).jpg" target="_blank" rel="noopener noreferrer">Photo and source: W. Bulach, CC BY-SA 4.0</a></figcaption></figure>
+                <p><strong>Overview and uses:</strong> Weed science examines weeds and their relationship to agriculture. A plant unwanted in a field may provide pollen, nectar, and ground cover in another habitat; in crops, it can compete for water, light, and nutrients.</p>
+                <p><strong>Life cycle and reproduction:</strong> Annual species may build a persistent seed bank; couch grass and johnsongrass spread by rhizomes, while field bindweed spreads by root shoots. Seeds and plant fragments can be carried by wind, water, animals, or farm machinery.</p>
+                <p><strong>Climate and examples:</strong> Germination depends on temperature, moisture, light, and soil disturbance. Common examples include wild oat, foxtail, poppy, lamb's quarters, johnsongrass, couch grass, and field bindweed. Management can include rotation, clean seed, and mechanical or cultural methods; herbicide decisions should follow correct identification and registered product labels.</p>
               </article>
               <article class="plant-topic-card" id="field-extreme">
-                <h4>Egzotik ve Ekstrem Koşul Bitkileri</h4>
-                <figure><img src="https://thumb.wikimedia.org/wikipedia/commons/thumb/3/37/Venus_Flytrap_showing_trigger_hairs.jpg/1280px-Venus_Flytrap_showing_trigger_hairs.jpg" alt="Böcek yakalayan yaprak tuzaklarıyla sinekkapan" loading="lazy"><figcaption><a href="https://commons.wikimedia.org/wiki/File:Venus_Flytrap_showing_trigger_hairs.jpg" target="_blank" rel="noopener noreferrer">Fotoğraf ve kaynak: Noah Elhardt, CC BY-SA 2.5</a></figcaption></figure>
-                <p><strong>Tanım ve kullanım:</strong> Bu ortak bir botanik sınıfı değil; etobur, parazit ve çöl bitkileri gibi farklı grupların sıra dışı uyumlarını anlatan bir başlıktır. Egzotik tür doğal yayılış alanı dışındadır; doğaya salınması istilacı tür riski yaratabilir.</p>
-                <p><strong>Yaşam ve çoğalma:</strong> Sinekkapan fotosentez yapar, böceklerden mineral alır. Küsküt ve canavar otu konukçudan kaynak alır; kaktüs ve sukulentler suyu gövde veya yapraklarında depolar. Tohum, yavru, çelik veya soğanla çoğalma türe göre değişir.</p>
-                <p><strong>İklim ve örnekler:</strong> Sinekkapan gibi bataklık etoburları güneşli, sürekli nemli, asitli ve besince fakir zemin ister; çöl kaktüsleri güneş ve hızlı drenaj ister. Örnekler: Dionaea, Drosera, Nepenthes, küsküt, canavar otu, ökseotu, kaktüs ve agav. Doğal habitat ve tür gereksinimleri ayrı ayrı gözetilmelidir.</p>
+                <h4>Exotic Plants and Extreme Environments</h4>
+                <figure><img src="https://thumb.wikimedia.org/wikipedia/commons/thumb/3/37/Venus_Flytrap_showing_trigger_hairs.jpg/1280px-Venus_Flytrap_showing_trigger_hairs.jpg" alt="Venus flytrap with leaf traps that capture insects" loading="lazy"><figcaption><a href="https://commons.wikimedia.org/wiki/File:Venus_Flytrap_showing_trigger_hairs.jpg" target="_blank" rel="noopener noreferrer">Photo and source: Noah Elhardt, CC BY-SA 2.5</a></figcaption></figure>
+                <p><strong>Overview and uses:</strong> This is not a formal botanical class; it groups unusual adaptations found in carnivorous, parasitic, and desert plants. An exotic species grows outside its native range and may become invasive if released into the wild.</p>
+                <p><strong>Life cycle and reproduction:</strong> Venus flytraps photosynthesize and obtain minerals from insects. Dodder and broomrape draw resources from host plants; cacti and succulents store water in stems or leaves. Reproduction by seed, offsets, cuttings, or bulbs varies by species.</p>
+                <p><strong>Climate and examples:</strong> Carnivorous wetland plants such as Venus flytraps need sunny, consistently moist, acidic, nutrient-poor conditions; desert cacti need sun and rapid drainage. Examples include Dionaea, Drosera, Nepenthes, dodder, broomrape, mistletoe, cacti, and agave. Consider the natural habitat and needs of each species.</p>
               </article>
             </div>
           </section>
         </section>
         <section class="crop-group" id="garden-crops-section" aria-labelledby="garden-crops-title">
           <header class="crop-group-heading">
-            <div><span class="crop-group-kicker">MEYVECİLİK & BAĞ</span><h2 id="garden-crops-title">Meyvecilik ve Bağcılık <span class="crop-count-badge">15 Çeşit</span></h2></div>
-            <p>Meyve ağaçları, sert kabuklular, turunçgiller ve bağcılık rehberi</p>
+            <div><span class="crop-group-kicker">FRUIT & VITICULTURE</span><h2 id="garden-crops-title">Fruit and Viticulture <span class="crop-count-badge">15 crops</span></h2></div>
+            <p>A guide to fruit trees, nuts, citrus, and grape production</p>
           </header>
           <figure class="field-crop-feature garden-crop-feature" hidden>
-            <img src="https://thumb.wikimedia.org/wikipedia/commons/thumb/6/68/Orchards_in_snow%2C_Sangla%2C_Himachal_Pradesh%2C_India.jpg/1280px-Orchards_in_snow%2C_Sangla%2C_Himachal_Pradesh%2C_India.jpg" alt="Kışın dinlenme dönemindeki meyve ağaçlarından oluşan bahçe" loading="lazy">
-            <figcaption>Meyve bahçeleri, sebze üretimi, bağlar ve süs bitkileri bahçe bitkileri yetiştiriciliğinin ana alanlarıdır.</figcaption>
+            <img src="https://thumb.wikimedia.org/wikipedia/commons/thumb/6/68/Orchards_in_snow%2C_Sangla%2C_Himachal_Pradesh%2C_India.jpg/1280px-Orchards_in_snow%2C_Sangla%2C_Himachal_Pradesh%2C_India.jpg" alt="Fruit orchard in winter dormancy" loading="lazy">
+            <figcaption>Fruit orchards, vegetable production, vineyards, and ornamental plants are major areas of horticulture.</figcaption>
           </figure>
-          <nav class="field-climate-index garden-topic-index" aria-label="Bahçe bitkileri alt grupları" hidden>
-            <a href="#garden-fruit">Meyvecilik</a>
-            <a href="#garden-vegetables">Sebzecilik</a>
-            <a href="#garden-viticulture">Bağcılık</a>
-            <a href="#garden-ornamental">Süs bitkileri</a>
-            <a href="#garden-aromatic">Tıbbi ve aromatik bitkiler</a>
+          <nav class="field-climate-index garden-topic-index" aria-label="Horticultural crop groups" hidden>
+            <a href="#garden-fruit">Fruit production</a>
+            <a href="#garden-vegetables">Vegetable production</a>
+            <a href="#garden-viticulture">Viticulture</a>
+            <a href="#garden-ornamental">Ornamental plants</a>
+            <a href="#garden-aromatic">Medicinal and aromatic plants</a>
           </nav>
           <div class="plant-topic-grid garden-topic-grid" hidden>
             <article class="plant-topic-card" id="garden-fruit">
-              <h4>Meyvecilik</h4>
-              <figure><img src="https://thumb.wikimedia.org/wikipedia/commons/thumb/6/68/Orchards_in_snow%2C_Sangla%2C_Himachal_Pradesh%2C_India.jpg/1280px-Orchards_in_snow%2C_Sangla%2C_Himachal_Pradesh%2C_India.jpg" alt="Kış döneminde meyve ağaçlarından oluşan elma bahçesi" loading="lazy"><figcaption><a href="https://commons.wikimedia.org/wiki/File:Orchards_in_snow,_Sangla,_Himachal_Pradesh,_India.jpg" target="_blank" rel="noopener noreferrer">Fotoğraf ve kaynak: UnpetitproleX, CC BY-SA 4.0</a></figcaption></figure>
-              <p><strong>Tanım ve kullanım:</strong> Meyve ağaçları ve çalıları taze tüketim, kurutma, meyve suyu ve işleme sanayisi için yetiştirilir. Bahçeler ayrıca tozlayıcılara ve tarımsal peyzaja katkı verir.</p>
-              <p><strong>Yaşam ve çoğalma:</strong> Meyve ağaçları çok yıllık ve odunsudur. Tohumdan çöğür elde edilir; çeşidi korumak için çoğunlukla anaç üzerine aşı yapılır. Taç şekli, budama ve tozlayıcı çeşitler verim ve kaliteyi etkiler.</p>
-              <p><strong>İklim ve örnekler:</strong> Elma, armut ve kirazda kış soğuklaması önemlidir; turunçgiller donlara duyarlıdır. Derin, drenajlı tınlı toprak ve türe uygun sulama tercih edilir. Elma, kayısı, kiraz, zeytin, ceviz ve turunçgiller öne çıkan örneklerdir.</p>
+              <h4>Fruit Production</h4>
+              <figure><img src="https://thumb.wikimedia.org/wikipedia/commons/thumb/6/68/Orchards_in_snow%2C_Sangla%2C_Himachal_Pradesh%2C_India.jpg/1280px-Orchards_in_snow%2C_Sangla%2C_Himachal_Pradesh%2C_India.jpg" alt="Apple orchard during winter dormancy" loading="lazy"><figcaption><a href="https://commons.wikimedia.org/wiki/File:Orchards_in_snow,_Sangla,_Himachal_Pradesh,_India.jpg" target="_blank" rel="noopener noreferrer">Photo and source: UnpetitproleX, CC BY-SA 4.0</a></figcaption></figure>
+              <p><strong>Overview and uses:</strong> Fruit trees and shrubs are grown for fresh markets, drying, juice, and food processing. Orchards can also support pollinators and agricultural landscapes.</p>
+              <p><strong>Life cycle and propagation:</strong> Fruit trees are perennial and woody. Seedlings can be raised from seed; grafting onto rootstocks is commonly used to preserve cultivars. Canopy shape, pruning, and pollinizer cultivars affect yield and quality.</p>
+              <p><strong>Climate and examples:</strong> Apples, pears, and cherries need winter chill, while citrus is frost-sensitive. Deep, well-drained loam and irrigation suited to the species are preferred. Examples include apple, apricot, cherry, olive, walnut, and citrus.</p>
             </article>
             <article class="plant-topic-card" id="garden-vegetables">
-              <h4>Sebzecilik</h4>
-              <figure><img src="https://thumb.wikimedia.org/wikipedia/commons/thumb/1/10/Vegetable_garden_at_Eisenhower_National_Historic_Site%2C_tomato_plants._%28369a4bd2-5401-4339-82f2-7921b3037821%29.jpg/1280px-Vegetable_garden_at_Eisenhower_National_Historic_Site%2C_tomato_plants._%28369a4bd2-5401-4339-82f2-7921b3037821%29.jpg" alt="Bahçede yetişen domates bitkileri" loading="lazy"><figcaption><a href="https://commons.wikimedia.org/wiki/File:Vegetable_garden_at_Eisenhower_National_Historic_Site,_tomato_plants._(369a4bd2-5401-4339-82f2-7921b3037821).jpg" target="_blank" rel="noopener noreferrer">Fotoğraf ve kaynak: Mary O'Neill, Wikimedia Commons</a></figcaption></figure>
-              <p><strong>Tanım ve kullanım:</strong> Sebzeler taze tüketim, konserve, dondurma ve kurutma gibi yollarla değerlendirilir. Açıkta veya örtü altında yetiştirilebilir; çeşit seçimi kullanım amacı ve hasat zamanına göre yapılır.</p>
-              <p><strong>Yaşam ve çoğalma:</strong> Domates, biber, fasulye ve kabak çoğunlukla tek yıllık üretim döngüsündedir. Lahana ve havuç gibi bazıları tohum üretirken iki yıllık döngü izler. Tohum, fide, yumru veya soğanla çoğalma türüne bağlıdır; kök yapısı kazık ya da saçak olabilir.</p>
-              <p><strong>İklim ve örnekler:</strong> Domates, biber ve hıyar sıcak dönemleri; bezelye, ıspanak ve marul daha serin havayı sever. Güneşli alan, organik maddesi yeterli ve drenajlı toprak çoğu sebzeye uygundur. Domates, biber, fasulye, patates, soğan, lahana ve kabak örnek verilebilir.</p>
+              <h4>Vegetable Production</h4>
+              <figure><img src="https://thumb.wikimedia.org/wikipedia/commons/thumb/1/10/Vegetable_garden_at_Eisenhower_National_Historic_Site%2C_tomato_plants._%28369a4bd2-5401-4339-82f2-7921b3037821%29.jpg/1280px-Vegetable_garden_at_Eisenhower_National_Historic_Site%2C_tomato_plants._%28369a4bd2-5401-4339-82f2-7921b3037821%29.jpg" alt="Tomato plants growing in a garden" loading="lazy"><figcaption><a href="https://commons.wikimedia.org/wiki/File:Vegetable_garden_at_Eisenhower_National_Historic_Site,_tomato_plants._(369a4bd2-5401-4339-82f2-7921b3037821).jpg" target="_blank" rel="noopener noreferrer">Photo and source: Mary O'Neill, Wikimedia Commons</a></figcaption></figure>
+              <p><strong>Overview and uses:</strong> Vegetables are eaten fresh or preserved by canning, freezing, or drying. They can be grown in open fields or under cover; choose cultivars according to intended use and harvest timing.</p>
+              <p><strong>Life cycle and propagation:</strong> Tomatoes, peppers, beans, and squash are usually grown as annuals. Some crops, such as cabbage and carrots, follow a two-year cycle for seed production. Propagation by seed, seedling, tuber, or bulb depends on the crop; roots may be taproots or fibrous.</p>
+              <p><strong>Climate and examples:</strong> Tomatoes, peppers, and cucumbers prefer warm conditions; peas, spinach, and lettuce prefer cooler weather. Most vegetables benefit from sunny sites and fertile, well-drained soil with adequate organic matter. Examples include tomato, pepper, bean, potato, onion, cabbage, and squash.</p>
             </article>
             <article class="plant-topic-card" id="garden-viticulture">
-              <h4>Bağcılık</h4>
-              <figure><img src="https://thumb.wikimedia.org/wikipedia/commons/thumb/6/68/Orchards_in_snow%2C_Sangla%2C_Himachal_Pradesh%2C_India.jpg/1280px-Orchards_in_snow%2C_Sangla%2C_Himachal_Pradesh%2C_India.jpg" alt="Meyve bahçesinde sıra halinde yetişen çok yıllık odunsu bitkiler" loading="lazy"><figcaption>Bağ ve meyve bahçelerinde sıra düzeni, terbiye ve budama bitki gelişimini yönetir.</figcaption></figure>
-              <p><strong>Tanım ve kullanım:</strong> Asma; sofralık üzüm, kurutmalık üzüm, pekmez ve şıra gibi ürünler için yetiştirilir. Bağcılık, çok yıllık tesis ve uzun dönemli terbiye yönetimi gerektirir.</p>
-              <p><strong>Yaşam ve çoğalma:</strong> Asma odunsu, çok yıllık ve sarılıcı bir bitkidir. Üretimde çelik ve aşılı fidan kullanılır; terbiye sistemi, budama ve omca aralığı çeşide ve mekanizasyona göre seçilir.</p>
-              <p><strong>İklim ve örnekler:</strong> Güneşli ve uzun bir büyüme dönemi üzüm olgunlaşmasını destekler; su birikmesi kök sağlığını olumsuz etkiler. Toprak drenajı, kireç ve tuzluluk toleransı anaç/çeşide göre dikkate alınır. Sofralık, kurutmalık ve şaraplık üzüm çeşitleri yetiştirilir.</p>
+              <h4>Viticulture</h4>
+              <figure><img src="https://thumb.wikimedia.org/wikipedia/commons/thumb/6/68/Orchards_in_snow%2C_Sangla%2C_Himachal_Pradesh%2C_India.jpg/1280px-Orchards_in_snow%2C_Sangla%2C_Himachal_Pradesh%2C_India.jpg" alt="Perennial woody plants growing in rows in an orchard" loading="lazy"><figcaption>Row layout, training, and pruning guide plant growth in vineyards and orchards.</figcaption></figure>
+              <p><strong>Overview and uses:</strong> Grapevines are grown for table grapes, raisins, molasses, and juice. Viticulture requires a perennial planting and long-term canopy and training management.</p>
+              <p><strong>Life cycle and propagation:</strong> Grapevines are perennial woody climbers. They are propagated from cuttings or grafted vines; training systems, pruning, and vine spacing depend on cultivar and mechanization.</p>
+              <p><strong>Climate and examples:</strong> Sunny, long growing seasons support grape ripening; waterlogging can damage roots. Consider soil drainage, calcareous conditions, and salinity tolerance for the rootstock and cultivar. Table, raisin, and wine grapes are grown.</p>
             </article>
             <article class="plant-topic-card" id="garden-ornamental">
-              <h4>Süs Bitkileri</h4>
-              <figure><img src="https://thumb.wikimedia.org/wikipedia/commons/thumb/1/13/Comestible_rose_in_the_Laquenexy_orchard_garden%2C_Moselle%2C_France_%2801%29.jpg/1280px-Comestible_rose_in_the_Laquenexy_orchard_garden%2C_Moselle%2C_France_%2801%29.jpg" alt="Bahçede çiçek açmış pembe gül" loading="lazy"><figcaption><a href="https://commons.wikimedia.org/wiki/File:Comestible_rose_in_the_Laquenexy_orchard_garden,_Moselle,_France_(01).jpg" target="_blank" rel="noopener noreferrer">Fotoğraf ve kaynak: M0tty, Wikimedia Commons</a></figcaption></figure>
-              <p><strong>Tanım ve kullanım:</strong> Süs bitkileri bahçe, park ve iç mekânlarda görsel düzenleme; kesme çiçek, saksı ve peyzaj için yetiştirilir. Yerel tür ve uygun tür seçimi kentlerde su kullanımını azaltabilir, tozlayıcılara kaynak sağlar.</p>
-              <p><strong>Yaşam ve çoğalma:</strong> Tek yıllık mevsimlik çiçekler, çok yıllık otsular, soğanlılar ve odunsu çalı/ağaçlar bu gruptadır. Tohum, çelik, aşı, soğan ve yumruyla çoğaltma türüne göre kullanılır.</p>
-              <p><strong>İklim ve örnekler:</strong> Güneş ve su ihtiyacı türden türe değişir; iyi drenaj çoğu saksı bitkisinde kök sağlığı için önemlidir. Gül, lale, sümbül, krizantem, sardunya ve mevsimlik petunya yaygın örneklerdir.</p>
+              <h4>Ornamental Plants</h4>
+              <figure><img src="https://thumb.wikimedia.org/wikipedia/commons/thumb/1/13/Comestible_rose_in_the_Laquenexy_orchard_garden%2C_Moselle%2C_France_%2801%29.jpg/1280px-Comestible_rose_in_the_Laquenexy_orchard_garden%2C_Moselle%2C_France_%2801%29.jpg" alt="Pink rose in bloom in a garden" loading="lazy"><figcaption><a href="https://commons.wikimedia.org/wiki/File:Comestible_rose_in_the_Laquenexy_orchard_garden,_Moselle,_France_(01).jpg" target="_blank" rel="noopener noreferrer">Photo and source: M0tty, Wikimedia Commons</a></figcaption></figure>
+              <p><strong>Overview and uses:</strong> Ornamental plants are grown for gardens, parks, and interiors, as well as for cut flowers, containers, and landscaping. Choosing locally adapted species can reduce urban water use and provide resources for pollinators.</p>
+              <p><strong>Life cycle and propagation:</strong> This group includes annual flowers, perennial herbs, bulbs, woody shrubs, and trees. Depending on the species, they are propagated by seed, cuttings, grafting, bulbs, or tubers.</p>
+              <p><strong>Climate and examples:</strong> Sun and water needs vary by species; good drainage is important for the root health of many container plants. Common examples include roses, tulips, hyacinths, chrysanthemums, geraniums, and seasonal petunias.</p>
             </article>
             <article class="plant-topic-card" id="garden-aromatic">
-              <h4>Tıbbi ve Aromatik (Kokulu) Bitkiler</h4>
-              <figure><img src="https://upload.wikimedia.org/wikipedia/commons/e/e1/Herb_garden_at_Hardwick_Hall_-_geograph.org.uk_-_1444243.jpg" alt="Aromatik ve tıbbi otların yetiştiği herb bahçesi" loading="lazy"><figcaption><a href="https://commons.wikimedia.org/wiki/File:Herb_garden_at_Hardwick_Hall_-_geograph.org.uk_-_1444243.jpg" target="_blank" rel="noopener noreferrer">Fotoğraf ve kaynak: Kate Jewell, CC BY-SA 2.0</a></figcaption></figure>
-              <p><strong>Tanım ve kullanım:</strong> Uçucu yağ, koku veya tat taşıyan bitkiler baharat, gıda, kozmetik ve parfümeri hammaddesi olarak kullanılır. Geleneksel kullanım, güvenli doz veya tedavi etkinliği garantisi değildir; doğru tür teşhisi önem taşır.</p>
-              <p><strong>Yaşam ve çoğalma:</strong> Papatya ve kişniş tek yıllık; lavanta, kekik, adaçayı, nane ve biberiye çoğunlukla çok yıllıktır. Tohumla üretimin yanında çelik ve kök bölme yapılabilir; yaprak ve çiçeklerdeki aromatik bezeler kokuyu oluşturur.</p>
-              <p><strong>İklim ve örnekler:</strong> Lavanta, kekik ve adaçayı güneşli, sıcak, kireçli ve geçirgen zemine uyumludur; nane daha nemli ve organik maddeli toprağı sever. Kekik, lavanta, adaçayı, nane, biberiye, melisa, papatya, anason ve kimyon örnekleridir.</p>
+              <h4>Medicinal and Aromatic Plants</h4>
+              <figure><img src="https://upload.wikimedia.org/wikipedia/commons/e/e1/Herb_garden_at_Hardwick_Hall_-_geograph.org.uk_-_1444243.jpg" alt="Herb garden with aromatic and medicinal plants" loading="lazy"><figcaption><a href="https://commons.wikimedia.org/wiki/File:Herb_garden_at_Hardwick_Hall_-_geograph.org.uk_-_1444243.jpg" target="_blank" rel="noopener noreferrer">Photo and source: Kate Jewell, CC BY-SA 2.0</a></figcaption></figure>
+              <p><strong>Overview and uses:</strong> Plants valued for essential oils, aroma, or flavor are used in spices, foods, cosmetics, and perfumery. Traditional use does not establish a safe dose or proven treatment effect; correct species identification is essential.</p>
+              <p><strong>Life cycle and propagation:</strong> Chamomile and coriander are annuals; lavender, thyme, sage, mint, and rosemary are mostly perennials. In addition to seed, plants may be propagated by cuttings or division; aromatic glands in leaves and flowers produce their scent.</p>
+              <p><strong>Climate and examples:</strong> Lavender, thyme, and sage suit sunny, warm, calcareous, well-drained sites; mint prefers moister, organic-rich soil. Examples include thyme, lavender, sage, mint, rosemary, lemon balm, chamomile, anise, and cumin.</p>
             </article>
           </div>
           <div id="garden-crops-grid"></div>
@@ -574,149 +574,149 @@
 
         <section class="crop-group" id="vegetable-crops-section" aria-labelledby="vegetable-crops-title" hidden>
           <header class="crop-group-heading">
-            <div><span class="crop-group-kicker">SEBZE ÜRETİMİ</span><h2 id="vegetable-crops-title">Sebze Bitkileri <span class="crop-count-badge">8 Çeşit</span></h2></div>
-            <p>Açık alan ve örtüaltı sebzeleri, sofralık ve sanayi çeşitleri</p>
+            <div><span class="crop-group-kicker">VEGETABLE PRODUCTION</span><h2 id="vegetable-crops-title">Vegetable Crops <span class="crop-count-badge">8 crops</span></h2></div>
+            <p>Field and greenhouse vegetables for fresh markets and processing</p>
           </header>
           <div id="vegetable-crops-grid"></div>
         </section>
 
         <section class="crop-group" id="medicinal-crops-section" aria-labelledby="medicinal-crops-title" hidden>
           <header class="crop-group-heading">
-            <div><span class="crop-group-kicker">FİTOTERAPİ & SAĞLIK</span><h2 id="medicinal-crops-title">Tıbbi Bitkiler <span class="crop-count-badge">6 Çeşit</span></h2></div>
-            <p>Eczacılık, fitoterapi, şifalı çay ve sağlık sanayisi bitkileri</p>
+            <div><span class="crop-group-kicker">HERBAL PRODUCTS & WELLNESS</span><h2 id="medicinal-crops-title">Medicinal Plants <span class="crop-count-badge">6 crops</span></h2></div>
+            <p>Plants used in pharmaceuticals, herbal products, teas, and wellness products</p>
           </header>
           <div id="medicinal-crops-grid"></div>
         </section>
 
         <section class="crop-group" id="aromatic-crops-section" aria-labelledby="aromatic-crops-title" hidden>
           <header class="crop-group-heading">
-            <div><span class="crop-group-kicker">UÇUCU YAĞ & BAHARAT</span><h2 id="aromatic-crops-title">Aromatik Bitkiler <span class="crop-count-badge">6 Çeşit</span></h2></div>
-            <p>Kozmetik, parfümeri, baharat ve uçucu yağ ekstraksiyonu ürünleri</p>
+            <div><span class="crop-group-kicker">ESSENTIAL OILS & SPICES</span><h2 id="aromatic-crops-title">Aromatic Plants <span class="crop-count-badge">6 crops</span></h2></div>
+            <p>Crops for cosmetics, perfumery, spices, and essential-oil production</p>
           </header>
           <div id="aromatic-crops-grid"></div>
         </section>
 
         <section class="crop-group" id="forage-crops-section" aria-labelledby="forage-crops-title" hidden>
           <header class="crop-group-heading">
-            <div><span class="crop-group-kicker">KABA YEM & MERA</span><h2 id="forage-crops-title">Yem Bitkileri <span class="crop-count-badge">5 Çeşit</span></h2></div>
-            <p>Besi ve süt hayvancılığı için kaliteli proteinli kaba yem ve silaj bitkileri</p>
+            <div><span class="crop-group-kicker">FORAGE & PASTURE</span><h2 id="forage-crops-title">Forage Crops <span class="crop-count-badge">5 crops</span></h2></div>
+            <p>Protein-rich forage and silage crops for beef and dairy production</p>
           </header>
           <div id="forage-crops-grid"></div>
         </section>
       </section>
     </section>
   </main>
-  <footer><span>TarımYol · Toprağını tanı, sezonu planla.</span><span>NASA POWER · Açık veri</span></footer>
+  <footer><span>TarımYol · Know your soil, plan your season.</span><span>NASA POWER · Open data</span></footer>
 
-  <!-- Bitki Detay Penceresi (Tüm ekranın tam ortasında açılır) -->
+  <!-- Crop detail modal -->
   <div class="plant-modal-overlay" id="plant-modal" hidden>
     <div class="plant-modal-box">
-      <button class="modal-close-btn" id="modal-close-btn" type="button" aria-label="Kapat">✕</button>
+      <button class="modal-close-btn" id="modal-close-btn" type="button" aria-label="Close">✕</button>
       <div id="plant-modal-body"></div>
     </div>
   </div>
 
-  <!-- Çiftçi Defteri & Kayıtlı Ada-Parsel Modalı (Sade & Anlaşılır) -->
+  <!-- Farmer's field notebook and saved parcel modal -->
   <div class="farmer-modal-overlay" id="farmer-auth-modal" hidden>
     <div class="farmer-modal-box">
-      <button class="modal-close-btn btn-close-farmer-modal" type="button" aria-label="Kapat">✕</button>
+      <button class="modal-close-btn btn-close-farmer-modal" type="button" aria-label="Close">✕</button>
       
       <div class="farmer-modal-tabs">
-        <button type="button" class="farmer-tab-btn active" data-tab="tab-my-fields">🌾 Kayıtlı Tarlalarım</button>
-        <button type="button" class="farmer-tab-btn" data-tab="tab-add-field">➕ Yeni Tarla / Parsel Ekle</button>
-        <button type="button" class="farmer-tab-btn" data-tab="tab-login">👤 Çiftçi Girişi</button>
+        <button type="button" class="farmer-tab-btn active" data-tab="tab-my-fields">🌾 My Saved Fields</button>
+        <button type="button" class="farmer-tab-btn" data-tab="tab-add-field">➕ Add a Field / Parcel</button>
+        <button type="button" class="farmer-tab-btn" data-tab="tab-login">👤 Sign In</button>
       </div>
 
       <div class="farmer-modal-body">
-        <!-- SEKME 1: Tarlalarım -->
+        <!-- Tab 1: My Fields -->
         <div class="farmer-tab-content" id="tab-my-fields">
           <div class="tab-intro">
-            <h3>🌾 Kayıtlı Ada & Parsellerim</h3>
-            <p>Tarlanızı bir kez kaydedin; ada-parsel aramaya gerek kalmadan tek tıkla haritada açın ve rüzgar/ilaçlama durumunu görün.</p>
+            <h3>🌾 My Saved Blocks & Parcels</h3>
+            <p>Save a field once, then open it on the map with one click and check wind and spraying conditions without searching for its block and parcel numbers again.</p>
           </div>
           <div id="farmer-no-fields-notice" class="empty-fields-notice">
             <span>🌱</span>
-            <p><strong>Henüz kayıtlı bir tarlanız yok.</strong><br>Yukarıdaki <b>"Yeni Tarla / Parsel Ekle"</b> sekmesinden tarlanızı hemen kaydedebilirsiniz.</p>
+            <p><strong>You don't have any saved fields yet.</strong><br>You can save one from the <b>"Add a Field / Parcel"</b> tab above.</p>
           </div>
           <div id="farmer-saved-fields-list" class="farmer-fields-list"></div>
         </div>
 
-        <!-- SEKME 2: Yeni Ada & Parsel Ekle -->
+        <!-- Tab 2: Add a Block & Parcel -->
         <div class="farmer-tab-content" id="tab-add-field" hidden>
           <div class="tab-intro">
-            <h3>➕ Yeni Tarla & Parsel Bilgisi Ekle</h3>
-            <p>Tarlanın adını, ada ve parsel numarasını yazıp kaydedin. Artık bu cihazda kalıcı olarak saklanacak.</p>
+            <h3>➕ Add a Field & Parcel</h3>
+            <p>Enter the field name, block and parcel numbers, then save. The information will be stored on this device.</p>
           </div>
           <form id="farmer-add-field-form" class="farmer-form">
             <div class="form-group">
-              <label for="field-name-input">1. Tarlanın Adı (Örnek: Ev Önü Tarlası, Dere Boyu)</label>
-              <input id="field-name-input" type="text" placeholder="Örn: Ev Önündeki Buğday Tarlası" required>
+              <label for="field-name-input">1. Field name (e.g. Home Field, Riverside Field)</label>
+              <input id="field-name-input" type="text" placeholder="e.g. Home Wheat Field" required>
             </div>
             <div class="form-row-3">
               <div class="form-group">
-                <label for="field-province-input">İl</label>
-                <input id="field-province-input" type="text" placeholder="Örn: Diyarbakır" required>
+                <label for="field-province-input">Province</label>
+                <input id="field-province-input" type="text" placeholder="e.g. Diyarbakır" required>
               </div>
               <div class="form-group">
-                <label for="field-district-input">İlçe</label>
-                <input id="field-district-input" type="text" placeholder="Örn: Kayapınar" required>
+                <label for="field-district-input">District</label>
+                <input id="field-district-input" type="text" placeholder="e.g. Kayapınar" required>
               </div>
               <div class="form-group">
-                <label for="field-neighborhood-input">Köy / Mahalle</label>
-                <input id="field-neighborhood-input" type="text" placeholder="Örn: Çölgüzeli" required>
+                <label for="field-neighborhood-input">Village / Neighborhood</label>
+                <input id="field-neighborhood-input" type="text" placeholder="e.g. Çölgüzeli" required>
               </div>
             </div>
             <div class="form-row-2">
               <div class="form-group highlight-input-group">
-                <label for="field-block-input">🏷️ Ada Numarası</label>
-                <input id="field-block-input" type="text" placeholder="Örn: 104" required>
+                <label for="field-block-input">🏷️ Block number</label>
+                <input id="field-block-input" type="text" placeholder="e.g. 104" required>
               </div>
               <div class="form-group highlight-input-group">
-                <label for="field-parcel-input">🏷️ Parsel Numarası</label>
-                <input id="field-parcel-input" type="text" placeholder="Örn: 12" required>
+                <label for="field-parcel-input">🏷️ Parcel number</label>
+                <input id="field-parcel-input" type="text" placeholder="e.g. 12" required>
               </div>
             </div>
             <div class="form-row-2">
               <div class="form-group">
-                <label for="field-area-input">Büyüklük (Kaç Dekar?)</label>
-                <input id="field-area-input" type="number" min="0.5" step="0.5" placeholder="Örn: 35" required>
+                <label for="field-area-input">Area (decares)</label>
+                <input id="field-area-input" type="number" min="0.5" step="0.5" placeholder="e.g. 35" required>
               </div>
               <div class="form-group">
-                <label for="field-crop-select">Ekilen Ürün</label>
+                <label for="field-crop-select">Crop grown</label>
                 <select id="field-crop-select">
-                  <option value="wheat">🌾 Buğday</option>
-                  <option value="barley">🌾 Arpa</option>
-                  <option value="corn">🌽 Mısır</option>
-                  <option value="sunflower">🌻 Ayçiçeği</option>
-                  <option value="chickpea">🫘 Nohut</option>
-                  <option value="lentil">🫘 Mercimek</option>
-                  <option value="cotton">☁️ Pamuk</option>
-                  <option value="tomato">🍅 Domates</option>
-                  <option value="potato">🥔 Patates</option>
+                  <option value="wheat">🌾 Wheat</option>
+                  <option value="barley">🌾 Barley</option>
+                  <option value="corn">🌽 Corn</option>
+                  <option value="sunflower">🌻 Sunflower</option>
+                  <option value="chickpea">🫘 Chickpea</option>
+                  <option value="lentil">🫘 Lentil</option>
+                  <option value="cotton">☁️ Cotton</option>
+                  <option value="tomato">🍅 Tomato</option>
+                  <option value="potato">🥔 Potato</option>
                 </select>
               </div>
             </div>
-            <button type="submit" class="farmer-btn-submit">💾 Tarlamı Deftere Kaydet (Bir daha sorma)</button>
+            <button type="submit" class="farmer-btn-submit">💾 Save Field (Don't ask again)</button>
           </form>
         </div>
 
-        <!-- SEKME 3: Çiftçi Girişi -->
+        <!-- Tab 3: Sign In -->
         <div class="farmer-tab-content" id="tab-login" hidden>
           <div class="tab-intro">
-            <h3>👤 Çiftçi Girişi</h3>
-            <p>Adınızı yazmanız yeterlidir. Şifre gerekmez, tarlalarınız doğrudan bu tarayıcıya bağlanır.</p>
+            <h3>👤 Sign In</h3>
+            <p>Just enter your name. No password is required; your fields are linked directly to this browser.</p>
           </div>
           <form id="farmer-login-form" class="farmer-form">
             <div class="form-group">
-              <label for="farmer-input-name">Adınız Soyadınız / Lakabınız</label>
-              <input id="farmer-input-name" type="text" placeholder="Örn: Ahmet Dayı veya Mehmet Yılmaz" required>
+              <label for="farmer-input-name">Full name / nickname</label>
+              <input id="farmer-input-name" type="text" placeholder="e.g. Alex Smith" required>
             </div>
-            <button type="submit" class="farmer-btn-submit">✅ Giriş Yap / Defterimi Aç</button>
+            <button type="submit" class="farmer-btn-submit">✅ Sign In / Open My Fields</button>
             <p id="farmer-login-status" class="form-status-msg"></p>
           </form>
           <div id="farmer-logout-wrap" class="farmer-logout-box" hidden>
             <hr>
-            <button type="button" id="btn-farmer-logout" class="btn-farmer-logout">Hesaptan Çıkış Yap</button>
+            <button type="button" id="btn-farmer-logout" class="btn-farmer-logout">Sign Out</button>
           </div>
         </div>
       </div>
@@ -746,12 +746,12 @@
     };
     const plantCategories = ['field', 'garden', 'vegetable', 'medicinal', 'aromatic', 'forage'];
     const categoryMeta = {
-      field: { title: 'Tarla Bitkileri', desc: 'Tahıl, yemeklik tane baklagil ve endüstri bitkilerinin yetiştirme ve pazar bilgileri.' },
-      garden: { title: 'Meyvecilik ve Bağcılık', desc: 'Meyve ağaçları, sert kabuklu türler, narenciye ve bağcılık yetiştirme rehberi.' },
-      vegetable: { title: 'Sebze Bitkileri', desc: 'Açık tarla ve örtüaltı sofralık sebzelerin fide dikimi, bakım ve hasat takvimi.' },
-      medicinal: { title: 'Tıbbi Bitkiler', desc: 'Fitoterapi, sağlık, etken madde ve şifalı çay sanayisine yönelik tıbbi bitkiler.' },
-      aromatic: { title: 'Aromatik ve Baharat Bitkileri', desc: 'Lavanta, kekik, nane ve biberiye gibi uçucu yağ ve baharat bitkileri.' },
-      forage: { title: 'Yem Bitkileri', desc: 'Besi ve süt hayvancılığı için kaliteli proteinli kaba yem ve mera bitkileri.' }
+      field: { title: 'Field Crops', desc: 'Growing and market information for cereals, food legumes, and industrial crops.' },
+      garden: { title: 'Fruit and Viticulture', desc: 'A growing guide for fruit trees, nuts, citrus, and grapevines.' },
+      vegetable: { title: 'Vegetable Crops', desc: 'Transplanting, care, and harvest schedules for field and greenhouse vegetables.' },
+      medicinal: { title: 'Medicinal Plants', desc: 'Plants used in herbal products, health products, active ingredients, and herbal teas.' },
+      aromatic: { title: 'Aromatic and Spice Plants', desc: 'Essential oil and spice crops such as lavender, thyme, mint, and rosemary.' },
+      forage: { title: 'Forage Crops', desc: 'High-quality protein forage and pasture crops for beef and dairy production.' }
     };
     function renderRoute() {
       const requestedRoute = window.location.hash;
@@ -797,8 +797,8 @@
           pill.removeAttribute('aria-current');
         }
       });
-      if (plantsTitle) plantsTitle.textContent = categoryMeta[category]?.title || 'Bitki Türleri ve Ürün Rehberi';
-      if (plantsDescription) plantsDescription.textContent = categoryMeta[category]?.desc || 'İncelemek istediğiniz bitki türünü seçerek ekim, yetiştirme ve hasat bilgilerine ulaşın.';
+      if (plantsTitle) plantsTitle.textContent = categoryMeta[category]?.title || 'Crop Species and Growing Guide';
+      if (plantsDescription) plantsDescription.textContent = categoryMeta[category]?.desc || 'Choose a crop to explore planting, growing, and harvest information.';
       if (cropGuideTarget) {
         requestAnimationFrame(() => {
           setTimeout(() => {

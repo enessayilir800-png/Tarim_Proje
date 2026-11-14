@@ -17,35 +17,35 @@ const NASA_POWER_API_KEY = "";
 
   // Hava durumu kodları (WMO) açıklamaları ve ikonları
   const WMO_CODES = {
-    0: { text: 'Açık / Güneşli', icon: '☀️' },
-    1: { text: 'Çoğunlukla Açık', icon: '🌤️' },
-    2: { text: 'Parçalı Bulutlu', icon: '⛅' },
-    3: { text: 'Kapalı / Bulutlu', icon: '☁️' },
-    45: { text: 'Sisli', icon: '🌫️' },
-    48: { text: 'Kırağı / Sis', icon: '🌫️' },
-    51: { text: 'Hafif Çisenti', icon: '🌦️' },
-    53: { text: 'Çisenti', icon: '🌦️' },
-    55: { text: 'Yoğun Çisenti', icon: '🌧️' },
-    61: { text: 'Hafif Yağmur', icon: '🌧️' },
-    63: { text: 'Orta Şiddetli Yağmur', icon: '🌧️' },
-    65: { text: 'Kuvvetli Yağmur', icon: '⛈️' },
-    71: { text: 'Hafif Kar', icon: '🌨️' },
-    73: { text: 'Kar Yağışlı', icon: '❄️' },
-    75: { text: 'Yoğun Kar', icon: '❄️' },
-    80: { text: 'Sağanak Yağış', icon: '🌦️' },
-    81: { text: 'Şiddetli Sağanak', icon: '🌧️' },
-    82: { text: 'Çok Şiddetli Fırtınalı Yağış', icon: '⛈️' },
-    95: { text: 'Gök Gürültülü Fırtına', icon: '⛈️' },
+    0: { text: 'Clear / Sunny', icon: '☀️' },
+    1: { text: 'Mainly Clear', icon: '🌤️' },
+    2: { text: 'Partly Cloudy', icon: '⛅' },
+    3: { text: 'Overcast', icon: '☁️' },
+    45: { text: 'Fog', icon: '🌫️' },
+    48: { text: 'Rime Fog', icon: '🌫️' },
+    51: { text: 'Light Drizzle', icon: '🌦️' },
+    53: { text: 'Drizzle', icon: '🌦️' },
+    55: { text: 'Dense Drizzle', icon: '🌧️' },
+    61: { text: 'Light Rain', icon: '🌧️' },
+    63: { text: 'Moderate Rain', icon: '🌧️' },
+    65: { text: 'Heavy Rain', icon: '⛈️' },
+    71: { text: 'Light Snow', icon: '🌨️' },
+    73: { text: 'Snowfall', icon: '❄️' },
+    75: { text: 'Heavy Snow', icon: '❄️' },
+    80: { text: 'Rain Showers', icon: '🌦️' },
+    81: { text: 'Heavy Showers', icon: '🌧️' },
+    82: { text: 'Violent Rain Showers', icon: '⛈️' },
+    95: { text: 'Thunderstorm', icon: '⛈️' },
   };
 
   function getWeatherDesc(code) {
-    return WMO_CODES[code] || { text: 'Değişken', icon: '🌤️' };
+    return WMO_CODES[code] || { text: 'Variable', icon: '🌤️' };
   }
 
   // Rüzgar yönü dereceyi yön metnine çevirir
   function getWindDirection(deg) {
     if (deg == null) return '—';
-    const directions = ['Kuzey (K)', 'Kuzeydoğu (KD)', 'Doğu (D)', 'Güneydoğu (GD)', 'Güney (G)', 'Güneybatı (GB)', 'Batı (B)', 'Kuzeybatı (KB)'];
+    const directions = ['North (N)', 'Northeast (NE)', 'East (E)', 'Southeast (SE)', 'South (S)', 'Southwest (SW)', 'West (W)', 'Northwest (NW)'];
     return directions[Math.round(deg / 45) % 8];
   }
 
@@ -54,32 +54,32 @@ const NASA_POWER_API_KEY = "";
     if (rain > 0.5) {
       return {
         level: 'danger',
-        badge: '🔴 İlaçlama Yapılamaz!',
-        title: 'Yağmur Riski',
-        desc: `Beklenen yağış (${rain.toFixed(1)} mm) ilacı yapraktan yıkar ve toprağa akıtır. İlaç tamamen ziyan olur, kesinlikle yapmayın.`
+        badge: '🔴 Do Not Spray',
+        title: 'Rain Risk',
+        desc: `Expected rainfall (${rain.toFixed(1)} mm) may wash the product off leaves and into the soil. Avoid spraying under these conditions.`
       };
     }
     if (windSpeed > 18) {
       return {
         level: 'danger',
-        badge: '🔴 İlaçlama Yapılamaz!',
-        title: 'Kuvvetli Rüzgar',
-        desc: `Rüzgar hızı (${windSpeed.toFixed(0)} km/s > 18 km/s). İlaç hedefe varamaz, havada savrulup komşu tarlaya zarar verir.`
+        badge: '🔴 Do Not Spray',
+        title: 'Strong Wind',
+        desc: `Wind speed (${windSpeed.toFixed(0)} km/h) is above 18 km/h. Spray may drift off target and affect neighboring fields.`
       };
     }
     if (windSpeed >= 12 && windSpeed <= 18) {
       return {
         level: 'warning',
-        badge: '🟡 Dikkatli Yapılabilir',
-        title: 'Orta Seviye Rüzgar',
-        desc: `Rüzgar (${windSpeed.toFixed(0)} km/s). Sadece sabah erken veya akşam rüzgarsız saatte, iri damlacıklı püskürtme memesiyle yapılabilir.`
+        badge: '🟡 Use Caution',
+        title: 'Moderate Wind',
+        desc: `Wind speed is ${windSpeed.toFixed(0)} km/h. If conditions allow, spray only during calmer early-morning or evening hours and use a nozzle that produces larger droplets.`
       };
     }
     return {
       level: 'success',
-      badge: '🟢 İlaçlama İçin Çok Uygun',
-      title: 'Kusursuz Şartlar',
-      desc: `Rüzgar sakin (${windSpeed.toFixed(0)} km/s) ve yağış yok. İlacın yaprağa tam tutunması için en ideal hava koşulları.`
+      badge: '🟢 Favorable for Spraying',
+      title: 'Favorable Conditions',
+      desc: `Winds are light (${windSpeed.toFixed(0)} km/h) and no rain is expected. These conditions can support good leaf coverage.`
     };
   }
 
@@ -88,24 +88,24 @@ const NASA_POWER_API_KEY = "";
     if (windSpeed > 15) {
       return {
         level: 'danger',
-        badge: '🔴 Fıskiye İle Sulama YAPILAMAZ!',
-        title: 'Şiddetli Rüzgar (Su Savrulur)',
-        desc: `Rüzgar çok sert (${windSpeed.toFixed(0)} km/s). Fıskiyeden çıkan su havada savrulur, tarlanın bir tarafı çamur olurken diğer tarafı kupkuru kalır. Elektrik ve su tamamen boşa gider. Rüzgar dinene kadar fıskiyeyi çalıştırmayın veya damla sulama yapın.`
+        badge: '🔴 Avoid Sprinkler Irrigation',
+        title: 'Strong Wind (Drift Risk)',
+        desc: `Winds are very strong (${windSpeed.toFixed(0)} km/h). Sprinkler water may drift, causing uneven irrigation. Wait for calmer conditions or consider drip irrigation.`
       };
     }
     if (windSpeed >= 8 && windSpeed <= 15) {
       return {
         level: 'warning',
-        badge: '🟡 Fıskiyeyi Dikkatli Çalıştırın',
-        title: 'Orta Rüzgar (Hafif Sürüklenme)',
-        desc: `Rüzgar ${windSpeed.toFixed(0)} km/s hızında. Su damlaları hafifçe sürüklenebilir. Mümkünse rüzgarın durulduğu akşam/gece saatlerini bekleyin veya meme yüksekliğini alçaltın.`
+        badge: '🟡 Use Sprinklers with Caution',
+        title: 'Moderate Wind (Some Drift Possible)',
+        desc: `Wind speed is ${windSpeed.toFixed(0)} km/h. Water droplets may drift. If possible, irrigate in the evening or at night when winds ease, or lower the sprinkler height.`
       };
     }
     return {
       level: 'success',
-      badge: '🟢 Fıskiye / Yağmurlama İçin İdeal',
-      title: 'Sakin Hava (Eşit Dağılım)',
-      desc: `Rüzgar sakin (${windSpeed.toFixed(0)} km/s). Fıskiye suyu havada savrulmadan tarlanın her köşesine eşit ve dengeli dağılır. Yağmurlama sulama için en uygun zaman.`
+      badge: '🟢 Favorable for Sprinkler Irrigation',
+      title: 'Calm Conditions (Even Distribution)',
+      desc: `Winds are light (${windSpeed.toFixed(0)} km/h), reducing drift and supporting more even sprinkler coverage.`
     };
   }
 
@@ -116,24 +116,24 @@ const NASA_POWER_API_KEY = "";
     if (totalRain >= 5 && totalRain <= 20) {
       return {
         level: 'success',
-        badge: '🟢 İdeal Gübreleme Zamanı',
-        title: 'Mükemmel Çözünme',
-        desc: `Beklenen ${totalRain.toFixed(1)} mm hafif/orta yağış, azot ve üre gübrelerinin eriyip bitki köküne inmesini sağlar.`
+        badge: '🟢 Favorable Fertilizer Window',
+        title: 'Moderate Rain Expected',
+        desc: `${totalRain.toFixed(1)} mm of light to moderate rain is forecast, which may help move nitrogen and urea fertilizer into the root zone.`
       };
     }
     if (totalRain > 25) {
       return {
         level: 'danger',
-        badge: '🔴 Gübre Atmayın!',
-        title: 'Yıkanma ve Akıntı Riski',
-        desc: `Aşırı şiddetli yağış (${totalRain.toFixed(1)} mm) gübreyi tarla yüzeyinden süpürüp dereye akıtır, gübre kaybı yaşanır.`
+        badge: '🔴 Avoid Fertilizing',
+        title: 'Leaching and Runoff Risk',
+        desc: `Heavy rainfall (${totalRain.toFixed(1)} mm) may wash fertilizer off the field and into waterways, causing nutrient loss.`
       };
     }
     return {
       level: 'warning',
-      badge: '🟡 Sulama ile Birlikte Verin',
-      title: 'Toprak Kuru',
-      desc: `Yetersiz yağış (${totalRain.toFixed(1)} mm). Kuru toprağa atılan azot gübresi gaz haline gelip uçar; sulama ile birlikte uygulayın.`
+      badge: '🟡 Coordinate with Irrigation',
+      title: 'Limited Rain Expected',
+      desc: `Only ${totalRain.toFixed(1)} mm of rain is forecast. Apply nitrogen fertilizer in line with soil conditions and irrigation plans to reduce losses.`
     };
   }
 
@@ -142,24 +142,24 @@ const NASA_POWER_API_KEY = "";
     if (rainSum3Days >= 12) {
       return {
         level: 'danger',
-        badge: '🔴 Sulamayı Kapatın',
-        title: 'Doğal Yağış Yeterli',
-        desc: `Önümüzdeki 3 günde toplam ${rainSum3Days.toFixed(1)} mm yağmur bekleniyor. Sulama vanalarını kapatın, su ve elektrik tasarrufu yapın.`
+        badge: '🔴 Pause Irrigation',
+        title: 'Rainfall May Meet Crop Needs',
+        desc: `${rainSum3Days.toFixed(1)} mm of rain is forecast over the next three days. Consider pausing irrigation to conserve water and energy.`
       };
     }
     if (rainSum3Days < 4 && maxTemp > 24) {
       return {
         level: 'success',
-        badge: '🟢 Sulama Tavsiye Edilir',
-        title: 'Buharlaşma Yüksek',
-        desc: `Hava sıcak (${maxTemp.toFixed(0)}°C) ve yağış yok. Bitkide su stresini önlemek için sulama yapılması önerilir.`
+        badge: '🟢 Irrigation May Be Needed',
+        title: 'High Evaporative Demand',
+        desc: `Warm conditions (${maxTemp.toFixed(0)}°C) and no rain are forecast. Consider irrigation to help prevent crop water stress.`
       };
     }
     return {
       level: 'warning',
-      badge: '🟡 Toprak Nemini Kontrol Edin',
-      title: 'Dengeli Nem',
-      desc: `Kök bölgesindeki toprak nemini kontrol edin. Toprak tavındaysa gereksiz sulamadan kaçının.`
+      badge: '🟡 Check Soil Moisture',
+      title: 'Moderate Conditions',
+      desc: `Check soil moisture in the root zone. Avoid unnecessary irrigation if soil moisture is adequate.`
     };
   }
 
@@ -178,14 +178,14 @@ const NASA_POWER_API_KEY = "";
 
     // Yedek doğrudan çağrı
     const resRemote = await fetch(remoteUrl);
-    if (!resRemote.ok) throw new Error('Hava durumu verisi alınamadı.');
+    if (!resRemote.ok) throw new Error('Weather data could not be retrieved.');
     const remoteData = await resRemote.json();
     return normalizeDailyForecast(remoteData.daily);
   }
 
   function normalizeDailyForecast(daily) {
     if (!daily || !Array.isArray(daily.time) || daily.time.length === 0) {
-      throw new Error('Tahmin verisi boş döndü.');
+      throw new Error('The forecast returned no data.');
     }
 
     const aliases = {
@@ -201,7 +201,7 @@ const NASA_POWER_API_KEY = "";
     const required = ['weathercode', 'windspeed_10m_max', 'precipitation_sum', 'temperature_2m_max', 'temperature_2m_min'];
     const missing = required.filter(key => !Array.isArray(normalized[key]) || normalized[key].length === 0);
     if (missing.length) {
-      throw new Error(`Hava tahmininde gerekli veriler eksik: ${missing.join(', ')}.`);
+      throw new Error(`Required forecast data is missing: ${missing.join(', ')}.`);
     }
 
     return normalized;
@@ -216,8 +216,8 @@ const NASA_POWER_API_KEY = "";
     container.innerHTML = `
       <div class="agro-loading">
         <div class="loader"></div>
-        <p><strong>${escapeHtml(fieldInfo.name || 'Tarla')}</strong> için rüzgar, fıskiye ve yağmur analizi yapılıyor…</p>
-        <small>Konum: ${lat.toFixed(4)}°, ${lon.toFixed(4)}°</small>
+        <p>Analyzing wind, sprinkler irrigation, and rainfall for <strong>${escapeHtml(fieldInfo.name || 'Field')}</strong>…</p>
+        <small>Location: ${lat.toFixed(4)}°, ${lon.toFixed(4)}°</small>
       </div>
     `;
 
@@ -231,15 +231,15 @@ const NASA_POWER_API_KEY = "";
           wind: daily.windspeed_10m_max[0] || 0,
           rain: daily.precipitation_sum[0] || 0,
           temp: daily.temperature_2m_max[0] || 0,
-          fieldName: fieldInfo.name || 'Tarla'
+          fieldName: fieldInfo.name || 'Field'
         });
       }
 
     } catch (err) {
       container.innerHTML = `
         <div class="agro-error-box">
-          <p>⚠️ Hava durumu ve tarımsal analiz yüklenemedi: ${escapeHtml(err.message)}</p>
-          <button type="button" onclick="window.AgroAdvisor.loadForCoordinates(${lat}, ${lon})">Tekrar Dene</button>
+          <p>⚠️ Weather and agricultural analysis could not be loaded: ${escapeHtml(err.message)}</p>
+          <button type="button" onclick="window.AgroAdvisor.loadForCoordinates(${lat}, ${lon})">Try again</button>
         </div>
       `;
     }
@@ -270,7 +270,7 @@ const NASA_POWER_API_KEY = "";
     // Günlük tablo satırları
     const tableRows = daily.time.map((dateStr, i) => {
       const date = new Date(dateStr);
-      const dayName = i === 0 ? 'Bugün' : i === 1 ? 'Yarın' : date.toLocaleDateString('tr-TR', { weekday: 'short', day: 'numeric', month: 'short' });
+      const dayName = i === 0 ? 'Today' : i === 1 ? 'Tomorrow' : date.toLocaleDateString('en', { weekday: 'short', day: 'numeric', month: 'short' });
       const wDesc = getWeatherDesc(daily.weathercode[i]);
       const wSpeed = daily.windspeed_10m_max[i] || 0;
       const pSum = daily.precipitation_sum[i] || 0;
@@ -286,7 +286,7 @@ const NASA_POWER_API_KEY = "";
           <td><strong>${dayName}</strong></td>
           <td><span title="${wDesc.text}">${wDesc.icon} ${wDesc.text}</span></td>
           <td><b>${tMax.toFixed(0)}°</b> / <small>${tMin.toFixed(0)}°</small></td>
-          <td><span class="agro-wind-pill ${wSpeed > 18 ? 'danger' : wSpeed > 12 ? 'warning' : 'ok'}">💨 ${wSpeed.toFixed(0)} km/s</span></td>
+          <td><span class="agro-wind-pill ${wSpeed > 18 ? 'danger' : wSpeed > 12 ? 'warning' : 'ok'}">💨 ${wSpeed.toFixed(0)} km/h</span></td>
           <td><span class="agro-rain-pill ${pSum > 10 ? 'rain-high' : pSum > 0 ? 'rain-light' : 'rain-none'}">🌧️ ${pSum.toFixed(1)} mm</span></td>
           <td><span class="agro-status-chip ${sp.level}">${sp.badge}</span></td>
           <td><span class="agro-status-chip ${spk.level}">${spk.badge}</span></td>
@@ -295,19 +295,19 @@ const NASA_POWER_API_KEY = "";
       `;
     }).join('');
 
-    const fieldTitle = fieldInfo.name ? `"${escapeHtml(fieldInfo.name)}"` : 'Seçili Tarla';
-    const adaParselText = (fieldInfo.block && fieldInfo.parcel) ? `(Ada: ${fieldInfo.block}, Parsel: ${fieldInfo.parcel})` : '';
+    const fieldTitle = fieldInfo.name ? `"${escapeHtml(fieldInfo.name)}"` : 'Selected field';
+    const adaParselText = (fieldInfo.block && fieldInfo.parcel) ? `(Block: ${fieldInfo.block}, Parcel: ${fieldInfo.parcel})` : '';
 
     container.innerHTML = `
       <section class="agro-advisor-card">
         <div class="agro-advisor-header">
           <div>
             <div class="agro-badge-row">
-              <span class="agro-tag">📡 CANLI TARLA HAVA RAPORU</span>
+              <span class="agro-tag">📡 LIVE FIELD WEATHER REPORT</span>
               <span class="agro-tag-field">🌾 ${fieldTitle} ${escapeHtml(adaParselText)}</span>
             </div>
-            <h3>Günün Tarla İşlem Haritası & Kararları</h3>
-            <p>Rüzgara göre <b>fıskiye ile sulama</b> ve <b>ilaçlama</b> uygunluğu; yağışa göre <b>gübreleme</b> zamanlaması.</p>
+            <h3>Today's Field Operations & Guidance</h3>
+            <p>Wind-based guidance for <b>sprinkler irrigation</b> and <b>spraying</b>, plus rainfall-based <b>fertilizer timing</b>.</p>
           </div>
           <div class="agro-weather-today-box">
             <span class="today-icon">${todayWeather.icon}</span>
@@ -318,49 +318,49 @@ const NASA_POWER_API_KEY = "";
           </div>
         </div>
 
-        <!-- 4 Önemli Hava Göstergesi -->
+        <!-- Four key weather indicators -->
         <div class="agro-kpi-grid">
           <div class="agro-kpi-card">
-            <span class="kpi-label">💨 Rüzgar Hızı & Yönü</span>
+            <span class="kpi-label">💨 Wind Speed & Direction</span>
             <strong class="kpi-value ${todayWind > 18 ? 'text-danger' : todayWind > 12 ? 'text-warning' : 'text-ok'}">
-              ${todayWind.toFixed(1)} <small>km/s</small>
+              ${todayWind.toFixed(1)} <small>km/h</small>
             </strong>
             <span class="kpi-sub">${getWindDirection(todayWindDir)}</span>
           </div>
 
           <div class="agro-kpi-card">
-            <span class="kpi-label">🌧️ Bugün Beklenen Yağış</span>
+            <span class="kpi-label">🌧️ Rainfall Expected Today</span>
             <strong class="kpi-value ${todayRain > 5 ? 'text-danger' : 'text-ok'}">
               ${todayRain.toFixed(1)} <small>mm</small>
             </strong>
-            <span class="kpi-sub">Yağış İhtimali: %${todayRainProb}</span>
+            <span class="kpi-sub">Chance of rain: ${todayRainProb}%</span>
           </div>
 
           <div class="agro-kpi-card">
-            <span class="kpi-label">💧 3 Günlük Yağmur Toplamı</span>
+            <span class="kpi-label">💧 Three-Day Rainfall Total</span>
             <strong class="kpi-value text-accent">
               ${rainSum3Days.toFixed(1)} <small>mm</small>
             </strong>
-            <span class="kpi-sub">Toprak nem desteği</span>
+            <span class="kpi-sub">Soil moisture contribution</span>
           </div>
 
           <div class="agro-kpi-card">
-            <span class="kpi-label">🌡️ Sıcaklık (Gündüz / Gece)</span>
+            <span class="kpi-label">🌡️ Temperature (Day / Night)</span>
             <strong class="kpi-value">
               ${todayTempMax.toFixed(0)}° / ${todayTempMin.toFixed(0)}°
             </strong>
-            <span class="kpi-sub">Hava Sıcaklığı</span>
+            <span class="kpi-sub">Air temperature</span>
           </div>
         </div>
 
-        <!-- 4 BÜYÜK TARIMSAL KARAR KARTI -->
+        <!-- Four agricultural guidance cards -->
         <div class="agro-decisions-grid agro-decisions-grid-4">
           <!-- 1. İLAÇLAMA -->
           <div class="agro-decision-card decision-${sprayDecision.level}">
             <div class="dec-head">
               <span class="dec-icon">🚜</span>
               <div>
-                <h4>İlaçlama Durumu</h4>
+                <h4>Spraying Conditions</h4>
                 <span class="dec-badge badge-${sprayDecision.level}">${sprayDecision.badge}</span>
               </div>
             </div>
@@ -368,12 +368,12 @@ const NASA_POWER_API_KEY = "";
             <p>${sprayDecision.desc}</p>
           </div>
 
-          <!-- 2. FISKİYE (YAĞMURLAMA) İLE SULAMA -->
+          <!-- 2. Sprinkler irrigation -->
           <div class="agro-decision-card decision-${sprinklerDecision.level}">
             <div class="dec-head">
               <span class="dec-icon">💦</span>
               <div>
-                <h4>Fıskiye (Yağmurlama) Sulama</h4>
+                <h4>Sprinkler Irrigation</h4>
                 <span class="dec-badge badge-${sprinklerDecision.level}">${sprinklerDecision.badge}</span>
               </div>
             </div>
@@ -381,12 +381,12 @@ const NASA_POWER_API_KEY = "";
             <p>${sprinklerDecision.desc}</p>
           </div>
 
-          <!-- 3. GÜBRELEME -->
+          <!-- 3. Fertilization -->
           <div class="agro-decision-card decision-${fertDecision.level}">
             <div class="dec-head">
               <span class="dec-icon">🌾</span>
               <div>
-                <h4>Gübreleme Durumu</h4>
+                <h4>Fertilizer Conditions</h4>
                 <span class="dec-badge badge-${fertDecision.level}">${fertDecision.badge}</span>
               </div>
             </div>
@@ -394,12 +394,12 @@ const NASA_POWER_API_KEY = "";
             <p>${fertDecision.desc}</p>
           </div>
 
-          <!-- 4. TOPRAK SULAMA İHTİYACI -->
+          <!-- 4. Field water needs -->
           <div class="agro-decision-card decision-${irrigDecision.level}">
             <div class="dec-head">
               <span class="dec-icon">💧</span>
               <div>
-                <h4>Toprak Su İhtiyacı</h4>
+                <h4>Field Water Needs</h4>
                 <span class="dec-badge badge-${irrigDecision.level}">${irrigDecision.badge}</span>
               </div>
             </div>
@@ -408,24 +408,24 @@ const NASA_POWER_API_KEY = "";
           </div>
         </div>
 
-        <!-- 7 Günlük Tarla İşlem Çizelgesi -->
+        <!-- Seven-day field operations schedule -->
         <div class="agro-schedule-section">
           <div class="schedule-head">
-            <h4>📅 7 Günlük Tarla Karar Takvimi (Rüzgar, Fıskiye & Yağış)</h4>
-            <small>Önümüzdeki günlerde hangi gün ilaç veya fıskiye çalıştırabileceğinizi önceden görün</small>
+            <h4>📅 Seven-Day Field Guidance (Wind, Sprinklers & Rain)</h4>
+            <small>See which upcoming days may be suitable for spraying or sprinkler irrigation.</small>
           </div>
           <div class="table-responsive">
             <table class="agro-schedule-table">
               <thead>
                 <tr>
-                  <th>Tarih</th>
-                  <th>Hava</th>
-                  <th>Sıcaklık</th>
-                  <th>Rüzgar</th>
-                  <th>Yağış</th>
-                  <th>İlaçlama</th>
-                  <th>Fıskiye Sulama</th>
-                  <th>Gübreleme</th>
+                  <th>Date</th>
+                  <th>Weather</th>
+                  <th>Temperature</th>
+                  <th>Wind</th>
+                  <th>Rain</th>
+                  <th>Spraying</th>
+                  <th>Sprinkler irrigation</th>
+                  <th>Fertilization</th>
                 </tr>
               </thead>
               <tbody>

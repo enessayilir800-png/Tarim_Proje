@@ -1,4 +1,4 @@
-// Bitkileri Tanı - Dinamik Bitki Rehberi
+// Crop guide - Dynamic crop profiles
 (function () {
   const PLANTS_DATA = [
     {
@@ -28,167 +28,167 @@
       market: 'Yem fabrikaları, malt ve bira sanayisi, TMO alım noktaları, lisanslı depolar ve tüccarlar. Maltlık satış çoğunlukla önceden kalite şartı teyidi gerektirir.'
     },
     {
-      id: 'red-lentil', name: 'Kırmızı Mercimek', category: 'Yemeklik Tane Baklagiller', subgroup: 'Yemeklik Tane Baklagiller', group: 'field', type: 'Kışlık baklagil',
+      id: 'red-lentil', name: 'Red Lentil', category: 'Food Legumes', subgroup: 'Food Legumes', group: 'field', type: 'Winter legume',
       img: 'assets/plants/lentil.jpg',
-      season: 'Kışlık', sow: 'Kasım', sowTiming: 'Kırmızı mercimek sonbaharda ekilir; yerel iklim ve çeşide göre ekim zamanı değişebilir.',
-      harvest: 'Haziran', harvestTiming: 'Bitkilerin alt kısımları sararıp baklalar olgunlaşınca, dane dökümünü azaltmak için uygun zamanda hasat edilir.',
-      duration: 'Yaklaşık 5 - 8 ay', climate: 'Serin-kurak koşullara uyumlu; çiçeklenme ve dane doldurmada aşırı sıcak/kuraklık verimi etkiler.',
-      regions: 'Güneydoğu Anadolu (Şanlıurfa, Diyarbakır).',
-      water: 'Düşük - orta; çoğunlukla kış yağışından yararlanır', temp: 'Yaklaşık 8 - 23 °C',
-      soil: 'Hafif-orta bünyeli, kireçli ve iyi drene toprak.',
-      summary: 'Kırmızı veya yeşil dane olarak pazarlanır; kuru tarıma ve münavebeye uygun bir baklagildir.',
-      tips: 'Yabancı ot kontrolünü erken yapın; hasat zamanında gecikme dane dökülmesine yol açabilir. Çeşit ve hasat ekipmanını yöreye göre belirleyin.',
-      market: 'Bakliyat işleme/paketleme tesisleri, kooperatifler, tüccarlar ve dönemsel TMO alımı. Kırmızı-yeşil tür, dane rengi ve kalite sınıfına göre alıcı değişebilir.'
+      season: 'Winter crop', sow: 'November', sowTiming: 'Red lentils are generally planted in autumn; timing varies with local climate and cultivar.',
+      harvest: 'June', harvestTiming: 'Harvest when lower plant parts yellow and pods mature, timing operations to reduce seed shattering.',
+      duration: 'Approximately 5–8 months', climate: 'Adapted to cool, dry conditions; heat or drought during flowering and seed fill can reduce yield.',
+      regions: 'Southeastern Anatolia (Şanlıurfa, Diyarbakır).',
+      water: 'Low to moderate; mainly relies on winter rainfall', temp: 'Approximately 8–23 °C',
+      soil: 'Light to medium-textured, calcareous, well-drained soil.',
+      summary: 'Marketed as red or green seed; a legume suited to dryland farming and crop rotation.',
+      tips: 'Control weeds early; delays at harvest can increase seed shattering. Choose cultivars and harvest equipment suited to local conditions.',
+      market: 'Pulse processors and packers, cooperatives, traders, and seasonal TMO procurement. Buyers may differ by lentil type, seed color, and grade.'
     },
     {
-      id: 'cotton', name: 'Pamuk', category: 'Endüstri (Sanayi) Bitkileri', subgroup: 'Endüstri (Sanayi) Bitkileri', group: 'field', type: 'Endüstri bitkisi',
+      id: 'cotton', name: 'Cotton', category: 'Industrial Crops', subgroup: 'Industrial Crops', group: 'field', type: 'Industrial crop',
       img: 'assets/plants/cotton.jpg',
-      season: 'Yazlık', sow: 'Nisan - Mayıs (toprak yeterince ısınınca)', sowTiming: 'Don riski geçip toprak ısındıktan sonra ekilir; kısa sezonlu ve serin Malatya ilçeleri için genel olarak uygun değildir.',
-      harvest: 'Eylül - Ekim', harvestTiming: 'Kozalar açıldıkça birden fazla toplama yapılabilir; yağış ve çiğ lif kalitesini etkiler.',
-      duration: 'Yaklaşık 5 - 7 ay', climate: 'Uzun, sıcak ve donsuz sezon; yüksek ısı toplamı ve sulama suyu gerektirir.',
-      regions: 'Güneydoğu Anadolu (Şanlıurfa), Ege (Aydın) ve Akdeniz.',
-      water: 'Yüksek; sulama altyapısı ve su tahsisi olmadan ekim risklidir', temp: 'Yaklaşık 20 - 32 °C',
-      soil: 'Derin, verimli, alüvyal ve iyi drene olan toprak.',
-      summary: 'Lif tekstil sanayisine, çiğit ve küspesi yağ/yem sanayisine gider; sözleşmeli üretim yaygındır.',
-      tips: 'Ekimden önce su kaynağını, sezon uzunluğunu ve alım sözleşmesini kesinleştirin. Hasat öncesi ilaçlama ve bekleme süresini ürün etiketine göre yönetin.',
-      market: 'Çırçır-prese tesisleri, tekstil ve yağ fabrikaları, üretici birlikleri. Çoğu bölgede çırçır işletmesi ve alım şartı ekimden önce bulunup teyit edilmelidir.'
+      season: 'Summer crop', sow: 'April–May (after the soil has warmed)', sowTiming: 'Plant after frost risk has passed and the soil has warmed. Cotton is generally unsuitable for Malatya districts with short, cool seasons.',
+      harvest: 'September–October', harvestTiming: 'Pickings may be staggered as bolls open; rain and dew can affect fiber quality.',
+      duration: 'Approximately 5–7 months', climate: 'Requires a long, hot, frost-free season, substantial heat accumulation, and irrigation water.',
+      regions: 'Southeastern Anatolia (Şanlıurfa), Aegean (Aydın), and the Mediterranean region.',
+      water: 'High; planting without irrigation infrastructure and a secure water allocation is risky', temp: 'Approximately 20–32 °C',
+      soil: 'Deep, fertile, alluvial, well-drained soil.',
+      summary: 'Fiber supplies the textile industry, while cottonseed and meal are used for oil and animal feed; contract production is common.',
+      tips: 'Confirm water supply, season length, and purchase contract before planting. Follow product labels for pre-harvest treatments and re-entry or pre-harvest intervals.',
+      market: 'Ginning and pressing facilities, textile and oil mills, and producer organizations. Identify a gin and confirm purchasing terms before planting.'
     },
     {
-      id: 'rice', name: 'Çeltik', category: 'Tahıl', subgroup: 'Tahıllar', group: 'field', type: 'Sulu tarla tahılı',
+      id: 'rice', name: 'Rice', category: 'Cereals', subgroup: 'Cereals', group: 'field', type: 'Irrigated cereal',
       img: 'assets/plants/rice.webp',
-      season: 'Yazlık; sürekli su yönetimi gerektirir', sow: 'Mayıs', sowTiming: 'Toprak sıcaklığı ve su kaynağı uygun olduğunda; ekim öncesi su kullanım izni/planı ve tarla tesviyesi yapılır.',
-      harvest: 'Eylül - Ekim', harvestTiming: 'Daneler olgunlaşıp nem uygun düzeye geldiğinde; hasat ve kurutma hızla planlanmalıdır.',
-      duration: 'Yaklaşık 4 - 5 ay', climate: 'Sıcak, uzun ve donsuz sezon; kontrollü sulama suyu ve tesviyeli tarla ister.',
-      regions: 'Marmara (Edirne, Balıkesir) ve Karadeniz (Samsun).',
-      water: 'Çok yüksek; su kaynağı, drenaj ve yasal kullanım koşulları kesinleşmeden ekilmemelidir', temp: 'Yaklaşık 20 - 30 °C',
-      soil: 'Su tutabilen, tesviyeli, geçirimsizliği uygun ağır bünyeli toprak.',
-      summary: 'Pirinç değirmenlerinde işlenerek sofralık ürüne dönüşür; su yönetimi üretimin belirleyici maliyetidir.',
-      tips: 'Ekim öncesi su tahsisi, drenaj, tesviye, çeşit ve çeltik ekim iznini yerel kurumlarla doğrulayın. Malatya’da su kısıtı varsa uygun alternatif ürün seçin.',
-      market: 'Çeltik fabrikaları ve pirinç değirmenleri, kooperatifler ve tüccarlar. Teslim öncesi randıman, tane özellikleri, nem ve alım şartlarını alıcıyla görüşün.'
+      season: 'Summer crop; requires continuous water management', sow: 'May', sowTiming: 'Plant when soil temperature and water supply are suitable. Secure water-use approval, plan irrigation, and level the field before planting.',
+      harvest: 'September–October', harvestTiming: 'Harvest when grains mature and moisture is suitable; arrange harvesting and drying promptly.',
+      duration: 'Approximately 4–5 months', climate: 'Requires a warm, long, frost-free season, controlled irrigation, and a level field.',
+      regions: 'Marmara (Edirne, Balıkesir) and the Black Sea region (Samsun).',
+      water: 'Very high; do not plant until water supply, drainage, and legal use conditions are confirmed', temp: 'Approximately 20–30 °C',
+      soil: 'Level, heavy-textured soil that retains water and has suitable permeability.',
+      summary: 'Processed at rice mills for food markets; water management is a major production cost.',
+      tips: 'Confirm water allocation, drainage, leveling, cultivar, and rice-planting permits with local authorities before planting. Where water is limited in Malatya, consider a suitable alternative crop.',
+      market: 'Rice processors and mills, cooperatives, and traders. Discuss milling yield, grain characteristics, moisture, and delivery terms with buyers.'
     },
     {
-      id: 'dry-bean', name: 'Kuru Fasulye', category: 'Yemeklik Tane Baklagiller', subgroup: 'Yemeklik Tane Baklagiller', group: 'field', type: 'Yemeklik tane baklagil',
+      id: 'dry-bean', name: 'Dry Bean', category: 'Food Legumes', subgroup: 'Food Legumes', group: 'field', type: 'Food legume',
       img: 'assets/plants/bean.jpg',
-      season: 'Yazlık', sow: 'Nisan - Mayıs', sowTiming: 'İlkbaharda toprak ısındıktan ve don riski geçtikten sonra ekilir; yetiştiricilik çoğunlukla sulama veya yeterli yağış gerektirir.',
-      harvest: 'Ağustos - Eylül', harvestTiming: 'Bitkiler ve baklalar sararıp kuruduğunda; dane çatlaması ve dökülmesini azaltacak zamanda hasat edilir.',
-      duration: 'Yaklaşık 3 - 4 ay', climate: 'Ilıman-sıcak, don olmayan sezon; çiçeklenmede aşırı sıcak ve düzensiz sulama verimi azaltır.',
-      regions: 'İç Anadolu (Niğde, Konya), Karadeniz ve Doğu Anadolu.',
-      water: 'Orta; çiçeklenme ve bakla bağlamada düzenli su', temp: 'Yaklaşık 18 - 27 °C',
-      soil: 'İyi drene olan, organik maddeli tınlı toprak; su birikmesinden kaçının.',
-      summary: 'Kuru dane olarak tüketilir; yöresel pazar, bakliyat paketleme ve gıda sanayisine satılabilir.',
-      tips: 'Tohum çeşidini alıcının dane iriliği ve renk tercihine göre belirleyin. Münavebe yapın; hasat ve kurutma ekipmanını önceden ayarlayın.',
-      market: 'Bakliyat eleme/paketleme tesisleri, kooperatifler, tüccarlar, yerel pazarlar ve doğrudan tüketici. Alım fiyatı ve kalite sınıfı için ekim öncesi birden fazla alıcıyla görüşün.'
+      season: 'Summer crop', sow: 'April–May', sowTiming: 'Plant after the soil warms and frost risk passes; production usually requires irrigation or adequate rainfall.',
+      harvest: 'August–September', harvestTiming: 'Harvest when plants and pods turn yellow and dry, before seeds crack or shatter.',
+      duration: 'Approximately 3–4 months', climate: 'Mild to warm, frost-free season; excessive heat during flowering and irregular irrigation can reduce yield.',
+      regions: 'Central Anatolia (Niğde, Konya), the Black Sea region, and Eastern Anatolia.',
+      water: 'Moderate; provide regular water during flowering and pod set', temp: 'Approximately 18–27 °C',
+      soil: 'Well-drained loam with organic matter; avoid waterlogging.',
+      summary: 'Consumed as dry seed and sold to local markets, pulse packers, and food processors.',
+      tips: 'Choose seed type according to buyer preferences for seed size and color. Rotate crops and arrange harvesting and drying equipment in advance.',
+      market: 'Pulse cleaning and packing facilities, cooperatives, traders, local markets, and direct sales. Compare buyers and grades before planting.'
     },
     {
-      id: 'vetch', name: 'Fiğ', category: 'Yem Bitkisi', subgroup: 'Baklagil Yem Bitkileri', group: 'forage', type: 'Yemlik baklagil',
+      id: 'vetch', name: 'Vetch', category: 'Forage Crops', subgroup: 'Forage Legumes', group: 'forage', type: 'Forage legume',
       img: 'assets/plants/vetch.jpg',
-      season: 'Kışlık veya ilkbaharlık (türe göre)', sow: 'Eylül - Kasım; sert kışlı yerde Şubat - Mart', sowTiming: 'Kışlık türe göre sonbaharda; ilkbaharlık fiğ toprak işlenebilir olduğunda ekilir.',
-      harvest: 'Yeşil ot: Nisan - Mayıs; tohum: Haziran - Temmuz', harvestTiming: 'Ot için çiçeklenme başlangıcı; kuru ot için uygun kuruma havasında biçim yapılır.',
-      duration: 'Ot hasadı yaklaşık 5 - 8 ay; ilkbaharlıkta 3 - 4 ay', climate: 'Serin mevsime uyumlu, kuraklığa orta dayanıklı; kışlık türlerin soğuğa dayanımı farklıdır.',
-      regions: 'Malatya: kuru ve yarı kuru tarım alanları. Türkiye: İç Anadolu, Doğu Anadolu, Ege ve geçit bölgeleri.',
-      water: 'Düşük - orta; yağışla yetişebilir, erken gelişmede toprak nemi önemlidir', temp: 'Yaklaşık 8 - 22 °C',
-      soil: 'İyi drene olan, hafif-orta bünyeli tarla toprakları.',
-      summary: 'Kaba yem ve yeşil ot üretiminde kullanılır; tahıllarla karışık ekim yapılabilir.',
-      tips: 'Tohum miktarı ve tahılla karışım oranını yerel tarım danışmanına sorun. Biçim sonrası hızlı kurutma ve balyalama yem kalitesini korur.',
-      market: 'Hayvancılık işletmeleri, yem kooperatifleri, balya tüccarları ve tohumluk alıcıları. Ekimden önce yaş/kuru ot alıcısı, balya standardı ve nakliyeyi araştırın.'
+      season: 'Winter or spring crop, depending on species', sow: 'September–November; February–March in areas with harsh winters', sowTiming: 'Plant winter types in autumn; sow spring vetch when the soil is workable.',
+      harvest: 'Green forage: April–May; seed: June–July', harvestTiming: 'Cut for forage at the start of flowering; make hay when weather allows suitable drying.',
+      duration: 'Forage harvest in about 5–8 months; 3–4 months for spring types', climate: 'Adapted to cool seasons and moderately drought-tolerant; winter hardiness varies by species.',
+      regions: 'Malatya: dryland and semi-arid areas. Türkiye: Central and Eastern Anatolia, the Aegean, and transition zones.',
+      water: 'Low to moderate; can rely on rainfall, though soil moisture matters during early growth', temp: 'Approximately 8–22 °C',
+      soil: 'Well-drained, light to medium-textured field soils.',
+      summary: 'Grown for forage and green fodder; can be sown in mixtures with cereals.',
+      tips: 'Ask local agricultural advisers about seeding rates and cereal mix ratios. Rapid drying and baling after cutting help preserve forage quality.',
+      market: 'Livestock farms, feed cooperatives, hay traders, and seed buyers. Identify buyers and confirm bale standards and transport before planting.'
     },
     {
-      id: 'sainfoin', name: 'Korunga', category: 'Yem Bitkisi', subgroup: 'Baklagil Yem Bitkileri', group: 'forage', type: 'Çok yıllık yem bitkisi',
+      id: 'sainfoin', name: 'Sainfoin', category: 'Forage Crops', subgroup: 'Forage Legumes', group: 'forage', type: 'Perennial forage crop',
       img: 'assets/plants/sainfoin.jpg',
-      season: 'İlkbahar veya sonbahar', sow: 'Mart - Nisan; uygun yörede Ağustos - Eylül', sowTiming: 'Yabancı ot baskısı düşük, iyi hazırlanmış tarlaya; yöre ve toprak tavına göre ekilir.',
-      harvest: 'İlk biçim: Mayıs - Haziran; sonraki biçimler gelişime göre', harvestTiming: 'Kaliteli ot için çiçeklenme başlangıcında biçilir; bitkinin yeniden gelişmesi için uygun yükseklik bırakılır.',
-      duration: 'Çok yıllık; verimli kullanım çoğunlukla 3 - 5 yıl', climate: 'Kurak ve yarı kurak iklime, soğuğa ve kireçli toprağa dayanıklıdır.',
-      regions: 'Malatya: Akçadağ, Darende, Hekimhan ve kuru yamaç alanları. Türkiye: Erzurum, Sivas, Yozgat, Kayseri ve İç Anadolu.',
-      water: 'Düşük; kuruluş döneminde nem, biçim sonrası yağış yararlıdır', temp: 'Serin-ılıman iklime uyumlu; çeşit ve rakıma göre değişir',
-      soil: 'Kireçli, derin ve iyi drene toprak; su göllenmesi uygun değildir.',
-      summary: 'Proteinli kaba yem üretir; meraya ve kurak alanların yem bitkisi ekim nöbetine uygundur.',
-      tips: 'Yavaş tesis olduğu için ilk yıl yabancı ot kontrolü önemlidir. Biçim zamanını hayvan besleme amacı ve yerel gelişime göre ayarlayın.',
-      market: 'Balyalı ot tüccarları, kooperatifler, besi ve süt işletmeleri. Alıcıyı yakın çevrede arayın; taşıma maliyeti ve balya nemi satış fiyatını belirler.'
+      season: 'Spring or autumn', sow: 'March–April; August–September where conditions are suitable', sowTiming: 'Sow in a well-prepared field with low weed pressure; adjust timing to local conditions and soil moisture.',
+      harvest: 'First cut: May–June; later cuts depend on regrowth', harvestTiming: 'Cut at the start of flowering for quality hay, leaving enough stubble for regrowth.',
+      duration: 'Perennial; typically productive for 3–5 years', climate: 'Tolerant of dry and semi-arid climates, cold, and calcareous soils.',
+      regions: 'Malatya: Akçadağ, Darende, Hekimhan, and dry slopes. Türkiye: Erzurum, Sivas, Yozgat, Kayseri, and Central Anatolia.',
+      water: 'Low; moisture during establishment and rainfall after cutting are beneficial', temp: 'Adapted to cool-temperate conditions; varies by cultivar and elevation',
+      soil: 'Deep, calcareous, well-drained soil; avoid waterlogging.',
+      summary: 'Produces protein-rich forage and suits pastures and forage rotations in dry areas.',
+      tips: 'Because establishment is slow, weed control is important in the first year. Set cutting times according to livestock needs and local growth.',
+      market: 'Baled-hay traders, cooperatives, beef and dairy farms. Nearby buyers, transport costs, and bale moisture affect selling price.'
     },
     {
-      id: 'sugar-beet', name: 'Şeker Pancarı', category: 'Endüstri (Sanayi) Bitkileri', subgroup: 'Endüstri (Sanayi) Bitkileri', group: 'field', type: 'Sözleşmeli endüstri bitkisi',
+      id: 'sugar-beet', name: 'Sugar Beet', category: 'Industrial Crops', subgroup: 'Industrial Crops', group: 'field', type: 'Contract industrial crop',
       img: 'assets/plants/sugar-beet.webp',
-      season: 'İlkbahar',       sow: 'Mart - Nisan', sowTiming: 'İşlenebilir tavda, toprak ısındığında; fabrika kotası, tohum ve teslim planı netleşmeden ekilmemelidir.',
-      harvest: 'Eylül - Ekim', harvestTiming: 'Fabrikanın söküm ve teslim programına göre; pancar sökümü ve nakliye aynı plan içinde yürütülür.',
-      duration: 'Yaklaşık 6 - 8 ay', climate: 'Ilıman gelişme dönemi, yeterli güneş ve uzun kök gelişme süresi ister.',
-      regions: 'Malatya’da yalnızca alım kotası, fabrika sevki ve su imkânı yazılı olarak doğrulanırsa düşünülmeli. Türkiye: Konya, Eskişehir, Afyonkarahisar, Yozgat ve Amasya.',
-      water: 'Orta - yüksek; düzenli su ve drenaj gerekir', temp: 'Yaklaşık 15 - 25 °C',
-      soil: 'Derin, taşsız, verimli ve iyi drene toprak.',
-      summary: 'Şeker fabrikasına işlenmek üzere teslim edilen, alımı çoğunlukla kota ve sözleşmeyle yürüyen üründür.',
-      tips: 'Ekimden önce fabrikanın pancar ekim sözleşmesi, kota, polar şeker, fire, nakliye ve teslim koşullarını yazılı alın; münavebeyi gözetin.',
-      market: 'Şeker fabrikaları ve fabrika ile sözleşmeli üretim organizasyonları temel alıcıdır. Malatya Şeker Fabrikası ve bölgesel kampanya/ekim alanı şartları güncel olarak teyit edilmeden alıcı garantisi varsaymayın.'
+      season: 'Spring', sow: 'March–April', sowTiming: 'Plant when the soil is warm and workable. Do not plant until the factory quota, seed supply, and delivery plan are confirmed.',
+      harvest: 'September–October', harvestTiming: 'Follow the factory’s lifting and delivery schedule; coordinate beet lifting and transport.',
+      duration: 'Approximately 6–8 months', climate: 'Requires a mild growing season, adequate sunlight, and a long period for root development.',
+      regions: 'In Malatya, consider only after written confirmation of purchase quota, factory delivery, and water availability. Türkiye: Konya, Eskişehir, Afyonkarahisar, Yozgat, and Amasya.',
+      water: 'Moderate to high; needs regular water and good drainage', temp: 'Approximately 15–25 °C',
+      soil: 'Deep, stone-free, fertile, well-drained soil.',
+      summary: 'Delivered to sugar factories for processing; purchasing is generally managed through quotas and contracts.',
+      tips: 'Before planting, obtain written confirmation of the factory contract, quota, sugar content, tare, transport, and delivery terms. Follow crop rotation practices.',
+      market: 'Sugar factories and their contract-growing programs are the primary buyers. Confirm current campaign and growing-area requirements before assuming a buyer is available in Malatya.'
     },
     {
-      id: 'alfalfa', name: 'Yonca', category: 'Yem Bitkisi', subgroup: 'Baklagil Yem Bitkileri', group: 'forage', type: 'Çok yıllık yem bitkisi',
+      id: 'alfalfa', name: 'Alfalfa', category: 'Forage Crops', subgroup: 'Forage Legumes', group: 'forage', type: 'Perennial forage crop',
       img: 'assets/plants/alfalfa.jpg',
-      season: 'İlkbahar veya sonbahar', sow: 'Mart - Nisan; ılıman yörede Ağustos - Eylül', sowTiming: 'Yabancı ot kontrolü yapılmış, iyi hazırlanmış tohum yatağına yüzlek ekilir.',
-      harvest: 'İlk biçim: Mayıs - Haziran; sezonda gelişime göre tekrarlı biçim', harvestTiming: 'Yem kalitesi için tomurcuklanma-çiçeklenme başlangıcında biçilir; biçimler arasında bitkinin toparlanması beklenir.',
-      duration: 'Çok yıllık; uygun bakımda 3 - 5 yıl veya daha fazla', climate: 'Güneşli ve ılıman; kış soğuğuna dayanıklıdır, su birikmesi ve aşırı asitli topraktan hoşlanmaz.',
-      regions: 'Malatya: Battalgazi, Yazıhan, Yeşilyurt ve sulanabilir alanlar. Türkiye: Konya, Kayseri, Isparta, Bursa ve Erzurum.',
-      water: 'Orta - yüksek; sulama varsa biçim sonrası su yönetimi verimi artırır', temp: 'Yaklaşık 15 - 25 °C',
-      soil: 'Derin, verimli, iyi drene, nötr-hafif alkali toprak; pH ve drenajı kontrol edin.',
-      summary: 'Proteinli kuru ot ve balya üretir; yakın çevredeki hayvancılık işletmeleri için pazarlanabilir.',
-      tips: 'Ekim derinliğini düşük tutun; ilk yıl yabancı otlarla mücadele edin. Biçim ve kurutmayı yağış tahminine göre planlayın.',
-      market: 'Süt/besi işletmeleri, yem tüccarları, kooperatifler ve balya alıcıları. Malatya’da alıcıya mesafe, balya kalitesi ve nakliye çoğu zaman belirleyicidir.'
+      season: 'Spring or autumn', sow: 'March–April; August–September in mild regions', sowTiming: 'Shallow-sow into a well-prepared seedbed with weeds controlled.',
+      harvest: 'First cut: May–June; repeat cuts as growth allows', harvestTiming: 'Cut around budding to early flowering for quality forage; allow plants to recover between cuts.',
+      duration: 'Perennial; 3–5 years or longer with suitable management', climate: 'Sunny, temperate conditions; winter-hardy, but sensitive to waterlogging and highly acidic soil.',
+      regions: 'Malatya: Battalgazi, Yazıhan, Yeşilyurt, and irrigated areas. Türkiye: Konya, Kayseri, Isparta, Bursa, and Erzurum.',
+      water: 'Moderate to high; irrigation after cutting can support regrowth and yield', temp: 'Approximately 15–25 °C',
+      soil: 'Deep, fertile, well-drained, neutral to slightly alkaline soil; check pH and drainage.',
+      summary: 'Produces protein-rich hay and bales for livestock farms in nearby markets.',
+      tips: 'Sow shallowly and control weeds during the first year. Schedule cutting and drying around the rainfall forecast.',
+      market: 'Dairy and beef farms, feed traders, cooperatives, and hay buyers. In Malatya, distance to buyers, bale quality, and transport costs are key factors.'
     }
   ];
 
   const guidePlantDefaults = {
     field: {
-      duration: 'Yaklaşık 4 - 8 ay; çeşit ve bölgeye göre değişir',
-      climate: 'Yetişme dönemi boyunca ürünün sıcaklık, ışık ve yağış isteğine uygun koşullar gerekir.',
-      water: 'Ürüne ve yağışa göre düşükten yükseğe değişir; su planı ekim öncesinde yapılmalıdır.',
-      temp: 'İklim ve sıcaklık isteği çeşide, gelişme dönemine ve bölgeye göre değişir',
-      soil: 'İyi drenajlı, yapısı ve besin durumu ürünün isteğine uygun tarla toprağı; toprak analizi önerilir.'
+      duration: 'Approximately 4–8 months; varies by cultivar and region',
+      climate: 'Conditions should meet the crop’s temperature, light, and rainfall needs throughout the growing season.',
+      water: 'Water needs range from low to high depending on the crop and rainfall; plan water availability before planting.',
+      temp: 'Climate and temperature requirements vary by cultivar, growth stage, and region',
+      soil: 'Well-drained field soil with suitable structure and fertility; soil testing is recommended.'
     },
     orchard: {
-      duration: 'Çok yıllık; verime yatma süresi anaç, çeşit ve bakıma göre değişir',
-      climate: 'Işık, kış soğuklaması ve ilkbahar donu riski tür ve çeşide göre değerlendirilmelidir.',
-      water: 'Kuruluş döneminde ve meyve gelişiminde düzenli su; sulama miktarı toprak ve iklime göre ayarlanmalıdır.',
-      temp: 'Ilıman iklim; don ve sıcaklık isteği türe göre değişir',
-      soil: 'Derin, verimli ve iyi drene olan tınlı toprak; taban suyu yüksek alanlardan kaçınılmalıdır.'
+      duration: 'Perennial; time to bearing depends on rootstock, cultivar, and care',
+      climate: 'Consider light, winter chill requirements, and spring frost risk for each species and cultivar.',
+      water: 'Regular water is important during establishment and fruit development; adjust irrigation to soil and climate.',
+      temp: 'Temperate climate; frost tolerance and temperature needs vary by species',
+      soil: 'Deep, fertile, well-drained loam; avoid sites with a high water table.'
     },
     vegetable: {
-      duration: 'Yaklaşık 2 - 6 ay; tür, çeşit ve yetiştirme sistemine göre değişir',
-      climate: 'Açık alan veya örtüaltı koşulları ürünün sıcaklık ve ışık isteğine göre seçilmelidir.',
-      water: 'Düzenli toprak nemi gerekir; su miktarı tür, gelişme dönemi ve yetiştirme sistemine göre ayarlanmalıdır.',
-      temp: 'Ilıman veya sıcak dönem; türe göre değişir',
-      soil: 'Organik maddesi yeterli, verimli ve iyi drene olan tınlı toprak.'
+      duration: 'Approximately 2–6 months; varies by species, cultivar, and production system',
+      climate: 'Choose open-field or protected growing conditions according to the crop’s temperature and light needs.',
+      water: 'Maintain consistent soil moisture; adjust irrigation to species, growth stage, and production system.',
+      temp: 'Mild to warm conditions; varies by species',
+      soil: 'Fertile, well-drained loam with adequate organic matter.'
     },
     vine: {
-      duration: 'Çok yıllık; verime yatma süresi fidan, çeşit ve terbiye sistemine göre değişir',
-      climate: 'Güneşli ve uzun bir gelişme dönemi ister; don riski ve bölgesel olgunlaşma zamanı dikkate alınmalıdır.',
-      water: 'Kuruluş döneminde ve gerektiğinde düzenli su; aşırı sulama ve su göllenmesinden kaçınılmalıdır.',
-      temp: 'Ilıman-sıcak iklim; çeşit ve rakıma göre değişir',
-      soil: 'İyi drene olan, kök gelişimine elverişli tınlı veya kumlu-tınlı toprak.'
+      duration: 'Perennial; time to bearing varies by planting stock, cultivar, and training system',
+      climate: 'Requires a sunny, long growing season; consider frost risk and regional ripening time.',
+      water: 'Provide regular water during establishment and when needed; avoid overwatering and waterlogging.',
+      temp: 'Temperate to warm climate; varies by cultivar and elevation',
+      soil: 'Well-drained loam or sandy loam suited to root development.'
     },
     medicinal: {
-      duration: 'Türüne göre tek veya çok yıllık; 1. veya 2. yıldan itibaren etken madde hasadı yapılır',
-      climate: 'Bol güneşli ve havadar iklim; etken madde ve uçucu yağ birikimi için yüksek güneşlenme ister.',
-      water: 'Düşük - orta; aşırı sulama ve su göllenmesi kök çürüklüğüne ve etken madde kaybına yol açar.',
-      temp: 'Ilıman - sıcak iklim; gelişme ve çiçeklenme dönemi için yaklaşık 16 - 28 °C',
-      soil: 'Geçirgen, tınlı-kireçli ve iyi havalanan toprak; taban suyu düşük araziler uygundur.'
+      duration: 'Annual or perennial, depending on species; active compounds may be harvested from year one or two',
+      climate: 'Sunny, well-ventilated conditions; strong sunlight supports active-compound and essential-oil production.',
+      water: 'Low to moderate; overwatering and waterlogging can cause root rot and reduce active compounds.',
+      temp: 'Temperate to warm; approximately 16–28 °C during growth and flowering',
+      soil: 'Permeable, well-aerated loam or calcareous loam; sites with a low water table are suitable.'
     },
     aromatic: {
-      duration: 'Çoğunlukla çok yıllık yarı çalı; tesis edildikten sonra 8 - 12 yıl boyunca verim verir',
-      climate: 'Akdeniz tipi bol güneşli ve sıcak iklim; aromatik bileşenlerin ve koku kalitesinin garantisidir.',
-      water: 'Düşük - orta; kuraklığa yüksek dayanıklıdır, çiçek öncesi destek sulama yeterlidir.',
-      temp: 'Sıcak ve ılıman iklim; gelişme dönemi için yaklaşık 18 - 30 °C',
-      soil: 'Hafif-orta bünyeli, taşlı, kireççe zengin ve süzek toprak; aşırı nemden kaçınılmalıdır.'
+      duration: 'Usually a perennial subshrub; productive for 8–12 years after establishment',
+      climate: 'Sunny, warm Mediterranean-type conditions support aromatic compounds and oil quality.',
+      water: 'Low to moderate; drought-tolerant, with supplemental irrigation often helpful before flowering.',
+      temp: 'Warm to mild climate; approximately 18–30 °C during growth',
+      soil: 'Light to medium-textured, stony, calcareous, well-drained soil; avoid excessive moisture.'
     },
     forage: {
-      duration: 'Tek yıllık (fiğ, yem bezelyesi) veya çok yıllık (yonca, korunga: 3 - 5+ yıl)',
-      climate: 'Geniş iklim adaptasyonu; kış soğuklarına ve kuraklığa dayanıklı çeşitler mevcuttur.',
-      water: 'Orta - yüksek; düzenli sulamayla yılda 3 ila 6 biçim yüksek verim alınabilir.',
-      temp: 'Gelişme için yaklaşık 12 - 25 °C',
-      soil: 'Derin, geçirgen, kireçli veya tınlı toprak; taban suyu drenajı iyi olmalıdır.'
+      duration: 'Annual (vetch, forage pea) or perennial (alfalfa, sainfoin: 3–5+ years)',
+      climate: 'Adapted to a wide range of climates; winter-hardy and drought-tolerant cultivars are available.',
+      water: 'Moderate to high; regular irrigation can support three to six cuts per year.',
+      temp: 'Approximately 12–25 °C for active growth',
+      soil: 'Deep, permeable calcareous or loamy soil with good drainage.'
     }
   };
 
   function createGuidePlant(product) {
     const defaults = guidePlantDefaults[product.kind] || guidePlantDefaults.field;
     const isPerennial = product.kind === 'orchard' || product.kind === 'vine' || product.perennial;
-    const plantingLabel = product.plantingLabel || (isPerennial ? 'Fidan/çelik/fide dikimi' : 'Ekim dönemi');
+    const plantingLabel = product.plantingLabel || (isPerennial ? 'Planting stock / cuttings / seedlings' : 'Planting window');
     return {
       id: product.id,
       name: product.name,
@@ -204,7 +204,7 @@
       plantingLabel,
       sowTiming: product.sowTiming,
       harvest: product.harvest,
-      harvestTiming: product.harvestTiming || 'Takvim bölge ve çeşide göre değişebilir; ürün olgunluğuna ve yerel üretim takvimine göre hasat edin.',
+      harvestTiming: product.harvestTiming || 'Timing varies by region and cultivar; harvest according to crop maturity and local production schedules.',
       duration: product.duration || defaults.duration,
       climate: product.climate || defaults.climate,
       regions: product.regions,
@@ -212,8 +212,8 @@
       temp: product.temp || defaults.temp,
       soil: product.soil || defaults.soil,
       summary: product.summary,
-      tips: product.tips || 'Ekim/dikim tarihini ilçe iklimi, rakım, çeşit ve toprak koşullarına göre yerel tarım danışmanlığıyla doğrulayın. Sulama, gübreleme ve bitki koruma uygulamalarını toprak analizi ve ürün etiketine göre planlayın.',
-      market: product.market || 'Satış kanalı ürünün çeşidine, kalite sınıfına ve yöresel alıcıya göre değişir. Hasattan önce alıcı, teslim standardı, ambalaj ve nakliye koşullarını araştırın.'
+      tips: product.tips || 'Check planting dates with local agricultural guidance, taking district climate, elevation, cultivar, and soil into account. Plan irrigation, fertilization, and crop protection based on soil tests and product labels.',
+      market: product.market || 'Sales channels vary by cultivar, quality grade, and local buyers. Research buyers, delivery standards, packaging, and transport before harvest.'
     };
   }
 
@@ -266,16 +266,124 @@
     { id: 'sudan-grass', name: 'Sorgum - Sudan Otu', group: 'forage', subgroup: 'Buğdaygil Yem Bitkileri', kind: 'forage', img: 'assets/plants/sudan-grass.jpg', season: 'Yazlık hızlı gelişen buğdaygil', sow: 'Mayıs - Haziran', sowTiming: 'Toprak sıcaklığı 15 °C üzerine çıktığında ekilir.', harvest: 'Temmuz - Ekim (sezonda 3-4 biçim)', regions: 'Ege, Akdeniz (Çukurova), Güneydoğu ve İç Anadolu sulu arazileri.', summary: 'Kuraklığa ve sıcağa yüksek toleranslı, yaz aylarında bol yeşil ot, kuru ot ve silaj üreten hızlı gelişen yem bitkisidir.' }
   ].map(createGuidePlant);
 
+  // English display copy for the crop-guide catalog. Technical IDs and image paths remain unchanged.
+  const englishPlantContent = {
+    corn: ['Corn (Grain)', 'Summer crop', 'April–May', 'Plant after the soil warms and spring frost risk has passed.', 'August–October', 'Harvest at maturity when grain moisture is suitable for the intended market.', 'Irrigated areas of the Mediterranean (Çukurova), Southeastern Anatolia, and the Aegean.', 'A warm-season cereal used for animal feed, starch, and food processing.'],
+    oats: ['Oats', 'Winter or spring crop', 'October–November', 'Usually sown in autumn; spring planting is also possible depending on the region and cultivar.', 'July–August', 'Harvest when grain is mature and dry enough for the intended use.', 'Marmara and the Black Sea region, especially cooler and more humid areas.', 'A cool-season cereal grown for grain, forage, or green fodder.'],
+    rye: ['Rye', 'Winter crop', 'October–November', 'Sow in autumn at the locally suitable time into a prepared seedbed.', 'July–August', 'Harvest when grain is mature and field conditions are suitable.', 'Central Anatolia and cold, high-elevation areas; tolerates relatively low-fertility soils.', 'A cold-hardy cereal grown for bread grain and livestock feed.'],
+    'green-lentil': ['Green Lentil', 'Spring crop', 'March', 'Sow in spring once the soil reaches suitable moisture and is workable.', 'July–August', 'Harvest when pods mature, taking care to limit seed shattering.', 'Central Anatolia, particularly Yozgat, Çorum, and Kırşehir.', 'A plant-based protein crop suited to dryland production.'],
+    chickpea: ['Chickpea', 'Spring crop', 'March–April', 'Sow in spring when the soil is workable.', 'July–August', 'Harvest when plants and pods mature and dry.', 'Central Anatolia, the Aegean, and Southeastern Anatolia.', 'A drought-tolerant legume used for food and pulse processing.'],
+    sunflower: ['Sunflower (Oilseed)', 'Summer crop', 'April', 'Sow in spring when soil temperature and moisture are suitable.', 'August–September', 'Harvest when heads and seeds mature and seed moisture suits storage or processing.', 'Marmara (Tekirdağ, Edirne), Central Anatolia, and the Black Sea region.', 'Seeds are processed for vegetable oil; sunflower meal is used in animal feed.'],
+    tobacco: ['Tobacco', 'Spring transplanting', 'April–May', 'Transplant seedlings after the risk of frost has passed.', 'July–August', 'Harvest leaves as they mature, following local curing and buyer requirements.', 'Aegean (Manisa, Denizli), Black Sea (Samsun), and Southeastern Anatolia.', 'An industrial crop processed for its leaves; production may require permits and contracts.'],
+    potato: ['Potato (Tuber)', 'Spring or summer crop', 'March–April', 'Plant seed tubers in workable soil; avoid frost and periods of extreme heat.', 'Summer and autumn', 'Harvest when plants mature and the skin has set, according to intended use.', 'Central Anatolia (Niğde, Nevşehir) and the Aegean (Ödemiş).', 'A tuber crop grown for fresh consumption and food processing.'],
+    rapeseed: ['Canola (Rapeseed)', 'Winter crop', 'September–October', 'Sow in autumn early enough for plants to establish before winter.', 'June–July', 'Harvest when most pods mature, while minimizing seed shattering.', 'Marmara, especially Thrace.', 'Seeds are processed for vegetable oil and the by-product is used in animal feed.'],
+    apple: ['Apple', 'Perennial fruit tree', 'November–March', 'Plant dormant trees when the soil is workable and severe frost is absent.', 'September–October', 'Pick at cultivar-specific maturity for fresh markets or storage.', 'Lake District (Isparta) and Central Anatolia (Karaman, Niğde).', 'A temperate fruit crop for fresh markets and processing that benefits from winter chill.'],
+    apricot: ['Apricot', 'Perennial fruit tree', 'November–March', 'Plant during dormancy; assess sites with a risk of late spring frost.', 'June–July', 'Harvest at the maturity required for fresh sale or drying.', 'Eastern Anatolia (Malatya) and the Mediterranean (Mersin–Mut).', 'A fresh and dried fruit crop whose blossoms are vulnerable to spring frost.'],
+    fig: ['Fig', 'Perennial fruit tree', 'November–March', 'Plant dormant trees, considering frost risk and soil conditions.', 'August–September', 'Harvest ripe fruit in multiple pickings as it matures.', 'Aegean region, especially Aydın and İzmir.', 'A warm-temperate fruit crop marketed fresh or dried.'],
+    cherry: ['Cherry', 'Perennial fruit tree', 'November–March', 'Plant dormant trees and plan for compatible pollinizer cultivars and frost risk.', 'Late spring–early summer', 'Pick carefully at market maturity; fruit is sensitive to handling and rain cracking.', 'Aegean (İzmir–Kemalpaşa), Central Anatolia, and Marmara.', 'A high-value fresh and export fruit that requires cultivar and pollination planning.'],
+    peach: ['Peach', 'Perennial fruit tree', 'November–March', 'Plant dormant trees during a frost-free period.', 'July–August', 'Harvest in multiple pickings as fruit reaches the desired maturity.', 'Marmara (Bursa, Çanakkale) and the Mediterranean (Mersin).', 'A fresh and processed fruit crop that benefits from regular pruning and irrigation.'],
+    nectarine: ['Nectarine', 'Perennial fruit tree', 'November–March', 'Plant dormant trees during a frost-free period.', 'July–August', 'Pick at the maturity required for fresh sale or handling.', 'Marmara (Bursa, Çanakkale) and the Mediterranean (Mersin).', 'A smooth-skinned stone fruit grown for fresh markets and processing.'],
+    hazelnut: ['Hazelnut', 'Perennial shrub crop', 'Winter dormancy', 'Plant in January–February on days without frost.', 'August', 'Harvest mature nuts and dry them promptly to protect quality.', 'Black Sea region (Ordu, Giresun, Trabzon) and Sakarya.', 'A nut crop used for snacks and food processing.'],
+    pistachio: ['Pistachio', 'Perennial fruit tree', 'Winter dormancy', 'Plant dormant trees when there is no frost and the soil is workable.', 'Early September', 'Harvest at maturity and handle promptly to protect nut quality.', 'Southeastern Anatolia (Gaziantep, Şanlıurfa, Siirt).', 'A heat- and drought-adapted nut crop requiring planned male pollinizers and female trees.'],
+    walnut: ['Walnut', 'Perennial fruit tree', 'Winter dormancy', 'Plant dormant trees during a frost-free period.', 'September–October', 'Harvest mature nuts and dry them carefully after collection.', 'Central Anatolia (Kaman), the Aegean (Denizli), and Marmara.', 'A nut crop for fresh and dried markets and food processing.'],
+    almond: ['Almond', 'Perennial fruit tree', 'Winter dormancy', 'Plant dormant trees, considering local conditions and late-frost risk.', 'August–September', 'Harvest when hulls split and nuts reach maturity.', 'Mediterranean, Aegean (Datça), and Southeastern Anatolia.', 'A relatively heat- and drought-tolerant nut crop with blossoms vulnerable to spring frost.'],
+    orange: ['Orange', 'Evergreen perennial fruit tree', 'Spring, after frost risk', 'Plant in spring after the danger of frost has passed.', 'November–February', 'Harvest according to cultivar maturity and local market timing.', 'Mediterranean (Antalya, Adana, Mersin) and Aegean (Muğla).', 'A citrus crop for fresh markets and juice processing that is sensitive to frost.'],
+    mandarin: ['Mandarin', 'Evergreen perennial fruit tree', 'Spring, after frost risk', 'Plant in spring after the danger of frost has passed.', 'Late autumn–winter', 'Harvest at cultivar-specific maturity; early and late cultivars extend the season.', 'Mediterranean (Hatay, Adana) and Aegean (İzmir–Seferihisar).', 'A fresh-market citrus crop with cultivars that ripen across the season.'],
+    lemon: ['Lemon', 'Evergreen perennial fruit tree', 'Spring, after frost risk', 'Plant in spring after the danger of frost has passed.', 'Winter', 'Harvest mature fruit according to cultivar and buyer requirements.', 'Mediterranean, especially Mersin–Erdemli and Adana.', 'A frost-sensitive citrus crop for fresh markets and food processing.'],
+    'seedless-grape': ['Seedless Grapes', 'Perennial woody vine', 'Winter–early spring', 'Plant grape cuttings or vines at the locally suitable time for the planting material.', 'August–September', 'Harvest at the maturity and quality required for fresh sale or drying.', 'Aegean (Manisa, İzmir, Denizli).', 'Seedless grapes are grown for table use and raisins; training and pruning are important.'],
+    'wine-table-grape': ['Juice / Table Grapes', 'Perennial woody vine', 'Winter–early spring', 'Plant grape cuttings or vines at the locally suitable time for the planting material.', 'September–October', 'Harvest at the maturity required for fresh use or juice and molasses processing.', 'Southeastern Anatolia (Diyarbakır, Gaziantep) and Central Anatolia.', 'Grapes are grown for fresh consumption, juice, and molasses; end use guides cultivar choice.'],
+    tomato: ['Tomato', 'Summer crop; season can be extended under cover', 'April–May (sowing / transplanting)', 'Transplant outdoors after spring frost risk passes; protected-cropping calendars differ.', 'Summer–autumn', 'Pick repeatedly as fruit reaches market maturity.', 'Greenhouse production in the Mediterranean; open-field production in the Aegean, Marmara, and Central Anatolia.', 'A widely grown vegetable for fresh markets and processed products such as paste.'],
+    pepper: ['Pepper', 'Summer crop; season can be extended under cover', 'April–May (sowing / transplanting)', 'Transplant after frost risk passes and the soil has warmed.', 'Summer–autumn', 'Pick repeatedly at the maturity required for fresh, dried, or processing markets.', 'Greenhouse production in the Mediterranean; open-field production in the Aegean, Marmara, and Central Anatolia.', 'Used fresh, dried, or processed; requires warm, sunny growing conditions.'],
+    eggplant: ['Eggplant', 'Summer vegetable', 'April–May (transplanting)', 'Transplant after the soil warms and spring frost risk passes.', 'July–October', 'Harvest regularly while fruit is tender and at market size.', 'Mediterranean (Antalya), Aegean (Aydın), and Marmara (Bursa).', 'A warm-season vegetable sold fresh, dried, or for canning.'],
+    cucumber: ['Cucumber', 'Spring and summer', 'April–May (earlier under cover)', 'Direct-sow into warm soil or transplant seedlings; maintain regular irrigation.', 'June–September', 'Harvest frequently while fruit is young and firm.', 'Mediterranean greenhouse areas (Antalya, Mersin), the Aegean, and Marmara.', 'A high-water-content cucurbit for fresh markets and pickling.'],
+    melon: ['Melon', 'Summer crop', 'March–May', 'Direct-sow or transplant after the soil warms in spring.', 'June–August', 'Harvest when fruit reaches cultivar-specific maturity and aroma.', 'Mediterranean (Adana), Southeastern Anatolia (Diyarbakır), and the Aegean.', 'A warm-season cucurbit grown for fresh consumption.'],
+    watermelon: ['Watermelon', 'Summer crop', 'March–May', 'Direct-sow or transplant after the soil warms in spring.', 'June–August', 'Harvest when fruit reaches maturity, using cultivar and field indicators.', 'Mediterranean (Adana), Southeastern Anatolia (Diyarbakır), and the Aegean.', 'A high-value fresh-market crop requiring warm conditions and a long growing season.'],
+    onion: ['Onion', 'Spring or autumn planting', 'March (spring) / autumn', 'Plant seed, sets, or transplants according to the production system and region.', 'July–August', 'Harvest when tops fall and bulbs mature; cure before storage.', 'Central Anatolia (Ankara, Amasya) and Marmara.', 'A staple vegetable used fresh, dried, and in food processing.'],
+    garlic: ['Garlic', 'Autumn crop', 'October–November', 'Plant cloves in autumn in well-drained soil.', 'June–July', 'Harvest when foliage yellows and bulbs mature; cure before storage.', 'Black Sea region (Kastamonu–Taşköprü) and Southeastern Anatolia.', 'A vegetable propagated from cloves and consumed fresh or dried.'],
+    sage: ['Medicinal Sage', 'Perennial medicinal shrub', 'March–April (seedlings / cuttings)', 'Transplant seedlings in spring into a stone-free, well-drained field.', 'May–September (before flowering)', 'Harvest leaves before flowering according to the intended product and buyer specification.', 'Aegean (İzmir, Muğla) and the Mediterranean region.', 'Leaves and essential oil are used in herbal teas, food products, and botanical preparations.'],
+    'st-johns-wort': ["St. John’s Wort", 'Perennial herb', 'March–April or autumn', 'Shallow-sow in a prepared, well-drained seedbed or transplant seedlings.', 'June–July (full bloom)', 'Harvest flowering tops at the required stage and handle according to buyer specifications.', 'Aegean, Marmara, Mediterranean, and Eastern Anatolian highlands.', 'Flowers containing hypericin are used in herbal products and botanical extracts.'],
+    echinacea: ['Echinacea', 'Perennial herb', 'March–April', 'Transplant seedlings after spring frost risk has passed.', 'July–August', 'Harvest roots or flowers at the stage required for the intended product.', 'Irrigable areas of the Aegean, Marmara, and Central Anatolia.', 'Roots and flowers are used in botanical products, lozenges, and syrups.'],
+    chamomile: ['Medicinal Chamomile', 'Annual herb', 'September–October or February–March', 'Shallow-sow the very small seeds and lightly firm the seedbed.', 'April–May', 'Harvest flower heads when fully open and dry them promptly in suitable conditions.', 'Aegean, Mediterranean, Central Anatolia, and Marmara.', 'Essential oil and flavonoids are used in herbal teas and cosmetic products.'],
+    'lemon-balm': ['Lemon Balm', 'Perennial herb', 'March–April', 'Establish from seedlings; plants tolerate partial shade and prefer mild conditions.', 'June–August (before flowering)', 'Harvest leaves before flowering for aromatic quality.', 'Mediterranean, Aegean, and Black Sea coastal areas.', 'Lemon-scented leaves are used in herbal teas and aromatherapy products.'],
+    licorice: ['Licorice', 'Deep-rooted perennial legume', 'Spring, from root cuttings', 'Plant in moist lowland soils and along suitable river terraces.', 'October–November (root harvest from year 3–4)', 'Harvest mature roots after several years, taking care to protect future regrowth.', 'Southeastern Anatolia (Şanlıurfa, Gaziantep) and Çukurova.', 'Roots containing glycyrrhizic acid are used in confectionery, pharmaceutical, and tobacco products.'],
+    lavender: ['Medicinal Lavender', 'Perennial aromatic subshrub', 'November–March (container seedlings)', 'Plant seedlings during winter dormancy or early spring.', 'July–August', 'Harvest flowering stems at the stage required for oil or dried-flower production.', 'Isparta (Kuyucak), Burdur, Afyonkarahisar, and Thrace.', 'Essential oil is used in perfumery, cosmetics, and aromatherapy; the crop can suit dry, calcareous slopes.'],
+    thyme: ['Wild / İzmir Thyme', 'Perennial aromatic shrub', 'Spring or autumn (transplanting)', 'Transplant into sunny, well-drained hillside fields.', 'June–July (early flowering)', 'Harvest at early flowering for dried herb or distillation, according to buyer requirements.', 'Aegean (Denizli–Pamukkale), Mediterranean, and western Anatolia.', 'Thymol- and carvacrol-rich leaves are exported as spice and distilled oil.'],
+    rosemary: ['Rosemary', 'Evergreen perennial aromatic shrub', 'Spring (cuttings or seedlings)', 'Plant in frost-free locations with calcareous, well-drained soil.', 'Several fresh-shoot harvests per year', 'Harvest shoots as needed while maintaining the plant for regrowth.', 'Mediterranean (Mersin, Adana, Antalya) and Aegean coasts.', 'Leaves are used as a natural food preservative, spice, meat seasoning, and cosmetic ingredient.'],
+    mint: ['Medicinal Mint (Peppermint)', 'Perennial rhizomatous herb', 'March–April (runners / seedlings)', 'Plant in moist, organic-rich soil and provide regular irrigation.', 'June–September (two to three cuts per year)', 'Cut before or at early flowering, according to the intended product.', 'Irrigated areas of the Mediterranean, Aegean, and Southeastern Anatolia.', 'Menthol-rich leaves and oil are used in confectionery, oral-care, and pharmaceutical products.'],
+    basil: ['Basil / Purple Basil', 'Annual warm-season herb', 'April–May (transplanting)', 'Transplant in warm weather after the last spring frost.', 'Harvest through summer, before or at flowering', 'Harvest leaves and flowering shoots according to fresh, dried, or processing use.', 'Malatya (Arapgir purple basil), the Aegean, and the Mediterranean.', 'Green basil and locally distinctive purple basil are used in drinks, sauces, spices, and dried products.'],
+    'black-cumin': ['Black Cumin', 'Annual winter or spring crop', 'October–November or February–March', 'Drill into a fine, well-prepared seedbed.', 'June–July (when capsules turn brown)', 'Harvest as capsules mature and brown, before seeds are lost.', 'Central Anatolia (Afyonkarahisar, Konya) and Burdur.', 'Seeds rich in thymoquinone and cold-pressed oil are sold for food, baking, and botanical products.'],
+    'forage-pea': ['Forage Pea', 'Winter or spring forage legume', 'October–November or March', 'Sow alone or in a mixture with cereals such as barley or oats.', 'May–June (late flowering / pod set)', 'Cut for forage near the end of flowering or at pod set, depending on the intended use.', 'Central Anatolia, Thrace, the Aegean, and Marmara.', 'An annual forage legume that forms productive cereal mixtures and supplies protein-rich hay or silage.'],
+    'sudan-grass': ['Sorghum–Sudan Grass', 'Fast-growing summer grass', 'May–June', 'Sow when soil temperature rises above 15 °C.', 'July–October (three to four cuts per season)', 'Cut at a suitable height and stage, allowing regrowth between harvests.', 'Irrigated areas of the Aegean, Mediterranean (Çukurova), Southeastern, and Central Anatolia.', 'A fast-growing forage crop with strong heat and drought tolerance that produces green fodder, hay, and silage.']
+  };
+  seasonalGuidePlants.forEach(plant => {
+    const copy = englishPlantContent[plant.id];
+    if (!copy) return;
+    [plant.name, plant.season, plant.sow, plant.sowTiming, plant.harvest, plant.harvestTiming, plant.regions, plant.summary] = copy;
+  });
+
   PLANTS_DATA.forEach(plant => {
     if (!plant.subgroup) plant.subgroup = plant.category;
-    if (!plant.plantingLabel) plant.plantingLabel = 'Ekim dönemi';
+    if (!plant.plantingLabel) plant.plantingLabel = 'Planting window';
   });
   PLANTS_DATA.push(...seasonalGuidePlants);
 
-  const monthNames = ['Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran', 'Temmuz', 'Ağustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık'];
+  const categoryEnglish = {
+    'Tahıl': 'Cereals', 'Tahıllar': 'Cereals',
+    'Yemeklik Tane Baklagiller': 'Food Legumes',
+    'Endüstri (Sanayi) Bitkileri': 'Industrial Crops',
+    'Yem Bitkisi': 'Forage Crops', 'Baklagil Yem Bitkileri': 'Forage Legumes',
+    'Buğdaygil Yem Bitkileri': 'Forage Grasses', 'Meyvecilik': 'Fruit Crops',
+    'Sert Kabuklu Meyveler': 'Nuts', 'Turunçgiller (Narenciye)': 'Citrus',
+    'Bağcılık': 'Viticulture', 'Sebzecilik (Meyvesi Yenenler)': 'Fruiting Vegetables',
+    'Sebzecilik (Kabakgiller)': 'Cucurbits', 'Sebzecilik (Yumru ve Soğansı)': 'Bulb and Root Vegetables',
+    'Tıbbi Bitkiler': 'Medicinal Plants', 'Tıbbi Kök Bitkileri': 'Medicinal Root Crops',
+    'Aromatik & Uçucu Yağ': 'Aromatic and Essential Oil Crops',
+    'Baharat & Çeşni Bitkileri': 'Spice and Seasoning Plants', 'Tohum Baharat Bitkileri': 'Seed Spices'
+  };
+  const baseEnglishContent = {
+    wheat: {
+      name: 'Wheat', category: 'Cereals', subgroup: 'Cereals', type: 'Winter cereal',
+      season: 'Winter / early spring', sow: 'October–November',
+      sowTiming: 'Plant when soil moisture is suitable. Sow earlier in cold, high-elevation areas and later in mild lowlands.',
+      harvest: 'June–July',
+      harvestTiming: 'Harvest with a combine before rain when ears and stems yellow, grain hardens, and grain moisture is suitable.',
+      duration: 'Approximately 7–9 months',
+      climate: 'Needs a cool growing period, a winter-hardy cultivar, and warm, dry weather during grain filling.',
+      regions: 'Central Anatolia (Konya, Ankara), Thrace, and Southeastern Anatolia.',
+      water: 'Moderate; supplemental irrigation may help at stem elongation and heading when rainfall is insufficient',
+      temp: 'Approximately 10–22 °C for growth',
+      soil: 'Deep, well-drained loam or clay loam; avoid heavy soils that retain excess water.',
+      summary: 'A staple raw material for flour, bulgur, and animal feed; performs well in rotations with legumes.',
+      tips: 'Choose certified cultivars suited to the area. Base seedbed preparation, seeding rate, and fertilizer on soil tests; split nitrogen applications.',
+      market: 'TMO procurement points under published terms, licensed warehouses, flour and feed mills, traders, and cooperatives. Confirm delivery and buyer terms in Malatya before planting.'
+    },
+    barley: {
+      name: 'Barley', category: 'Cereals', subgroup: 'Cereals', type: 'Winter cereal / feed and malt',
+      season: 'Winter crop', sow: 'October–November',
+      sowTiming: 'Planting may be earlier in colder, higher areas; local cultivar and soil moisture guide timing.',
+      harvest: 'June',
+      harvestTiming: 'Harvest when grain hardens and stems yellow. For malting barley, confirm buyer moisture and quality requirements.',
+      duration: 'Approximately 7–9 months',
+      climate: 'Adapted to cool climates and winter cold; more tolerant of drought and salinity than wheat.',
+      regions: 'Central Anatolia, Eastern Anatolia, and Southeastern Anatolia.',
+      water: 'Low to moderate; suitable for rainfed production', temp: 'Approximately 8–20 °C',
+      soil: 'Well-drained, light to medium-textured soils; avoid fields with a high water table.',
+      summary: 'A drought-tolerant cereal used for feed, malt, and food.',
+      tips: 'For malting, cultivar purity and protein content must meet buyer specifications. Maintain crop rotation and monitor weeds.',
+      market: 'Feed mills, malt and brewing industries, TMO procurement points, licensed warehouses, and traders. Malting sales usually require advance confirmation of quality specifications.'
+    }
+  };
+  PLANTS_DATA.forEach(plant => {
+    if (baseEnglishContent[plant.id]) Object.assign(plant, baseEnglishContent[plant.id]);
+    plant.category = categoryEnglish[plant.category] || plant.category;
+    plant.subgroup = categoryEnglish[plant.subgroup] || plant.subgroup;
+    if (plant.type) plant.type = categoryEnglish[plant.type] || plant.type;
+  });
+
+  const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
   function createCardHTML(plant) {
     return `
-      <article class="plant-card-item" data-id="${plant.id}" tabindex="0" role="button" aria-label="${plant.name} hakkında detayları gör">
+      <article class="plant-card-item" data-id="${plant.id}" tabindex="0" role="button" aria-label="View details about ${plant.name}">
         <div class="plant-card-photo" style="${plant.img ? `background-image: url('${plant.img}')` : 'background-image: linear-gradient(135deg, #e7efe4, #f5f2e7)'}">
           <span class="plant-card-tag">${plant.type}</span>
         </div>
@@ -289,7 +397,7 @@
             <span>🌱 <b>Ekim / dikim:</b> ${plant.sow}</span>
             <span>🌾 <b>Hasat:</b> ${plant.harvest}</span>
           </div>
-          <span class="plant-card-action-btn">Yetiştirme ve satış bilgileri ↗</span>
+          <span class="plant-card-action-btn">Growing and market information ↗</span>
         </div>
       </article>
     `;
@@ -350,12 +458,13 @@
     const body = document.getElementById('plant-modal-body');
     if (!modal || !body) return;
 
-    const currentMonth = monthNames[new Date().getMonth()];
+    const monthIndex = new Date().getMonth();
+    const currentMonth = monthNames[monthIndex];
     body.innerHTML = `
       <div class="modal-banner" style="${plant.img ? `background-image: url('${plant.img}')` : 'background-image: linear-gradient(135deg, #e7efe4, #f5f2e7)'}">
         <span class="modal-type-chip">${plant.type}</span>
       </div>
-      ${plant.imageCredit ? `<p class="plant-image-credit">Fotoğraf: <a href="${plant.imageSource}" target="_blank" rel="noopener noreferrer">${plant.imageCredit}</a></p>` : ''}
+      ${plant.imageCredit ? `<p class="plant-image-credit">Photo: <a href="${plant.imageSource}" target="_blank" rel="noopener noreferrer">${plant.imageCredit}</a></p>` : ''}
       <div class="modal-info-wrap">
         <div class="modal-header-line">
           <h2>${plant.name}</h2>
@@ -364,19 +473,19 @@
         <p class="modal-summary">${plant.summary}</p>
 
         <div class="modal-spec-grid">
-          <div class="spec-box"><span class="spec-label">🌱 ${plant.plantingLabel || 'Ekim dönemi'}</span><strong>${plant.sow}</strong><small>${plant.sowTiming}</small></div>
-          <div class="spec-box"><span class="spec-label">🌾 Hasat / biçim zamanı</span><strong>${plant.harvest}</strong><small>${plant.harvestTiming}</small></div>
-          <div class="spec-box"><span class="spec-label">📆 Üretim süresi</span><strong>${plant.duration}</strong></div>
-          <div class="spec-box"><span class="spec-label">💧 Su ihtiyacı</span><strong>${plant.water}</strong></div>
-          <div class="spec-box"><span class="spec-label">🌡️ İklim ve sıcaklık</span><strong>${plant.temp}</strong><small>${plant.climate}</small></div>
-          <div class="spec-box"><span class="spec-label">🗓️ Bugünkü sezon</span><strong>${currentMonth}</strong><small>${plant.sow.includes(currentMonth) ? 'Bu ay ekim dönemine denk gelebilir; yerel hava ve toprak koşullarını kontrol edin.' : plant.harvest.includes(currentMonth) ? 'Bu ay hasat dönemine denk gelebilir; ürün olgunluğunu ve alıcı takvimini kontrol edin.' : 'Ekim/hasat takvimini ilçe iklimi ve çeşit özellikleriyle doğrulayın.'}</small></div>
+          <div class="spec-box"><span class="spec-label">🌱 ${plant.plantingLabel || 'Planting window'}</span><strong>${plant.sow}</strong><small>${plant.sowTiming}</small></div>
+          <div class="spec-box"><span class="spec-label">🌾 Harvest / cutting window</span><strong>${plant.harvest}</strong><small>${plant.harvestTiming}</small></div>
+          <div class="spec-box"><span class="spec-label">📆 Growing period</span><strong>${plant.duration}</strong></div>
+          <div class="spec-box"><span class="spec-label">💧 Water needs</span><strong>${plant.water}</strong></div>
+          <div class="spec-box"><span class="spec-label">🌡️ Climate and temperature</span><strong>${plant.temp}</strong><small>${plant.climate}</small></div>
+          <div class="spec-box"><span class="spec-label">🗓️ Current season</span><strong>${currentMonth}</strong><small>${plant.sow.includes(currentMonth) ? 'This month may fall within the planting window; check local weather and soil conditions.' : plant.harvest.includes(currentMonth) ? 'This month may fall within the harvest window; check crop maturity and buyer schedules.' : 'Verify the planting/harvest calendar against the local climate and cultivar.'}</small></div>
         </div>
 
-        <div class="modal-extra-info"><h4>📍 En verimli bölgeler ve şehirler</h4><p>${plant.regions}</p></div>
-        <div class="modal-extra-info"><h4>🌍 Toprak isteği</h4><p>${plant.soil}</p></div>
-        <div class="modal-extra-info tips-box"><h4>💡 Yetiştirme ve bakım notları</h4><p>${plant.tips}</p></div>
-        <div class="modal-extra-info market-box"><h4>🏭 Satış kanalı ve olası alıcılar</h4><p>${plant.market}</p></div>
-        <p class="plant-info-disclaimer">Bu takvimler genel aralıktır; çeşit, rakım, hava, toprak ve su koşulları tarihleri değiştirebilir. Uygulama takvimini yerel koşullar ve güncel üretim önerileriyle doğrulayın.</p>
+        <div class="modal-extra-info"><h4>📍 Main growing regions</h4><p>${plant.regions}</p></div>
+        <div class="modal-extra-info"><h4>🌍 Soil requirements</h4><p>${plant.soil}</p></div>
+        <div class="modal-extra-info tips-box"><h4>💡 Growing and care notes</h4><p>${plant.tips}</p></div>
+        <div class="modal-extra-info market-box"><h4>🏭 Sales channels and potential buyers</h4><p>${plant.market}</p></div>
+        <p class="plant-info-disclaimer">These calendars provide general windows; cultivar, elevation, weather, soil, and water conditions can shift dates. Check the calendar against local conditions and current production guidance.</p>
       </div>
     `;
 

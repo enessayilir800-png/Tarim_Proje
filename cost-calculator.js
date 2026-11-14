@@ -3,7 +3,7 @@
   // Ürün bazlı dekar (da) başına ortalama girdi maliyetleri ve piyasa verileri (TL)
   const FINANCIAL_DATA = {
     wheat: {
-      name: 'Buğday',
+      name: 'Wheat',
       yieldPerDekar: 380, // kg/dekar
       pricePerKg: 10.5,   // TL/kg
       seedCost: 350,      // TL/da
@@ -12,7 +12,7 @@
       irrigationCost: 200 // TL/da (sulama varsa)
     },
     barley: {
-      name: 'Arpa',
+      name: 'Barley',
       yieldPerDekar: 350,
       pricePerKg: 8.5,
       seedCost: 300,
@@ -21,7 +21,7 @@
       irrigationCost: 150
     },
     corn: {
-      name: 'Mısır',
+      name: 'Corn',
       yieldPerDekar: 1100,
       pricePerKg: 8.0,
       seedCost: 750,
@@ -30,7 +30,7 @@
       irrigationCost: 950
     },
     sunflower: {
-      name: 'Ayçiçeği',
+      name: 'Sunflower',
       yieldPerDekar: 260,
       pricePerKg: 18.0,
       seedCost: 400,
@@ -39,7 +39,7 @@
       irrigationCost: 300
     },
     chickpea: {
-      name: 'Nohut',
+      name: 'Chickpea',
       yieldPerDekar: 160,
       pricePerKg: 35.0,
       seedCost: 550,
@@ -48,7 +48,7 @@
       irrigationCost: 100
     },
     lentil: {
-      name: 'Mercimek',
+      name: 'Lentil',
       yieldPerDekar: 150,
       pricePerKg: 32.0,
       seedCost: 500,
@@ -57,7 +57,7 @@
       irrigationCost: 100
     },
     cotton: {
-      name: 'Pamuk',
+      name: 'Cotton',
       yieldPerDekar: 450,
       pricePerKg: 24.0,
       seedCost: 600,
@@ -66,7 +66,7 @@
       irrigationCost: 1200
     },
     tomato: {
-      name: 'Domates',
+      name: 'Tomato',
       yieldPerDekar: 7500,
       pricePerKg: 3.5,
       seedCost: 1800,
@@ -75,7 +75,7 @@
       irrigationCost: 1500
     },
     potato: {
-      name: 'Patates',
+      name: 'Potato',
       yieldPerDekar: 3800,
       pricePerKg: 8.5,
       seedCost: 3500,
@@ -113,47 +113,47 @@
     box.id = 'cost-analysis-box';
     box.className = 'cost-analysis-box';
     box.innerHTML = `
-      <div class="timeline-title">💰 TAHMİNİ GELİR, MALİYET VE KÂR ANALİZİ (${dekar} DEKAR)</div>
+      <div class="timeline-title">💰 ESTIMATED REVENUE, COST & PROFIT (${dekar} DECARES)</div>
       <div class="financial-summary-grid">
         <div class="fin-card fin-card-expense">
-          <span class="fin-label">Toplam Tahmini Gider</span>
+          <span class="fin-label">Estimated Total Cost</span>
           <strong class="fin-val text-expense">${fmtCurrency(totalExpense)}</strong>
-          <small>Dekar başı: ${fmtCurrency(totalExpense / dekar)}</small>
+          <small>Per decare: ${fmtCurrency(totalExpense / dekar)}</small>
         </div>
         <div class="fin-card fin-card-revenue">
-          <span class="fin-label">Tahmini Brüt Gelir</span>
+          <span class="fin-label">Estimated Gross Revenue</span>
           <strong class="fin-val text-revenue">${fmtCurrency(totalRevenue)}</strong>
-          <small>${Math.round(totalYieldKg).toLocaleString('tr-TR')} kg rekolte beklentisi</small>
+          <small>Expected yield: ${Math.round(totalYieldKg).toLocaleString('en')} kg</small>
         </div>
         <div class="fin-card ${isProfit ? 'fin-card-profit' : 'fin-card-loss'}">
-          <span class="fin-label">${isProfit ? 'Tahmini Net Kâr' : 'Tahmini Risk / Zarar'}</span>
+          <span class="fin-label">${isProfit ? 'Estimated Net Profit' : 'Estimated Risk / Loss'}</span>
           <strong class="fin-val ${isProfit ? 'text-profit' : 'text-loss'}">${fmtCurrency(netProfit)}</strong>
-          <small>Dekar başı net: ${fmtCurrency(netProfit / dekar)}</small>
+          <small>Net per decare: ${fmtCurrency(netProfit / dekar)}</small>
         </div>
       </div>
 
       <div class="expense-breakdown">
-        <h4>Gider Kalemleri Dağılımı</h4>
+        <h4>Cost Breakdown</h4>
         <div class="expense-bars">
           <div class="exp-item">
-            <span>🌱 Tohum / Fide:</span>
+            <span>🌱 Seed / Seedling:</span>
             <strong>${fmtCurrency(seedTotal)}</strong>
           </div>
           <div class="exp-item">
-            <span>🧪 Taban ve Üst Gübre:</span>
+            <span>🧪 Basal and Top-dressing Fertilizer:</span>
             <strong>${fmtCurrency(fertTotal)}</strong>
           </div>
           <div class="exp-item">
-            <span>🚜 Mazot, Sürüm ve İşçilik:</span>
+            <span>🚜 Fuel, Tillage, and Labor:</span>
             <strong>${fmtCurrency(fuelTotal)}</strong>
           </div>
           <div class="exp-item">
-            <span>💧 Sulama & Enerji:</span>
+            <span>💧 Irrigation & Energy:</span>
             <strong>${fmtCurrency(irrTotal)}</strong>
           </div>
         </div>
         <p class="fin-disclaimer">
-          * Fiyatlar ve rekolte değerleri Türkiye tarım piyasası ortalamalarına dayalı tahmini karar desteğidir. Akaryakıt, tohum çeşidi ve yerel pazar koşullarına göre değişkenlik gösterebilir.
+          * Prices and yield figures are estimates based on averages in Türkiye's agricultural markets. Actual figures vary with fuel prices, seed variety, and local market conditions.
         </p>
       </div>
     `;

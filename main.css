@@ -546,15 +546,26 @@ footer{display:flex;justify-content:space-between;align-items:center;gap:12px;fo
 .tips-box{background:#f3f7ee;border-left:4px solid var(--green);padding:10px 14px;border-radius:0 10px 10px 0}
 .market-box{padding:12px 14px;background:#f4f7f5;border:1px solid #e2e9e3;border-radius:10px}
 .plant-info-disclaimer{margin:14px 0 0;padding-top:10px;border-top:1px solid #e8ede6;color:#788579;font-size:10.5px;line-height:1.5}
-.overview-card{position:relative;min-height:132px;padding:22px;display:flex;align-items:center;gap:15px;overflow:hidden;border:1px solid #e6e0d4;border-radius:18px;background:var(--white);box-shadow:0 12px 30px #2339200b;color:inherit;text-decoration:none;transition:transform .2s,border-color .2s,box-shadow .2s}
+.overview-card{position:relative;min-height:280px;padding:20px;display:flex;align-items:center;gap:18px;overflow:hidden;border:1px solid #e6e0d4;border-radius:18px;background:var(--white);box-shadow:0 12px 30px #2339200b;color:inherit;text-decoration:none;transition:transform .2s,border-color .2s,box-shadow .2s}
 .overview-card:after{position:absolute;right:-28px;bottom:-48px;width:132px;height:132px;border:1px solid #e7e8d9;border-radius:50%;content:"";box-shadow:0 0 0 16px #f4f3e91a,0 0 0 34px #f4f3e91a}
 .overview-card:hover{transform:translateY(-3px);border-color:#d6d5c2;box-shadow:0 18px 34px #23392013}
 .overview-card-icon{z-index:1;width:46px;height:46px;flex:0 0 46px;display:grid;place-items:center;border:1px solid #e4e6d9;border-radius:15px;background:#eff1e6;color:#4d704c;font-size:21px}
-.overview-card-copy{z-index:1;display:grid;gap:4px}
+.overview-card-copy{z-index:1;flex:1 1 43%;min-width:0;display:grid;gap:5px}
 .overview-card-copy>small{color:#8b826c;font:600 9px 'Instrument Sans',sans-serif;letter-spacing:1.15px}
 .overview-card-copy>strong{color:#20382c;font:600 18px 'Bricolage Grotesque',sans-serif}
 .overview-card-copy>span{color:#748075;font-size:11px;line-height:1.5}
 .overview-card-arrow{z-index:1;margin-left:auto;align-self:flex-start;color:#738261;font-size:17px}
+.overview-card-scene{position:relative;z-index:1;flex:0 1 49%;min-width:0;height:190px;align-self:center;display:flex;flex-direction:column;overflow:hidden}
+.overview-map-art{display:block;flex:0 0 145px;width:100%;height:145px;border-radius:10px 10px 0 0;transform-origin:center;animation:overview-map-approach 7s ease-in-out infinite alternate}
+.overview-map-tag,.overview-map-caption{position:relative;z-index:1;display:block;overflow:hidden;background:var(--white);text-overflow:ellipsis;white-space:nowrap}
+.overview-map-tag{padding-top:6px;color:#51674d;font-size:11px;font-weight:600}
+.overview-map-dot{display:inline-block;width:6px;height:6px;margin:0 4px 1px 0;border-radius:50%;background:#79a05d;box-shadow:0 0 0 3px #79a05d20}
+.overview-map-caption{padding-top:2px;color:#7a8677;font-size:10px}
+.overview-map-pulse,.overview-plant-pulse{transform-box:fill-box;transform-origin:center;animation:overview-map-pulse 2.4s ease-out infinite}
+.overview-growing-plant{transform-box:fill-box;transform-origin:center bottom;animation:overview-plant-grow 3.2s ease-in-out infinite alternate}
+@keyframes overview-map-approach{from{transform:scale(1)}to{transform:scale(1.16)}}
+@keyframes overview-map-pulse{0%{opacity:.75;transform:scale(.82)}100%{opacity:0;transform:scale(1.45)}}
+@keyframes overview-plant-grow{from{transform:scale(.68)}to{transform:scale(1.12)}}
 .overview-page .bottom-note{margin-top:0}
 .crop-category-choices{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:20px;max-width:1200px;margin:20px auto 0}
 .crop-category-choices .plants-category-card{min-height:290px}
@@ -577,10 +588,10 @@ footer{display:flex;justify-content:space-between;align-items:center;gap:12px;fo
   .crop-category-choices{grid-template-columns:1fr;gap:13px}
   .crop-category-choices .plants-category-card{min-height:260px}
 }
-@media(max-width:680px){.page-heading,.overview-cards{width:calc(100% - 26px)}.page-heading{margin:25px auto 16px}.page-heading h1{font-size:34px}.page-heading>p{font-size:12px}.overview-cards{grid-template-columns:1fr;gap:10px;margin:15px auto}.overview-card{min-height:105px;padding:16px;border-radius:15px}.overview-card-icon{width:40px;height:40px;flex-basis:40px;border-radius:13px}.overview-card-copy>strong{font-size:16px}.overview-page .bottom-note{width:calc(100% - 26px)}}
+@media(max-width:680px){.page-heading,.overview-cards{width:calc(100% - 26px)}.page-heading{margin:25px auto 16px}.page-heading h1{font-size:34px}.page-heading>p{font-size:12px}.overview-cards{grid-template-columns:1fr;gap:10px;margin:15px auto}.overview-card{min-height:230px;padding:16px;border-radius:15px;gap:12px}.overview-card-copy>strong{font-size:16px}.overview-card-scene{height:170px;flex-basis:48%}.overview-map-art{flex-basis:125px;height:125px}.overview-card-icon{width:40px;height:40px;flex-basis:40px;border-radius:13px}.overview-page .bottom-note{width:calc(100% - 26px)}}
 @media(max-width:680px){.plants-category-choices{width:calc(100% - 26px);margin:18px auto 26px}.plants-category-card{min-height:260px}}
 @media(max-width:680px){.crop-category-choices{width:calc(100% - 26px);margin-top:15px}}
-@media(prefers-reduced-motion:reduce){.app-page:not([hidden]),.crop-group:not([hidden]){animation:none}.overview-card,.plants-category-card,.plants-category-photo,.plants-category-action>span{animation:none;transition:none}}
+@media(prefers-reduced-motion:reduce){.app-page:not([hidden]),.crop-group:not([hidden]){animation:none}.overview-card,.overview-map-art,.overview-map-pulse,.overview-plant-pulse,.overview-growing-plant,.plants-category-card,.plants-category-photo,.plants-category-action>span{animation:none;transition:none}}
 .place-search-fields{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:9px}.place-search-fields input{height:42px;min-width:0;padding:0 14px;border:1px solid #d0dacb;border-radius:8px;background:#fff;color:#183428;font:13px 'Instrument Sans',sans-serif}.place-search-fields input:focus{outline:none;border-color:var(--green);box-shadow:0 0 0 3px rgba(36,86,58,.12)}.place-search-fields button{height:42px;padding:0 16px;border:0;border-radius:8px;background:var(--green);color:#fff;font:600 13px 'Bricolage Grotesque',sans-serif;cursor:pointer;white-space:nowrap}.place-search-fields button:disabled{opacity:.6;cursor:wait}.parcel-id-search{margin-top:12px;padding-top:12px;border-top:1px solid #e5e8df}.parcel-id-label{display:block;margin-bottom:8px;color:#405540;font-size:11px;font-weight:700}.tkgm-fields{grid-template-columns:repeat(3,minmax(120px,1fr));gap:8px}.tkgm-fields input{width:100%;min-width:0;height:38px;padding:0 10px;border:1px solid #dce5d8;border-radius:7px;background:#fff;color:#344a38;font:12px 'Instrument Sans',sans-serif}.tkgm-fields input:focus{outline:none;border-color:#6c9068;box-shadow:0 0 0 3px #6c90681c}.tkgm-fields button{min-height:38px;border-radius:7px;font-size:11px}.tkgm-search #tkgm-status{min-height:16px;margin:8px 1px 0;line-height:1.5}
 @media(max-width:900px){.tkgm-fields{grid-template-columns:repeat(2,minmax(0,1fr))}.tkgm-fields button{height:38px}}
 @media(max-width:520px){.place-search-fields{grid-template-columns:1fr}.place-search-fields button{width:100%}.tkgm-fields{grid-template-columns:1fr 1fr}.tkgm-fields select:nth-child(-n+3){grid-column:span 2}.tkgm-fields button{grid-column:span 2}}

@@ -17,7 +17,7 @@
     return nativeFetch(url,init).then(async response=>{
       if(isGeo){
         const type=response.headers.get('content-type')||'';
-        if(!type.includes('application/json')) return new Response(JSON.stringify({error:'Konum servisi JSON yerine bir web sayfası döndürdü. Sunucuyu yeniden başlatıp tekrar deneyin.'}),{status:503,headers:{'Content-Type':'application/json'}});
+        if(!type.includes('application/json')) return new Response(JSON.stringify({error:'The location service returned a web page instead of JSON. Restart the server and try again.'}),{status:503,headers:{'Content-Type':'application/json'}});
       }
       return response;
     });
@@ -26,8 +26,8 @@
 
 // ===== app.js =====
 const CROPS = {
-  wheat: { name:'Buğday', season:'Kışlık tahıl', sow:[9,10,11], harvest:[6,7], temp:[10,22], water:420, seed:'Ekim öncesi tohum yatağını hazırla; sertifikalı ve bölgeye uygun çeşidi tercih et.', fertilizer:'Toprak analizine göre taban gübresini ekimle birlikte ver. Azotu bölerek uygula; üst gübreyi kardeşlenme dönemine planla.', spray:'Yabancı ot kontrolünü kardeşlenme döneminde değerlendir. Hastalık ve zararlı görülmeden rutin ilaçlama yapma.', irrigate:'Yağış yetersizse sapa kalkma ve başaklanma dönemlerinde su ihtiyacını kontrol et.' },
-  barley: { name:'Arpa', season:'Kışlık tahıl', sow:[9,10,11], harvest:[6,7], temp:[8,20], water:380, seed:'Ekim yatağını hazırla; bölgeye ve kullanım amacına uygun arpa çeşidini seç.', fertilizer:'Taban gübresini toprak analizine göre uygula. Azotu ihtiyaca ve gelişme dönemine böl.', spray:'Yabancı ot ve hastalıkları düzenli gözle; yalnızca eşik ve etiket önerilerine göre müdahale et.', irrigate:'Kuraklıkta sapa kalkma ve başaklanma dönemlerinde su durumunu izle.' },
+  wheat: { name:'Wheat', season:'Winter cereal', sow:[9,10,11], harvest:[6,7], temp:[10,22], water:420, seed:'Prepare the seedbed before planting; choose a certified cultivar suited to the region.', fertilizer:'Apply basal fertilizer at planting based on soil test results. Split nitrogen applications and schedule top-dressing around tillering.', spray:'Monitor weeds around tillering. Avoid routine spraying before correctly identifying a pest or disease.', irrigate:'If rainfall is insufficient, monitor water needs during stem elongation and heading.' },
+  barley: { name:'Barley', season:'Winter cereal', sow:[9,10,11], harvest:[6,7], temp:[8,20], water:380, seed:'Prepare the seedbed and select a barley cultivar suited to the region and intended use.', fertilizer:'Apply basal fertilizer based on soil test results. Split nitrogen according to crop needs and growth stage.', spray:'Monitor weeds and disease regularly; intervene only when thresholds and product labels support it.', irrigate:'During drought, monitor water availability at stem elongation and heading.' },
   corn: { name:'Mısır', season:'Yazlık tarla bitkisi', sow:[4,5], harvest:[9,10], temp:[18,30], water:600, seed:'Toprak sıcaklığı yeterince yükselince ek. Sıra arası ve hibrit seçimini yerel öneriye göre belirle.', fertilizer:'Ekim öncesi toprak analizi yaptır. Azot uygulamasını ekim ve hızlı büyüme dönemlerine böl.', spray:'Çıkış sonrası yabancı otları erken dönemde izle. Zararlı kontrolünü tarla gözlemine göre yap.', irrigate:'Sulama varsa çiçeklenme ve tane doldurma dönemlerini önceliklendir; yağış ve toprağı takip et.' },
   sunflower: { name:'Ayçiçeği', season:'Yazlık yağ bitkisi', sow:[3,4,5], harvest:[8,9], temp:[15,28], water:450, seed:'Don riski azaldığında ve toprak ısındığında ek. Bölgeye uygun hibrit ve ekim sıklığı seç.', fertilizer:'Toprak analizine göre fosfor ve potasyumu taban gübresinde değerlendir; azotu dengeli kullan.', spray:'Yabancı ot takibi özellikle ilk gelişme döneminde önemli. İlaç kararını ruhsat ve etiket bilgisine göre ver.', irrigate:'Kurak koşulda tabla oluşumu ve çiçeklenme çevresindeki su stresini izle.' },
   chickpea: { name:'Nohut', season:'Baklagil', sow:[2,3,4], harvest:[7,8], temp:[12,26], water:300, seed:'Ekim zamanını yöresel don ve hastalık riskine göre belirle; temiz, uygun tohum kullan.', fertilizer:'Ekim öncesi toprak analizi yap. Baklagil olduğu için azot uygulamasını uzman önerisi olmadan artırma.', spray:'Antraknoz ve yabancı otları düzenli gözle. Hastalık geçmişi olan tarlada dayanıklı çeşit ve ekim nöbetini değerlendir.', irrigate:'Çoğu koşulda sınırlı suyla yetişebilir; çiçeklenmede şiddetli stres varsa su durumunu gözle.' },
@@ -130,21 +130,21 @@ $('farm-form').addEventListener('submit',async e=>{e.preventDefault();const lat=
 
 // ===== quality-fixes.js =====
 (function(){
-  const names={wheat:'Buğday',barley:'Arpa',corn:'Mısır',sunflower:'Ayçiçeği',chickpea:'Nohut',lentil:'Mercimek',corn:'Mısır',cotton:'Pamuk',tomato:'Domates',potato:'Patates'};
-  const traits={wheat:'Tahıl',barley:'Tahıl',corn:'Tahıl',sunflower:'Yağlı tohum',chickpea:'Baklagil',lentil:'Baklagil',cotton:'Endüstri',tomato:'Sebze',potato:'Yumru'};
+  const names={wheat:'Wheat',barley:'Barley',corn:'Corn',sunflower:'Sunflower',chickpea:'Chickpea',lentil:'Lentil',cotton:'Cotton',tomato:'Tomato',potato:'Potato'};
+  const traits={wheat:'Cereal',barley:'Cereal',corn:'Cereal',sunflower:'Oilseed',chickpea:'Legume',lentil:'Legume',cotton:'Industrial crop',tomato:'Vegetable',potato:'Tuber'};
   const pool=['wheat','chickpea','barley','sunflower','lentil','corn'];
-  const monthNames=['Ocak','Şubat','Mart','Nisan','Mayıs','Haziran','Temmuz','Ağustos','Eylül','Ekim','Kasım','Aralık'];
+  const monthNames=['January','February','March','April','May','June','July','August','September','October','November','December'];
   function rotation(){
     const box=document.querySelector('.rotation-box'), selected=document.getElementById('crop')?.value;
     if(!box||!selected||!names[selected])return;
     const priority=document.getElementById('priority')?.value||'soil'; const previous=document.getElementById('previous-crop')?.value||'none';
     const future=pool.filter(id=>id!==selected).sort((a,b)=>{
-      const score=id=>(traits[id]!==traits[selected]?3:0)+(traits[id]==='Baklagil'?3:0)+(priority==='water'&&['corn','cotton'].includes(id)?-4:0)+(priority==='soil'&&traits[id]==='Baklagil'?4:0);
+      const score=id=>(traits[id]!==traits[selected]?3:0)+(traits[id]==='Legume'?3:0)+(priority==='water'&&['corn','cotton'].includes(id)?-4:0)+(priority==='soil'&&traits[id]==='Legume'?4:0);
       return score(b)-score(a);
     });
     const years=[selected,future[0],future[1]];
-    const reasons=['Bu sezon seçtiğin ürün.','Farklı bir ürün ailesiyle hastalık döngüsünü kırar.','Baklagil veya farklı kök yapısıyla toprağı destekler.'];
-    box.innerHTML=`<div class="timeline-title">3 YILLIK ÜRÜN ROTASYONU <span style="font-weight:400;letter-spacing:0">· Her yıl aynı aileyi tekrarlamama planı</span></div><div class="rotation-grid">${years.map((id,i)=>`<div class="rotation-card"><span>${2026+i}. yıl</span><strong>${names[id]}</strong><small>${reasons[i]}</small></div>`).join('')}</div><p class="rotation-note"><b>Toprak sağlığı:</b> Ürün ailesini değiştirerek hastalık baskısını azaltır, baklagillerle besin döngüsünü ve farklı köklerle toprak yapısını destekleriz.</p>`;
+    const reasons=['Crop selected for this season.','Break the disease cycle by rotating to a different crop family.','Support soil health with legumes or a different root structure.'];
+    box.innerHTML=`<div class="timeline-title">3-YEAR CROP ROTATION <span style="font-weight:400;letter-spacing:0">· A plan to avoid repeating the same crop family each year</span></div><div class="rotation-grid">${years.map((id,i)=>`<div class="rotation-card"><span>Year ${2026+i}</span><strong>${names[id]}</strong><small>${reasons[i]}</small></div>`).join('')}</div><p class="rotation-note"><b>Soil health:</b> Rotating crop families can reduce disease pressure, support nutrient cycling with legumes, and improve soil structure through varied root systems.</p>`;
   }
   function rows(items){return items.map(x=>`<div class="month-row"><div class="month-name">${x[0]}</div><div class="month-tasks"><b>${x[1]}:</b> ${x[2]}</div></div>`).join('')}
   function timeline(){
