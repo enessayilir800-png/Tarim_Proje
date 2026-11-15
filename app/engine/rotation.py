@@ -27,15 +27,15 @@ _TRAITS: dict[str, dict[str, Any]] = {
     "potato": {"family": "tuber", "water_need": 4, "soil_gain": -1, "cover": False},
 }
 _NAMES: dict[str, str] = {
-    "wheat": "Buğday", "barley": "Arpa", "corn": "Mısır",
-    "sunflower": "Ayçiçeği", "chickpea": "Nohut", "lentil": "Mercimek",
-    "cotton": "Pamuk", "tomato": "Domates", "potato": "Patates",
+    "wheat": "Wheat", "barley": "Barley", "corn": "Corn",
+    "sunflower": "Sunflower", "chickpea": "Chickpea", "lentil": "Lentil",
+    "cotton": "Cotton", "tomato": "Tomato", "potato": "Potato",
 }
 _ROTATION_POOL = ("wheat", "chickpea", "barley", "sunflower", "lentil", "corn")
 _REASONS = (
-    "Bu sezon seçtiğin ürün.",
-    "Önceki ürün ailesini kırar; toprağı dinlendirmeye yardımcı olur.",
-    "Farklı kök yapısıyla hastalık baskısını ve besin tekdüzeliğini azaltır.",
+    "The crop selected for this season.",
+    "Breaks the previous crop family and helps restore the soil.",
+    "Different root structures can reduce disease pressure and nutrient imbalance.",
 )
 
 

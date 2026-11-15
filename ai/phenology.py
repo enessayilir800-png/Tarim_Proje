@@ -1,15 +1,16 @@
-"""NDVI zaman serisinden fenoloji özellikleri ve ürün grubu sınıflandırması.
+"""Phenology features and crop-group classification from NDVI time series.
 
-250 m MODIS ile buğday/nohut gibi tek tek ürünler ayrılamaz; ayrılabilen şey
-ürünün *sezonudur*. Bu yüzden sınıflar rotasyon kararı için anlamlı gruplardır:
+Individual crops such as wheat and chickpea cannot be distinguished using 250 m
+MODIS data; the observable signal is the crop *season*. These classes are useful
+for rotation decisions:
 
-    erken_sezon   Kışlık / erken ilkbahar ürünleri (buğday, arpa, mercimek, nohut) — tepe Mart-Haziran
-    yaz_sezonu    Yazlık ürünler (mısır, ayçiçeği, şeker pancarı, sebze) — tepe Haziran-Ekim
-    cift_urun     Aynı yıl iki ayrı yeşillenme (ör. buğday sonrası ikinci ürün)
-    bahce         Uzun ve geniş yeşil dönem (kayısı vb. bahçe, yonca)
-    sabit_yesil   Yıl boyu az değişen örtü (orman, mera, sulak alan kenarı)
-    nadas_ciplak  Yeşillenme yok (nadas, çıplak toprak, yerleşim)
-    belirsiz      Kurallara uymayan
+    erken_sezon   Winter / early spring crops; peak March-June
+    yaz_sezonu    Summer crops; peak June-October
+    cift_urun     Two distinct green-up periods in one year
+    bahce         Long, extended green season (orchards, alfalfa)
+    sabit_yesil   Cover with little seasonal variation (forest, pasture, wetland edge)
+    nadas_ciplak  No green-up (fallow, bare soil, built-up area)
+    belirsiz      Does not match the rules
 """
 from __future__ import annotations
 
@@ -20,13 +21,13 @@ from scipy.signal import find_peaks, savgol_filter
 
 CLASSES = ("erken_sezon", "yaz_sezonu", "cift_urun", "bahce", "sabit_yesil", "nadas_ciplak", "belirsiz")
 CLASS_LABELS = {
-    "erken_sezon": "Erken sezon (tahıl / baklagil)",
-    "yaz_sezonu": "Yaz sezonu (mısır, ayçiçeği, pancar, sebze)",
-    "cift_urun": "Çift ürün",
-    "bahce": "Bahçe / çok yıllık (kayısı, yonca)",
-    "sabit_yesil": "Sabit yeşil örtü (orman, mera)",
-    "nadas_ciplak": "Nadas / çıplak",
-    "belirsiz": "Belirsiz",
+    "erken_sezon": "Early season (cereal / legume)",
+    "yaz_sezonu": "Summer season (corn, sunflower, beet, vegetables)",
+    "cift_urun": "Double crop",
+    "bahce": "Orchard / perennial (apricot, alfalfa)",
+    "sabit_yesil": "Evergreen cover (forest, pasture)",
+    "nadas_ciplak": "Fallow / bare ground",
+    "belirsiz": "Unknown",
 }
 ANNUAL_CROP_CLASSES = ("erken_sezon", "yaz_sezonu", "cift_urun")
 COMPOSITE_DAYS = 16

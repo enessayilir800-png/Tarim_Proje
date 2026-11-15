@@ -1,6 +1,6 @@
-// TarımYol - Çiftçi Maliyet, Gelir ve Kârlılık Hesaplayıcı
+// TarımYol - Farm Cost, Revenue, and Profitability Calculator
 (function () {
-  // Ürün bazlı dekar (da) başına ortalama girdi maliyetleri ve piyasa verileri (TL)
+  // Average crop input costs and market data per decare (da), in TRY.
   const FINANCIAL_DATA = {
     wheat: {
       name: 'Wheat',
@@ -91,7 +91,7 @@
     const reportEl = document.getElementById('report');
     if (!reportEl || !cropKey) return;
 
-    // Varsa eski maliyet kutusunu kaldır
+    // Remove the previous cost panel, if present.
     const oldBox = document.getElementById('cost-analysis-box');
     if (oldBox) oldBox.remove();
 
@@ -158,7 +158,7 @@
       </div>
     `;
 
-    // Sürdürülebilirlik kartının veya takvimin öncesine ekle
+    // Insert before the sustainability card or timeline.
     const sustainabilityBox = reportEl.querySelector('.sustainability-box') || reportEl.querySelector('.timeline-title');
     if (sustainabilityBox) {
       sustainabilityBox.before(box);

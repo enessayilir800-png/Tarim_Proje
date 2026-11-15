@@ -16,13 +16,13 @@
   const lstTiles = L.tileLayer('https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/MODIS_Terra_L3_Land_Surface_Temp_8Day_Day/default/GoogleMapsCompatible_Level7/{z}/{y}/{x}.png', { maxNativeZoom: 7, maxZoom: 19, opacity: .68, attribution: '&copy; NASA GIBS MODIS Terra daytime LST 8-day' });
   const srtmTiles = L.tileLayer('https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/SRTM_Color_Index/default/GoogleMapsCompatible_Level12/{z}/{y}/{x}.png', { maxNativeZoom: 12, maxZoom: 19, opacity: .72, attribution: '&copy; NASA GIBS SRTM' });
   L.control.layers(
-    {'Sokak haritası · OpenStreetMap': streetTiles},
+    {'Street Map · OpenStreetMap': streetTiles},
     {
       [`NDVI · MODIS Terra (${gibsDate})`]: ndviTiles,
-      'EVI · MODIS Terra (8 günlük)': eviTiles,
+      'EVI · MODIS Terra (8-day)': eviTiles,
       'Toprak nemi · SMAP L4': smapTiles,
-      'Yüzey sıcaklığı · MODIS Terra (gündüz, 8 günlük)': lstTiles,
-      'Yükselti · SRTM': srtmTiles
+      'Surface Temperature · MODIS Terra (daytime, 8-day)': lstTiles,
+      'Elevation · SRTM': srtmTiles
     },
     {collapsed: false}
   ).addTo(map);
@@ -203,7 +203,7 @@
     if (selectedPreviewField) return;
     const latitude = Number($('latitude')?.value), longitude = Number($('longitude')?.value);
     if (Number.isFinite(latitude) && Number.isFinite(longitude) && $('latitude')?.value && $('longitude')?.value) {
-      setPreviewField({latitude, longitude, name:$('location')?.value || 'Seçili tarla'});
+      setPreviewField({latitude, longitude, name:$('location')?.value || 'Selected field'});
       return;
     }
     const firstField = window.FarmerAuth?.getFields?.()[0];
@@ -227,7 +227,7 @@
     parcels.forEach(parcel => {
       const hasNdvi = hasApiNdvi(parcel);
       const polygon = L.geoJSON(geometryFor(parcel), {style:{color: hasNdvi ? ndviColor(parcel.ndvi) : '#397149', weight: 3, fillColor: hasNdvi ? ndviColor(parcel.ndvi) : '#8eaf7c', fillOpacity: .38}});
-      polygon.bindPopup(`<strong>${escapeHtml(parcel.name)}</strong><br>${hasNdvi ? `Son NDVI ortalaması: ${parcel.ndvi.toFixed(3)}` : 'Henüz NDVI verisi yok'}${parcel.ndviSource ? `<br>${escapeHtml(parcel.ndviSource)}` : ''}`);
+      polygon.bindPopup(`<strong>${escapeHtml(parcel.name)}</strong><br>${hasNdvi ? `Latest NDVI mean: ${parcel.ndvi.toFixed(3)}` : 'No NDVI data yet'}${parcel.ndviSource ? `<br>${escapeHtml(parcel.ndviSource)}` : ''}`);
       polygon.addTo(layer);
     });
   }
@@ -261,14 +261,14 @@
     const end = new Date(), start = new Date(); start.setDate(start.getDate()-60);
     $('parcel-list').innerHTML = parcels.map((p, i) => {
       const insight = ndviInsight(p);
-      return `<article class="parcel-card"><div class="parcel-card-head"><h3>${escapeHtml(p.name)}</h3><button type="button" data-remove="${i}">Sil</button></div>${Number.isFinite(Number(p.area)) && Number(p.area) > 0 ? `<small class="parcel-area-note">Parsel alanı: ${Number(p.area).toLocaleString('tr-TR', {maximumFractionDigits:2})} dekar${p.properties?.alan ? ' · TKGM' : p.geometry || p.points?.length ? ' · Harita sınırından hesaplandı' : ''}</small>` : ''}<div class="ndvi-date-row"><label>Baslangic<input type="date" data-start="${i}" value="${isoDate(start)}"></label><label>Bitis<input type="date" data-end="${i}" value="${isoDate(end)}"></label></div><button type="button" class="ndvi-fetch" data-ndvi-fetch="${i}">NASA'dan NDVI getir</button><small data-ndvi-status="${i}">${hasApiNdvi(p) ? `Son NASA olcumu: ${p.ndvi.toFixed(3)} - ${p.ndviSource}` : 'MODIS - 250 m - 16 gunluk olcum'}</small>${p.ndviSeries?.length && hasApiNdvi(p) ? `<details class="ndvi-history"><summary>${p.ndviSeries.length} donem verisini gor</summary>${p.ndviSeries.map(x=>`<div><span>${escapeHtml(x.date)}</span><b>${x.mean.toFixed(3)}</b><span>min ${x.min.toFixed(3)} - max ${x.max.toFixed(3)}</span></div>`).join('')}</details>` : ''}<div class="ndvi-analysis"><strong>${escapeHtml(insight.title)}</strong><p>${escapeHtml(insight.summary)}</p>${insight.trend ? `<p>${escapeHtml(insight.trend)}</p>` : ''}${insight.range ? `<small>${escapeHtml(insight.range)}</small>` : ''}<small>Yorum mevsime/urun turune gore degisir. MODIS 250 m oldugundan kucuk parsellerde komsu alanlar olcume karisabilir.</small></div></article>`;
+      return `<article class="parcel-card"><div class="parcel-card-head"><h3>${escapeHtml(p.name)}</h3><button type="button" data-remove="${i}">Delete</button></div>${Number.isFinite(Number(p.area)) && Number(p.area) > 0 ? `<small class="parcel-area-note">Parcel area: ${Number(p.area).toLocaleString('en-US', {maximumFractionDigits:2})} decares${p.properties?.alan ? ' · TKGM' : p.geometry || p.points?.length ? ' · Calculated from map boundary' : ''}</small>` : ''}<div class="ndvi-date-row"><label>Start date<input type="date" data-start="${i}" value="${isoDate(start)}"></label><label>End date<input type="date" data-end="${i}" value="${isoDate(end)}"></label></div><button type="button" class="ndvi-fetch" data-ndvi-fetch="${i}">Fetch NDVI from NASA</button><small data-ndvi-status="${i}">${hasApiNdvi(p) ? `Latest NASA reading: ${p.ndvi.toFixed(3)} - ${p.ndviSource}` : 'MODIS - 250 m - 16-day measurement'}</small>${p.ndviSeries?.length && hasApiNdvi(p) ? `<details class="ndvi-history"><summary>View ${p.ndviSeries.length} periods</summary>${p.ndviSeries.map(x=>`<div><span>${escapeHtml(x.date)}</span><b>${x.mean.toFixed(3)}</b><span>min ${x.min.toFixed(3)} - max ${x.max.toFixed(3)}</span></div>`).join('')}</details>` : ''}<div class="ndvi-analysis"><strong>${escapeHtml(insight.title)}</strong><p>${escapeHtml(insight.summary)}</p>${insight.trend ? `<p>${escapeHtml(insight.trend)}</p>` : ''}${insight.range ? `<small>${escapeHtml(insight.range)}</small>` : ''}<small>Interpretation varies by season and crop. MODIS pixels are 250 m wide and may include neighboring areas for small parcels.</small></div></article>`;
     }).join('');
   }
   function stopDrawing(message) { drawing = false; points = []; draftLayer.clearLayers(); $('start-parcel').textContent = 'Draw parcel'; $('save-parcel').disabled = true; $('cancel-parcel').hidden = true; status.textContent = message; }
   $('start-parcel').addEventListener('click', () => {
     drawing = true; points = []; draftLayer.clearLayers(); $('start-parcel').textContent = 'Add boundary points'; $('save-parcel').disabled = true; $('cancel-parcel').hidden = false; status.textContent = 'Click the map to add boundary points (at least 3 points).'; map.doubleClickZoom.disable();
   });
-  $('cancel-parcel').addEventListener('click', () => { stopDrawing('Çizim iptal edildi.'); map.doubleClickZoom.enable(); });
+  $('cancel-parcel').addEventListener('click', () => { stopDrawing('Drawing cancelled.'); map.doubleClickZoom.enable(); });
   map.on('click', event => {
     if (!drawing) return;
     points.push([event.latlng.lat, event.latlng.lng]);
@@ -293,7 +293,7 @@
     }
     $('latitude').value = center.lat.toFixed(6);
     $('longitude').value = center.lng.toFixed(6);
-    persist(); stopDrawing(`${name} kaydedildi. NDVI değerini aşağıdan gir.`); map.doubleClickZoom.enable(); $('parcel-name').value = ''; redraw();
+    persist(); stopDrawing(`${name} saved. Enter an NDVI value below.`); map.doubleClickZoom.enable(); $('parcel-name').value = ''; redraw();
   });
   $('parcel-list').addEventListener('click', async event => {
     const button = event.target.closest('[data-ndvi-fetch]');
@@ -309,7 +309,7 @@
       // preflight when Live Server (5500) calls the local API (8000).
       const submitted = await fetch('/api/ndvi/task', {method:'POST', headers:{'Content-Type':'text/plain;charset=UTF-8'}, body:JSON.stringify({name:parcel.name,start,end,geometry:geometryFor(parcel)})});
       const task = await submitted.json();
-      if (!submitted.ok) throw new Error([task.error, task.details].filter(Boolean).join(' · ') || 'AppEEARS isteği gönderilemedi.');
+      if (!submitted.ok) throw new Error([task.error, task.details].filter(Boolean).join(' · ') || 'Could not submit the AppEEARS request.');
       message.textContent = `NASA request queued (${task.task_id}). Processing may take several minutes.`;
       let result;
       const submittedAt = Date.now();
@@ -317,14 +317,14 @@
         const waitMs = attempt < 10 ? 3000 : attempt < 30 ? 7000 : 15000;
         await new Promise(resolve => setTimeout(resolve, waitMs));
         const response = await fetch(`/api/ndvi/status?task_id=${encodeURIComponent(task.task_id)}`), state = await response.json();
-        if (!response.ok) throw new Error(state.error || 'NASA görev durumu alınamadı.');
+        if (!response.ok) throw new Error(state.error || 'Could not retrieve NASA task status.');
         if (state.status === 'done') { result = state; break; }
-        if (['error','failed','cancelled'].includes(state.status)) throw new Error(`NASA görevi tamamlanamadı: ${state.status}`);
+        if (['error','failed','cancelled'].includes(state.status)) throw new Error(`NASA task failed: ${state.status}`);
         const elapsed = Math.floor((Date.now()-submittedAt)/60000);
         message.textContent = `NASA sirada: ${state.status} - ${elapsed} dk. NASA islemi suruyor; NDVI harita katmani simdi gorunur.`;
       }
       if (!result) throw new Error(`NASA gorevi hala sirada (${task.task_id}). NDVI harita katmani kullanilabilir; ayni istegi tekrar gonderme.`);
-      if (!result.series?.length) throw new Error('Bu dönem ve parsel için kullanılabilir NDVI pikseli dönmedi.');
+      if (!result.series?.length) throw new Error('No usable NDVI pixels were returned for this period and parcel.');
       parcels[i].ndviSeries = result.series;
       parcels[i].ndvi = result.series[result.series.length-1].mean;
       parcels[i].ndviSource = 'NASA MODIS MOD13Q1.061';
@@ -332,7 +332,7 @@
       map.fitBounds(layer.getBounds(), {padding:[25,25]});
     } catch (error) {
       message.textContent = error instanceof TypeError && error.message === 'Failed to fetch'
-        ? 'API sunucusuna ulaşılamadı. Sayfayı http://127.0.0.1:8000 adresinden açın veya python server.py sunucusunu başlatın.'
+        ? 'Could not reach the API server. Open the page at http://127.0.0.1:8000 or start the server with python server.py.'
         : error.message;
       button.disabled = false;
     }
@@ -347,7 +347,7 @@
     const lat = Number(latText), lon = Number(lonText);
     if (Number.isFinite(lat) && Number.isFinite(lon) && Math.abs(lat) <= 90 && Math.abs(lon) <= 180) {
       map.setView([lat, lon], 14);
-      setPreviewField({lat, lon, name:$('location')?.value || 'Seçili tarla'});
+      setPreviewField({lat, lon, name:$('location')?.value || 'Selected field'});
       status.textContent = 'Map location updated. Select “Draw parcel” to outline a parcel.';
     }
   };
@@ -364,14 +364,14 @@
     try { response = await fetch(path); }
     catch (_) { response = await fetch(`${path}&proxy=1`); }
     const data = await response.json();
-    if (!response.ok) throw new Error(data.detail || data.error || 'TKGM konum listesi alınamadı.');
+    if (!response.ok) throw new Error(data.detail || data.error || 'Could not retrieve the TKGM location list.');
     const options = data.options || (data.features || []).map(feature => ({id:feature.properties?.id, name:feature.properties?.text}));
     fillSelect(select, options, placeholder);
   }
   let lastActiveParcel = null;
   let weatherMarker = null;
 
-  // Çiftçi hesabından seçilen tarlayı haritaya odakla ve tarımsal danışmanı çalıştır
+  // Focus the map on the field selected from the farmer account and run the advisor.
   window.focusFieldOnMap = function (field) {
     if (!field || !map) return;
     const lat = parseFloat(field.lat) || 39.0;
@@ -381,7 +381,7 @@
 
     if (searchMarker) searchMarker.remove();
 
-    const cropName = field.cropName || field.crop || 'Ürün';
+    const cropName = field.cropName || field.crop || 'Crop';
     const popupContent = `
       <div style="font-family:sans-serif;line-height:1.4;">
         <strong style="color:#1d4436;font-size:14px;">${escapeHtml(field.name)}</strong><br>
@@ -401,7 +401,7 @@
     }
   };
 
-  // Harita üzerine canlı rüzgar & yağış hava durumu rozeti yerleştir
+  // Add a live wind and rainfall weather badge to the map.
   window.addWeatherBadgeToMap = function (lat, lon, data) {
     if (!map) return;
     if (weatherMarker) weatherMarker.remove();
@@ -410,17 +410,17 @@
     const rain = data.rain || 0;
     const temp = data.temp || 0;
     
-    let statusText = '🟢 İlaçlama & Fıskiye İdeal';
+    let statusText = '🟢 Ideal for spraying and sprinklers';
     let badgeColor = '#2e6a43';
 
     if (rain > 0.5) {
-      statusText = '🌧️ Yağmur Var · İlaçlama Yapılmaz';
+      statusText = '🌧️ Rain · Do not spray';
       badgeColor = '#c94f42';
     } else if (wind > 15) {
-      statusText = '🔴 Rüzgarlı · Fıskiye & İlaçlama Yapılamaz';
+      statusText = '🔴 Windy · Sprinkler irrigation and spraying not advised';
       badgeColor = '#c94f42';
     } else if (wind >= 8) {
-      statusText = '🟡 Orta Rüzgar · Fıskiyeyi Dikkatli Çalıştır';
+      statusText = '🟡 Moderate wind · Use sprinklers with caution';
       badgeColor = '#b37d1d';
     }
 
@@ -442,7 +442,7 @@
     weatherMarker = L.marker([lat, lon], { icon: weatherIcon }).addTo(map);
   };
 
-  // Parseli Çiftçi Hesabına Kaydet Butonu
+  // Save parcel to farmer account button.
   $('btn-save-to-farmer')?.addEventListener('click', () => {
     let name = $('parcel-name')?.value.trim();
     let block = $('tkgm-block')?.value.trim();
@@ -454,7 +454,7 @@
     let lat = parseFloat($('latitude')?.value);
     let lon = parseFloat($('longitude')?.value);
 
-    // Eğer harita merkezinden veya son aktif parselden geliyorsa
+    // Use the map center or most recently active parcel when available.
     if (lastActiveParcel) {
       if (!block) block = lastActiveParcel.block || '';
       if (!parcelNo) parcelNo = lastActiveParcel.parcel || '';
@@ -496,7 +496,7 @@
         lon
       });
 
-      alert(`✓ "${saved.name}" · ${saved.area.toLocaleString('tr-TR')} dekar (Ada: ${saved.block || '—'}, Parsel: ${saved.parcel || '—'}) çiftçi hesabınıza kaydedildi.`);
+      alert(`✓ "${saved.name}" · ${saved.area.toLocaleString('en-US')} decares (Block: ${saved.block || '—'}, Parcel: ${saved.parcel || '—'}) saved to your farmer account.`);
     }
   });
 
@@ -527,7 +527,7 @@
       try { response = await fetch(path); }
       catch (_) { response = await fetch(`${path}&proxy=1`); }
       const result = await response.json();
-      if (!response.ok) throw new Error(result.detail || result.error || 'Parsel bulunamadı.');
+      if (!response.ok) throw new Error(result.detail || result.error || 'Parcel not found.');
       const properties = result.properties || {};
       const name = `${properties.mahalleAd || neighborhood.selectedOptions[0].text} · Ada ${properties.adaNo || block} / Parsel ${properties.parselNo || parcelNo}`;
       const bounds = L.geoJSON(result.geometry).getBounds();
@@ -557,12 +557,12 @@
       if (area) $('parcel-area').value = area.toFixed(2);
       if (area) $('area').value = area.toFixed(2);
 
-      // Tarlanın konumuna göre anında İlaçlama, Gübreleme ve Sulama analizi çalıştır!
+      // Immediately analyze spraying, fertilizing, and irrigation for the field location.
       if (window.AgroAdvisor && window.AgroAdvisor.loadForCoordinates) {
         window.AgroAdvisor.loadForCoordinates(center.lat, center.lng, lastActiveParcel);
       }
     } catch (error) {
-      tkgmStatus.innerHTML = `<span style="color:#b34033;">⚠️ ${escapeHtml(error.message)}</span><br><small>TKGM sorgusu yanıt vermezse, yukarıdaki "Konum veya parsel numarasıyla bul" arama kutusuna köy/ilçe adını yazabilir veya doğrudan "Tarlalarıma Kaydet" ile bilgilerinizi hesabınızda saklayabilirsiniz.</small>`;
+      tkgmStatus.innerHTML = `<span style="color:#b34033;">⚠️ ${escapeHtml(error.message)}</span><br><small>If the TKGM query does not respond, enter a village or district in the "Find by location or parcel number" search above, or save your details to your account with "Save to My Fields".</small>`;
     }
     finally { button.disabled = false; }
   });
@@ -572,7 +572,7 @@
     button.disabled = true; tkgmStatus.textContent = 'Searching for location…';
     try {
       const response = await fetch(`/api/geocode?q=${encodeURIComponent(query)}`), result = await response.json();
-      if (!response.ok) throw new Error(result.detail || result.error || 'Konum bulunamadı.');
+      if (!response.ok) throw new Error(result.detail || result.error || 'Location not found.');
       const point = [Number(result.latitude), Number(result.longitude)];
       const location = { latitude: point[0], longitude: point[1], name: result.display_name || query };
       if (window.applyResolvedFarmLocation) window.applyResolvedFarmLocation(location);
@@ -602,13 +602,13 @@
     try {
       const response = await fetch('/api/ndvi/health');
       const result = await response.json();
-      if (!response.ok || !result.connected) throw new Error(result.error || 'NASA tokenı doğrulanamadı.');
+      if (!response.ok || !result.connected) throw new Error(result.error || 'NASA token could not be verified.');
       output.dataset.state = 'ok'; output.textContent = `Connection successful · ${result.product}`;
     } catch (error) {
       output.dataset.state = 'error';
       output.textContent = error.message === 'Failed to fetch'
-        ? 'Yerel API sunucusuna ulaşılamadı. python server.py çalışıyor olmalı.'
-        : `${error.message} · Geçerli API tokenı için python setup_appeears.py çalıştır.`;
+        ? 'Could not reach the local API server. python server.py must be running.'
+        : `${error.message} · Run python setup_appeears.py to configure a valid API token.`;
     } finally { button.disabled = false; }
   });
   window.addEventListener('tarimyol:location-resolved', event => {

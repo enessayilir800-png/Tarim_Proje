@@ -1,12 +1,12 @@
 /**
- * farmer-auth.js - TarımYol Çiftçi Defteri & Kayıtlı Ada/Parsel Yönetimi
- * En sade, en anlaşılır ve pratik şekilde tasarlanmıştır.
+ * farmer-auth.js - TarımYol Farm Notebook and Saved Field Management
+ * Designed to be simple, clear, and practical.
  */
 (() => {
   const STORAGE_KEY_USER = 'tarimyol_active_farmer_v1';
   const STORAGE_KEY_FIELDS_PREFIX = 'tarimyol_farmer_fields_';
 
-  // Aktif kullanıcıyı getir
+  // Get the active user.
   function getActiveUser() {
     try {
       const data = localStorage.getItem(STORAGE_KEY_USER);
@@ -16,7 +16,7 @@
     }
   }
 
-  // Kullanıcıyı kaydet / çıkış yap
+  // Save the user or sign out.
   function setActiveUser(user) {
     if (user) {
       localStorage.setItem(STORAGE_KEY_USER, JSON.stringify(user));
@@ -28,7 +28,7 @@
     window.dispatchEvent(new CustomEvent('tarimyol:auth-change', { detail: user }));
   }
 
-  // Kullanıcının kayıtlı tarlalarını getir
+  // Get the user's saved fields.
   function getFields(userId) {
     const uId = userId || getActiveUser()?.id || 'varsayilan_ciftci';
     try {
@@ -37,11 +37,11 @@
         const list = JSON.parse(raw);
         return Array.isArray(list) ? list : [];
       }
-      // İlk açılışta çiftçiye yol göstermek için hazır örnek bir tarla
+      // Add a sample field to guide first-time users.
       const initialFields = [
         {
           id: 'tarla_ornek_1',
-          name: 'Örnek Buğday Tarlam',
+          name: 'Sample Wheat Field',
           province: 'Diyarbakır',
           district: 'Kayapınar',
           neighborhood: 'Çölgüzeli',
@@ -49,7 +49,7 @@
           parcel: '12',
           area: 45,
           crop: 'wheat',
-          cropName: 'Buğday',
+          cropName: 'Wheat',
           lat: 37.9333,
           lon: 40.1667,
           createdAt: new Date().toISOString()
@@ -80,7 +80,7 @@
       parcel: (fieldData.parcel || '').trim(),    // Parsel No
       area,
       crop: fieldData.crop || 'wheat',
-      cropName: fieldData.cropName || 'Buğday',
+      cropName: fieldData.cropName || 'Wheat',
       lat: parseFloat(fieldData.lat) || 38.9637,
       lon: parseFloat(fieldData.lon) || 35.2433,
       createdAt: fieldData.createdAt || new Date().toISOString()
@@ -150,7 +150,7 @@
     if (form?.checkValidity()) form.requestSubmit();
   }
 
-  // Tarlayı Plan Sayfasına Aktar
+  // Transfer the field to the planning page.
   function loadFieldToPlan(fieldId) {
     const fields = getFields();
     const field = fields.find(f => f.id === fieldId);
@@ -164,7 +164,7 @@
     }, 150);
   }
 
-  // Tarlayı Haritaya Aktar ve Rüzgar/Fıskiye/İlaçlama Analizini Aç
+  // Show the field on the map and open wind, sprinkler, and spraying analysis.
   function loadFieldToMap(fieldId) {
     const fields = getFields();
     const field = fields.find(f => f.id === fieldId);
@@ -178,7 +178,7 @@
     }, 200);
   }
 
-  // Üst bardaki çiftçi butonunu güncelle
+  // Update the farmer button in the top bar.
   function updateUI() {
     const user = getActiveUser();
     const userBtn = document.getElementById('farmer-auth-btn');
@@ -198,7 +198,7 @@
     renderFieldsList();
   }
 
-  // Harita üzerindeki hızlı tarla seçme kutusunu güncelle
+  // Update the quick field selector on the map.
   function updateQuickSelect() {
     const select = document.getElementById('quick-field-select');
     if (!select) return;
@@ -231,7 +231,7 @@
     }
   }
 
-  // Kayıtlı Tarlalar Listesini Render Et
+  // Render the saved fields list.
   function renderFieldsList() {
     const container = document.getElementById('farmer-saved-fields-list');
     const emptyNotice = document.getElementById('farmer-no-fields-notice');
@@ -249,9 +249,9 @@
 
     container.innerHTML = fields.map(f => {
       const cropName = ({
-        wheat: 'Buğday', barley: 'Arpa', corn: 'Mısır', sunflower: 'Ayçiçeği',
+        wheat: 'Wheat', barley: 'Barley', corn: 'Corn', sunflower: 'Sunflower',
         chickpea: 'Nohut', lentil: 'Mercimek', cotton: 'Pamuk', tomato: 'Domates', potato: 'Patates'
-      })[f.crop] || f.cropName || 'Karma Ürün';
+      })[f.crop] || f.cropName || 'Mixed Crops';
 
       const locParts = [f.province, f.district, f.neighborhood].filter(Boolean).join(' / ');
 
@@ -272,12 +272,12 @@
 
           <div class="field-card-actions">
             <button type="button" class="btn-field-action btn-show-map" data-action="map" data-id="${escapeHtml(f.id)}">
-              🗺️ Haritada Aç (Rüzgar & İlaçlama Gör)
+              🗺️ Open Map (View Wind & Spraying)
             </button>
             <button type="button" class="btn-field-action btn-send-plan" data-action="plan" data-id="${escapeHtml(f.id)}">
-              📋 Sezon Planı
+              📋 Seasonal Plan
             </button>
-            <button type="button" class="btn-field-delete" data-action="delete" data-id="${escapeHtml(f.id)}" title="Tarlayı Sil">
+            <button type="button" class="btn-field-delete" data-action="delete" data-id="${escapeHtml(f.id)}" title="Delete Field">
               🗑️ Sil
             </button>
           </div>
@@ -290,13 +290,13 @@
     updateUI();
     updateQuickSelect();
 
-    // Üst bar ve Menü Giriş Butonları
+    // Top bar and menu sign-in buttons.
     document.getElementById('farmer-auth-btn')?.addEventListener('click', () => {
       openModal('farmer-auth-modal');
       switchTab('tab-my-fields');
     });
 
-    // Hızlı seçim kutusu (Harita üzerindeki kutudan seçim yapınca)
+    // Quick selector (when a field is selected on the map).
     document.getElementById('quick-field-select')?.addEventListener('change', (e) => {
       const fieldId = e.target.value;
       if (fieldId) {
@@ -312,14 +312,14 @@
       });
     });
 
-    // Sekmeler (Tab geçişleri)
+    // Tabs.
     document.querySelectorAll('.farmer-tab-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         switchTab(btn.dataset.tab);
       });
     });
 
-    // Sade Giriş Formu
+    // Simple sign-in form.
     const loginForm = document.getElementById('farmer-login-form');
     loginForm?.addEventListener('submit', (e) => {
       e.preventDefault();
@@ -342,9 +342,9 @@
       }
     });
 
-    // Çıkış Butonu
+    // Sign-out button.
     document.getElementById('btn-farmer-logout')?.addEventListener('click', () => {
-      if (confirm('Çiftçi hesabınızdan çıkmak istiyor musunuz?')) {
+      if (confirm('Would you like to sign out of your farmer account?')) {
         setActiveUser(null);
         switchTab('tab-login');
       }
@@ -372,7 +372,7 @@
       alert(`✓ "${saved.name}" (Block: ${saved.block}, Parcel: ${saved.parcel}) saved successfully! You can now load it with one click whenever you return.`);
     });
 
-    // Liste Tıklama Olayları
+    // List click handlers.
     document.getElementById('farmer-saved-fields-list')?.addEventListener('click', (e) => {
       const btn = e.target.closest('button[data-action]');
       if (!btn) return;
@@ -384,7 +384,7 @@
       } else if (action === 'plan') {
         loadFieldToPlan(id);
       } else if (action === 'delete') {
-        if (confirm('Bu tarlayı defterinizden silmek istediğinize emin misiniz?')) {
+        if (confirm('Are you sure you want to delete this field from your notebook?')) {
           removeField(id);
         }
       }

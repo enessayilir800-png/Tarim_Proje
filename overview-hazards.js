@@ -64,47 +64,47 @@
     const rainDay = rain.reduce((best, value, index) => value > (rain[best] ?? -1) ? index : best, 0);
     const maxRain = rain[rainDay] ?? 0;
     const probability = rainProbability[rainDay];
-    const rainChance = Number.isFinite(probability) ? ` · yağış olasılığı %${Math.round(probability)}` : '';
+    const rainChance = Number.isFinite(probability) ? ` · ${Math.round(probability)}% chance of rain` : '';
     const dayLabel = dates[rainDay] ? ` · ${readableDate(dates[rainDay])}` : '';
 
     if (!rain.length && !rainProbability.length) {
-      setCard('rain', 'unavailable', 'Yağış verisi yok', 'Tahminde yağış miktarı ve olasılık verisi bulunamadı.');
+      setCard('rain', 'unavailable', 'Rain data unavailable', 'The forecast does not include rainfall amount or probability data.');
     } else if (maxRain >= 20 || (maxRain >= 10 && probability >= 70)) {
-      setCard('rain', 'danger', 'Kuvvetli yağış olasılığı', `En yağışlı gün ${maxRain.toLocaleString('tr-TR')} mm${rainChance}${dayLabel}.`);
+      setCard('rain', 'danger', 'Heavy rain likely', `Wettest day: ${maxRain.toLocaleString('en-US')} mm${rainChance}${dayLabel}.`);
     } else if (maxRain >= 5 || probability >= 50) {
-      setCard('rain', 'warning', 'Yağış bekleniyor', `En yağışlı gün ${maxRain.toLocaleString('tr-TR')} mm${rainChance}${dayLabel}.`);
+      setCard('rain', 'warning', 'Rain expected', `Wettest day: ${maxRain.toLocaleString('en-US')} mm${rainChance}${dayLabel}.`);
     } else {
-      setCard('rain', 'ok', 'Belirgin yağış görünmüyor', `10 günlük tahminde günlük yağış en fazla ${maxRain.toLocaleString('tr-TR')} mm${dayLabel}.`);
+      setCard('rain', 'ok', 'No significant rain expected', `Daily rainfall reaches at most ${maxRain.toLocaleString('en-US')} mm in the 10-day forecast${dayLabel}.`);
     }
 
     const hailDay = codes.findIndex(code => code === 96 || code === 99);
     const stormDay = codes.findIndex(code => code === 95 || code === 82);
     if (!codes.length) {
-      setCard('hail', 'unavailable', 'Hava durumu kodu yok', 'Dolu ve fırtına tahmini için gerekli veri bulunamadı.');
+      setCard('hail', 'unavailable', 'Weather code unavailable', 'Required data for hail and storm forecasts was not found.');
     } else if (hailDay >= 0) {
       setCard('hail', codes[hailDay] === 99 ? 'danger' : 'warning', 'Dolu ihtimali', `Tahminde dolu kodu var${dates[hailDay] ? ` · ${readableDate(dates[hailDay])}` : ''}.`);
     } else if (stormDay >= 0) {
-      setCard('hail', 'warning', 'Fırtına ihtimali', `Gök gürültülü fırtına tahmini${dates[stormDay] ? ` · ${readableDate(dates[stormDay])}` : ''}.`);
+      setCard('hail', 'warning', 'Storm possible', `Thunderstorm forecast${dates[stormDay] ? ` · ${readableDate(dates[stormDay])}` : ''}.`);
     } else {
-      setCard('hail', 'ok', 'Dolu / fırtına sinyali yok', '10 günlük tahminde dolu veya kuvvetli fırtına kodu görülmedi.');
+      setCard('hail', 'ok', 'No hail or storm signal', 'No hail or severe storm code appears in the 10-day forecast.');
     }
 
     const maxTemp = maxTemperatures.length ? Math.max(...maxTemperatures) : null;
     const minTemp = minTemperatures.length ? Math.min(...minTemperatures) : null;
     if (maxTemp === null && minTemp === null) {
-      setCard('heat', 'unavailable', 'Sıcaklık verisi yok', 'Tahminde sıcaklık verisi bulunamadı.');
+      setCard('heat', 'unavailable', 'Temperature data unavailable', 'The forecast does not include temperature data.');
     } else if (maxTemp !== null && maxTemp >= 40) {
-      setCard('heat', 'danger', 'Aşırı sıcak', `Tahmini en yüksek ${Math.round(maxTemp)}°C${minTemp !== null ? ` · en düşük ${Math.round(minTemp)}°C` : ''}.`);
+      setCard('heat', 'danger', 'Extreme heat', `Forecast high ${Math.round(maxTemp)}°C${minTemp !== null ? ` · low ${Math.round(minTemp)}°C` : ''}.`);
     } else if (maxTemp !== null && maxTemp >= 35) {
-      setCard('heat', 'warning', 'Sıcak hava', `Tahmini en yüksek ${Math.round(maxTemp)}°C${minTemp !== null ? ` · en düşük ${Math.round(minTemp)}°C` : ''}.`);
+      setCard('heat', 'warning', 'Hot weather', `Forecast high ${Math.round(maxTemp)}°C${minTemp !== null ? ` · low ${Math.round(minTemp)}°C` : ''}.`);
     } else if (minTemp !== null && minTemp <= 0) {
-      setCard('heat', 'warning', 'Don ihtimali', `Tahmini en düşük ${Math.round(minTemp)}°C${maxTemp !== null ? ` · en yüksek ${Math.round(maxTemp)}°C` : ''}.`);
+      setCard('heat', 'warning', 'Frost possible', `Forecast low ${Math.round(minTemp)}°C${maxTemp !== null ? ` · high ${Math.round(maxTemp)}°C` : ''}.`);
     } else {
       const details = [
         maxTemp !== null ? `en yüksek ${Math.round(maxTemp)}°C` : '',
         minTemp !== null ? `en düşük ${Math.round(minTemp)}°C` : ''
       ].filter(Boolean).join(' · ');
-      setCard('heat', 'ok', 'Belirgin sıcaklık riski yok', `Tahmini ${details}.`);
+      setCard('heat', 'ok', 'No significant temperature risk', `Forecast: ${details}.`);
     }
     forecastComplete = true;
     updateSummary();
@@ -113,9 +113,9 @@
   function updateForecastError(currentRequestId) {
     if (currentRequestId !== requestId) return;
     forecastComplete = true;
-    setCard('rain', 'unavailable', 'Tahmin alınamadı', 'Hava durumu servisi şu anda yanıt vermiyor.');
-    setCard('hail', 'unavailable', 'Tahmin alınamadı', 'Dolu ve fırtına verisi şu anda alınamıyor.');
-    setCard('heat', 'unavailable', 'Tahmin alınamadı', 'Sıcaklık verisi şu anda alınamıyor.');
+    setCard('rain', 'unavailable', 'Forecast unavailable', 'The weather service is not responding right now.');
+    setCard('hail', 'unavailable', 'Forecast unavailable', 'Hail and storm data cannot be retrieved right now.');
+    setCard('heat', 'unavailable', 'Forecast unavailable', 'Temperature data cannot be retrieved right now.');
   }
 
   async function getFireData(latitude, longitude) {
@@ -135,15 +135,15 @@
           return {
             available: false,
             message: detail.includes('NASA_FIRMS_MAP_KEY')
-              ? 'NASA FIRMS anahtarı yapılandırılmamış.'
-              : 'NASA FIRMS servisi şu anda erişilemiyor.'
+              ? 'The NASA FIRMS key is not configured.'
+              : 'The NASA FIRMS service is currently unavailable.'
           };
         }
         const detections = Number(data.detections);
-        if (!Number.isFinite(detections)) return { available: false, message: 'NASA FIRMS yanıtında tespit sayısı bulunamadı.' };
+        if (!Number.isFinite(detections)) return { available: false, message: 'The NASA FIRMS response did not include a detection count.' };
         return { available: true, detections, windowDays: Number(data.window_days) || 1 };
       })
-      .catch(() => ({ available: false, message: 'NASA FIRMS servisine bağlanılamadı.' }));
+      .catch(() => ({ available: false, message: 'Could not connect to the NASA FIRMS service.' }));
     return fireCachePromise;
   }
 
@@ -151,11 +151,11 @@
     if (currentRequestId !== requestId) return;
     fireComplete = true;
     if (!result.available) {
-      setCard('fire', 'unavailable', 'Yangın verisi alınamadı', result.message);
+      setCard('fire', 'unavailable', 'Fire data unavailable', result.message);
     } else if (result.detections > 0) {
-      setCard('fire', 'warning', `${result.detections} uydu tespiti`, `NASA FIRMS · yakın çevrede son ${result.windowDays} gün. Tespit, tarla içi yangın doğrulaması değildir.`);
+      setCard('fire', 'warning', `${result.detections} satellite detections`, `NASA FIRMS · within the past ${result.windowDays} days nearby. A detection does not confirm a fire inside the field.`);
     } else {
-      setCard('fire', 'ok', 'Uydu tespiti yok', `NASA FIRMS · yakın çevrede son ${result.windowDays} gün. Tespit olmaması yangın olmadığını garanti etmez.`);
+      setCard('fire', 'ok', 'No satellite detections', `NASA FIRMS · within the past ${result.windowDays} days nearby. No detection does not guarantee there is no fire.`);
     }
     updateSummary();
   }
@@ -179,7 +179,7 @@
     document.getElementById('overview-hazard-location').textContent = [selectedLocation, cropName].filter(Boolean).join(' · ');
     document.getElementById('overview-hazard-source').textContent = 'Weather: Open-Meteo · Fire: NASA FIRMS satellite detections. This is an early-warning summary and does not replace local field checks.';
 
-    Object.keys(cards).forEach(type => setCard(type, 'pending', 'Veri bekleniyor', 'Seçilen tarla için veri alınıyor.'));
+    Object.keys(cards).forEach(type => setCard(type, 'pending', 'Waiting for data', 'Retrieving data for the selected field.'));
     const currentRequestId = requestId;
     getFireData(latitude, longitude).then(result => updateFire(result, currentRequestId));
     return currentRequestId;

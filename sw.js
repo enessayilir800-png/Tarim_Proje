@@ -1,4 +1,4 @@
-// TarımYol - Offline & Service Worker Modülü
+// TarımYol - Offline and Service Worker Module
 const CACHE_NAME = 'tarimyol-cache-v13';
 
 const STATIC_ASSETS = [
@@ -92,15 +92,15 @@ self.addEventListener('activate', (event) => {
   self.clients.claim();
 });
 
-// Network-First stratejisi (İnternet varsa yenisini çek, yoksa cache'ten ver)
+// Network-first strategy: fetch an update when online; otherwise use the cache.
 self.addEventListener('fetch', (event) => {
   const url = new URL(event.request.url);
 
-  // Harici API istekleri offline ise hata döndür
+  // Return an error for external API requests while offline.
   if (url.pathname.includes('/api/')) {
     event.respondWith(
       fetch(event.request).catch(() => {
-        return new Response(JSON.stringify({ error: 'Çevrimdışı moddasınız. İnternet bağlantınızı kontrol edin.' }), {
+        return new Response(JSON.stringify({ error: 'You are offline. Check your internet connection.' }), {
           headers: { 'Content-Type': 'application/json' },
           status: 503
         });
@@ -109,7 +109,7 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // Statik dosyalar için ağdan çekip önbelleğe yaz, ağ yoksa önbellekten sun
+  // Fetch and cache static files when online; otherwise serve them from cache.
   event.respondWith(
     fetch(event.request)
       .then((networkResponse) => {

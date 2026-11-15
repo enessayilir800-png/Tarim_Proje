@@ -1,6 +1,6 @@
-// TarımYol - Profesyonel PDF Rapor İndirme Modülü (jsPDF + html2canvas)
+// TarımYol - PDF Report Export (jsPDF + html2canvas)
 (function () {
-  // Rapor oluşturulduğunda "PDF İndir" butonunu ekle
+  // Add a PDF download button after the report is generated.
   window.attachPdfDownloadButton = function () {
     const reportEl = document.getElementById('report');
     if (!reportEl || document.getElementById('btn-download-pdf')) return;
@@ -10,16 +10,16 @@
     btnWrap.innerHTML = `
       <button type="button" id="btn-download-pdf" class="btn-pdf-download">
         <span class="pdf-icon">📄</span>
-        <span>Bu Planı PDF Olarak İndir</span>
+        <span>Download This Plan as PDF</span>
       </button>
-      <span class="pdf-hint">Çiftçi raporu, takvim ve iklim grafikleriyle birlikte hazırlandı.</span>
+      <span class="pdf-hint">The farm report is ready with its calendar and climate charts.</span>
     `;
 
     // Raporun en tepesine ekle
     reportEl.prepend(btnWrap);
   };
 
-  // Butona tıklama olayı
+  // Handle button clicks.
   document.addEventListener('click', async (e) => {
     const btn = e.target.closest('#btn-download-pdf');
     if (!btn) return;
@@ -28,20 +28,20 @@
     if (!reportEl) return;
 
     if (!window.jspdf || !window.html2canvas) {
-      alert('PDF kütüphaneleri yükleniyor, lütfen birkaç saniye sonra tekrar deneyin.');
+      alert('PDF libraries are loading. Please try again in a few seconds.');
       return;
     }
 
     const originalText = btn.innerHTML;
     btn.disabled = true;
-    btn.innerHTML = '<span>⏳ PDF Hazırlanıyor, lütfen bekleyin…</span>';
+    btn.innerHTML = '<span>⏳ Preparing PDF, please wait…</span>';
 
     try {
-      // PDF oluştururken butonun kendisini geçici olarak gizle
+      // Temporarily hide the button while generating the PDF.
       const exportBar = reportEl.querySelector('.pdf-export-bar');
       if (exportBar) exportBar.style.display = 'none';
 
-      // HTML'i yüksek çözünürlüklü canvas'a çevir
+      // Convert the HTML to a high-resolution canvas.
       const canvas = await html2canvas(reportEl, {
         scale: 2,
         useCORS: true,
@@ -61,13 +61,13 @@
       const contentWidth = pageWidth - (margin * 2);
       const totalImgHeight = (canvas.height * contentWidth) / canvas.width;
 
-      // Sayfa sayfa bölme
+      // Split the output into pages.
       let remainingHeight = totalImgHeight;
       let sourceY = 0;
       let pageNumber = 1;
 
       while (remainingHeight > 0) {
-        // Her sayfa için üst bilgi başlığı (İlk sayfa hariç sade)
+        // Add a header to each page (use a simpler header on the first page).
         const usableHeight = pageHeight - 20;
         const sliceHeight = Math.min(remainingHeight, usableHeight);
 
@@ -87,11 +87,11 @@
         const sliceData = sliceCanvas.toDataURL('image/jpeg', 0.95);
         pdf.addImage(sliceData, 'JPEG', margin, 10, contentWidth, sliceHeight);
 
-        // Sayfa Numarası (Footer)
+        // Add the page number in the footer.
         pdf.setFontSize(8);
         pdf.setTextColor(140, 150, 140);
         pdf.text(
-          `TarımYol Sezon Karar Destek Raporu · Sayfa ${pageNumber}`,
+          `TarımYol Seasonal Decision Support Report · Page ${pageNumber}`,
           pageWidth / 2,
           pageHeight - 5,
           { align: 'center' }
@@ -106,14 +106,14 @@
         }
       }
 
-      // Dosya Adı (Ürün + Tarih)
+      // Build the filename from the crop and date.
       const cropName = document.getElementById('crop')?.selectedOptions[0]?.text || 'Tarla_Plani';
       const nowStr = new Date().toISOString().slice(0, 10);
       pdf.save(`TarimYol_${cropName}_Raporu_${nowStr}.pdf`);
 
     } catch (err) {
-      console.error('PDF oluşturma hatası:', err);
-      alert('PDF oluşturulurken bir sorun çıktı: ' + err.message);
+      console.error('PDF generation error:', err);
+      alert('There was a problem generating the PDF: ' + err.message);
     } finally {
       btn.disabled = false;
       btn.innerHTML = originalText;
